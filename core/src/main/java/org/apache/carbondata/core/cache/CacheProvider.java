@@ -122,8 +122,7 @@ public class CacheProvider {
           new ForwardDictionaryCache<DictionaryColumnUniqueIdentifier, Dictionary>(carbonStorePath,
               carbonLRUCache);
     } else if (cacheType.equals(cacheType.EXECUTOR_BTREE)) {
-      cacheObject = new BlockIndexStore<TableBlockUniqueIdentifier, AbstractIndex>(carbonStorePath,
-          carbonLRUCache);
+      cacheObject = new BlockIndexStore<TableBlockUniqueIdentifier, AbstractIndex>(carbonLRUCache);
     } else if (cacheType.equals(cacheType.DRIVER_BTREE)) {
       cacheObject =
           new SegmentTaskIndexStore(carbonStorePath, carbonLRUCache);

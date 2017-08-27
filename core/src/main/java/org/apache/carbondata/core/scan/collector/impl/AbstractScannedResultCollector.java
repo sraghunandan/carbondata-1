@@ -99,7 +99,7 @@ public abstract class AbstractScannedResultCollector implements ScannedResultCol
         case DECIMAL:
           BigDecimal bigDecimalMsrValue =
               dataChunk.getDecimal(index);
-          if (null != bigDecimalMsrValue && carbonMeasure.getScale() > bigDecimalMsrValue.scale()) {
+          if (carbonMeasure.getScale() > bigDecimalMsrValue.scale()) {
             bigDecimalMsrValue =
                 bigDecimalMsrValue.setScale(carbonMeasure.getScale(), RoundingMode.HALF_UP);
           }

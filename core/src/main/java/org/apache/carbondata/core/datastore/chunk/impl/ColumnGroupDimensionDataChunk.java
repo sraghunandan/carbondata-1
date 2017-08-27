@@ -37,7 +37,7 @@ public class ColumnGroupDimensionDataChunk extends AbstractDimensionDataChunk {
     this.dataChunkStore = DimensionChunkStoreFactory.INSTANCE
         .getDimensionChunkStore(columnValueSize, false, numberOfRows, dataChunk.length,
         DimensionStoreType.FIXEDLENGTH);
-    this.dataChunkStore.putArray(null, null, dataChunk);
+    this.dataChunkStore.putArray(new int[0], new int[0], dataChunk);
   }
 
   /**

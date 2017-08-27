@@ -192,6 +192,9 @@ public class ColumnDictionaryInfo extends AbstractColumnDictionaryInfo {
       int mid = (low + high) >>> 1;
       int surrogateKey = sortedSurrogates.get(mid);
       byte[] dictionaryValue = getDictionaryBytesFromSurrogate(surrogateKey);
+      if (null == dictionaryValue) {
+        return CarbonCommonConstants.INVALID_SURROGATE_KEY;
+      }
       int cmp = -1;
       if (this.getDataType() != DataType.STRING) {
         cmp = compareFilterKeyWithDictionaryKey(

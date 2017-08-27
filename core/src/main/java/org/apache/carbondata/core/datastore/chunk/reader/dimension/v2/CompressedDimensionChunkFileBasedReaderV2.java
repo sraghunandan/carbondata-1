@@ -118,8 +118,8 @@ public class CompressedDimensionChunkFileBasedReaderV2 extends AbstractChunkRead
   public DimensionColumnDataChunk convertToDimensionChunk(
       DimensionRawColumnChunk dimensionRawColumnChunk, int pageNumber) throws IOException {
     byte[] dataPage = null;
-    int[] invertedIndexes = null;
-    int[] invertedIndexesReverse = null;
+    int[] invertedIndexes = new int[0];
+    int[] invertedIndexesReverse = new int[0];
     int[] rlePage = null;
     DataChunk2 dimensionColumnChunk = null;
     int copySourcePoint = dimensionRawColumnChunk.getOffSet();

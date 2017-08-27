@@ -51,17 +51,19 @@ public class ServerDictionaryGenerator implements DictionaryGenerator<Integer, D
     CarbonTable carbonTable = metadata.getCarbonTable(key.getTableUniqueName());
     CarbonDimension dimension = carbonTable.getPrimitiveDimensionByName(
             key.getTableUniqueName(), key.getColumnName());
-    // initialize TableDictionaryGenerator first
-    if (tableMap.get(key.getTableUniqueName()) == null) {
-      synchronized (tableMap) {
-        if (tableMap.get(key.getTableUniqueName()) == null) {
-          tableMap.put(key.getTableUniqueName(), new TableDictionaryGenerator(dimension));
-        } else {
-          tableMap.get(key.getTableUniqueName()).updateGenerator(dimension);
+    if (null != dimension) {
+      // initialize TableDictionaryGenerator first
+      if (tableMap.get(key.getTableUniqueName()) == null) {
+        synchronized (tableMap) {
+          if (tableMap.get(key.getTableUniqueName()) == null) {
+            tableMap.put(key.getTableUniqueName(), new TableDictionaryGenerator(dimension));
+          } else {
+            tableMap.get(key.getTableUniqueName()).updateGenerator(dimension);
+          }
         }
+      } else {
+        tableMap.get(key.getTableUniqueName()).updateGenerator(dimension);
       }
-    } else {
-      tableMap.get(key.getTableUniqueName()).updateGenerator(dimension);
     }
   }
 

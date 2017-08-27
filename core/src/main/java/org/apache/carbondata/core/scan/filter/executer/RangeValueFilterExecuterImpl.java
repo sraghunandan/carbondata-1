@@ -115,7 +115,7 @@ public class RangeValueFilterExecuterImpl extends ValueBasedFilterExecuterImpl {
    */
   private void ifDefaultValueMatchesFilter() {
     isDefaultValuePresentInFilter = false;
-    if (!this.isDimensionPresentInCurrentBlock) {
+    if (!this.isDimensionPresentInCurrentBlock && null != filterRangesValues) {
       CarbonDimension dimension = this.dimColEvaluatorInfo.getDimension();
       byte[] defaultValue = dimension.getDefaultValue();
       if (null != defaultValue) {

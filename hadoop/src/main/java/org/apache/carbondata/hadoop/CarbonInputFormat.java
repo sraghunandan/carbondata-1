@@ -685,15 +685,18 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
         tableSegmentUniqueIdentifier.setIsSegmentUpdated(isSegmentUpdated);
         segmentTaskIndexWrapper =
             cacheClient.getSegmentAccessClient().get(tableSegmentUniqueIdentifier);
-        segmentIndexMap = segmentTaskIndexWrapper.getTaskIdToTableSegmentMap();
+        if (null != segmentTaskIndexWrapper) {
+          segmentIndexMap = segmentTaskIndexWrapper.getTaskIdToTableSegmentMap();
+        }
       }
 
       if (null != taskKeys) {
         Map<SegmentTaskIndexStore.TaskBucketHolder, AbstractIndex> finalMap =
             new HashMap<>(validTaskKeys.size());
-
-        for (SegmentTaskIndexStore.TaskBucketHolder key : validTaskKeys) {
-          finalMap.put(key, segmentIndexMap.get(key));
+        if (null != segmentIndexMap) {
+          for (SegmentTaskIndexStore.TaskBucketHolder key : validTaskKeys) {
+            finalMap.put(key, segmentIndexMap.get(key));
+          }
         }
         segmentIndexMap = finalMap;
       }
@@ -727,13 +730,14 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
         Map<SegmentTaskIndexStore.TaskBucketHolder, AbstractIndex> taskAbstractIndexMap =
             getSegmentAbstractIndexs(job, absoluteTableIdentifier, eachValidSeg, cacheClient,
                 updateStatusManager);
-        for (Map.Entry<SegmentTaskIndexStore.TaskBucketHolder, AbstractIndex> taskMap :
-            taskAbstractIndexMap
-            .entrySet()) {
-          AbstractIndex taskAbstractIndex = taskMap.getValue();
-          countOfBlocksInSeg += new BlockLevelTraverser()
-              .getBlockRowMapping(taskAbstractIndex, blockRowCountMapping, eachValidSeg,
-                  updateStatusManager);
+        if (null != taskAbstractIndexMap) {
+          for (Map.Entry<SegmentTaskIndexStore.TaskBucketHolder, AbstractIndex> taskMap :
+              taskAbstractIndexMap.entrySet()) {
+            AbstractIndex taskAbstractIndex = taskMap.getValue();
+            countOfBlocksInSeg += new BlockLevelTraverser()
+                .getBlockRowMapping(taskAbstractIndex, blockRowCountMapping, eachValidSeg,
+                    updateStatusManager);
+          }
         }
         segmentAndBlockCountMapping.put(eachValidSeg, countOfBlocksInSeg);
       }
@@ -774,7 +778,7 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
           blockFinder.findFirstDataBlock(abstractIndex.getDataRefNode(), startIndexKey);
       DataRefNode endBlock =
           blockFinder.findLastDataBlock(abstractIndex.getDataRefNode(), endIndexKey);
-      while (startBlock != endBlock) {
+      while ((null != startBlock) && (startBlock != endBlock)) {
         blocks.add(startBlock);
         startBlock = startBlock.getNextDataRefNode();
       }

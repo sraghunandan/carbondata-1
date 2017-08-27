@@ -77,13 +77,15 @@ public class MapredCarbonInputFormat extends CarbonInputFormat<ArrayWritable>
         }
       }
     }
-    AbsoluteTableIdentifier absoluteTableIdentifier =
-        AbsoluteTableIdentifier.fromTablePath(validInputPath);
-    // read the schema file to get the absoluteTableIdentifier having the correct table id
-    // persisted in the schema
-    CarbonTable carbonTable = SchemaReader.readCarbonTableFromStore(absoluteTableIdentifier);
-    configuration.set(CARBON_TABLE, ObjectSerializationUtil.convertObjectToString(carbonTable));
-    setTableInfo(configuration, carbonTable.getTableInfo());
+    if (null != validInputPath) {
+      AbsoluteTableIdentifier absoluteTableIdentifier =
+          AbsoluteTableIdentifier.fromTablePath(validInputPath);
+      // read the schema file to get the absoluteTableIdentifier having the correct table id
+      // persisted in the schema
+      CarbonTable carbonTable = SchemaReader.readCarbonTableFromStore(absoluteTableIdentifier);
+      configuration.set(CARBON_TABLE, ObjectSerializationUtil.convertObjectToString(carbonTable));
+      setTableInfo(configuration, carbonTable.getTableInfo());
+    }
   }
 
   private static CarbonTable getCarbonTable(Configuration configuration, String path)

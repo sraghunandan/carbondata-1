@@ -97,19 +97,21 @@ public class CarbondataSplitManager implements ConnectorSplitManager {
         getColumnConstraints(layoutHandle.getConstraint());
 
     CarbonTableCacheModel cache = carbonTableReader.getCarbonCache(key);
-    Expression filters = parseFilterExpression(layoutHandle.getConstraint(), cache.carbonTable);
+    if (null != cache) {
+      Expression filters = parseFilterExpression(layoutHandle.getConstraint(), cache.carbonTable);
 
-    try {
-      List<CarbonLocalInputSplit> splits = carbonTableReader.getInputSplits2(cache, filters);
+      try {
+        List<CarbonLocalInputSplit> splits = carbonTableReader.getInputSplits2(cache, filters);
 
-      ImmutableList.Builder<ConnectorSplit> cSplits = ImmutableList.builder();
-      for (CarbonLocalInputSplit split : splits) {
-        cSplits.add(new CarbondataSplit(connectorId, tableHandle.getSchemaTableName(),
-            layoutHandle.getConstraint(), split, rebuildConstraints));
+        ImmutableList.Builder<ConnectorSplit> cSplits = ImmutableList.builder();
+        for (CarbonLocalInputSplit split : splits) {
+          cSplits.add(new CarbondataSplit(connectorId, tableHandle.getSchemaTableName(),
+              layoutHandle.getConstraint(), split, rebuildConstraints));
+        }
+        return new FixedSplitSource(cSplits.build());
+      } catch (Exception ex) {
+        System.out.println(ex.toString());
       }
-      return new FixedSplitSource(cSplits.build());
-    } catch (Exception ex) {
-      System.out.println(ex.toString());
     }
     return null;
   }

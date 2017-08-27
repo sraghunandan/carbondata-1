@@ -17,6 +17,7 @@
 
 package org.apache.carbondata.spark.partition.api.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,10 @@ public final class QueryPartitionHelper {
 
     DataPartitioner dataPartitioner = partitionerMap.get(tableUniqueName);
 
+    if (null == dataPartitioner || null == dataPartitioner.getAllPartitions()) {
+      return new ArrayList<Partition>(0);
+    }
+
     return dataPartitioner.getPartitions();
   }
 
@@ -57,6 +62,10 @@ public final class QueryPartitionHelper {
     String tableUniqueName = databaseName + '_' + tableName;
 
     DataPartitioner dataPartitioner = partitionerMap.get(tableUniqueName);
+
+    if (null == dataPartitioner || null == dataPartitioner.getAllPartitions()) {
+      return new ArrayList<Partition>(0);
+    }
 
     return dataPartitioner.getAllPartitions();
   }

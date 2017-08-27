@@ -18,6 +18,7 @@
 package org.apache.carbondata.processing.newflow.sort.unsafe.merger;
 
 import java.util.AbstractQueue;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 import org.apache.carbondata.common.logging.LogService;
@@ -173,7 +174,11 @@ public class UnsafeInMemoryIntermediateDataMerger implements Runnable {
    * @throws CarbonSortKeyAndGroupByException
    */
   private UnsafeCarbonRowForMerge next() throws CarbonSortKeyAndGroupByException {
-    return getSortedRecordFromMemory();
+    if (hasNext()) {
+      return getSortedRecordFromMemory();
+    } else {
+      throw new NoSuchElementException("No more elements to return");
+    }
   }
 
   /**

@@ -81,13 +81,13 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
 
   @Override
   public void putByte(int rowId, byte value) {
-    long offset = rowId << byteBits;
+    long offset = ((long)rowId) << byteBits;
     CarbonUnsafe.getUnsafe().putByte(baseAddress, baseOffset + offset, value);
   }
 
   @Override
   public void putShort(int rowId, short value) {
-    long offset = rowId << shortBits;
+    long offset = ((long)rowId) << shortBits;
     CarbonUnsafe.getUnsafe().putShort(baseAddress, baseOffset + offset, value);
   }
 
@@ -102,19 +102,19 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
 
   @Override
   public void putInt(int rowId, int value) {
-    long offset = rowId << intBits;
+    long offset = ((long)rowId) << intBits;
     CarbonUnsafe.getUnsafe().putInt(baseAddress, baseOffset + offset, value);
   }
 
   @Override
   public void putLong(int rowId, long value) {
-    long offset = rowId << longBits;
+    long offset = ((long)rowId) << longBits;
     CarbonUnsafe.getUnsafe().putLong(baseAddress, baseOffset + offset, value);
   }
 
   @Override
   public void putDouble(int rowId, double value) {
-    long offset = rowId << doubleBits;
+    long offset = ((long)rowId) << doubleBits;
     CarbonUnsafe.getUnsafe().putDouble(baseAddress, baseOffset + offset, value);
   }
 
@@ -134,13 +134,13 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
 
   @Override
   public byte getByte(int rowId) {
-    long offset = rowId << byteBits;
+    long offset = ((long)rowId) << byteBits;
     return CarbonUnsafe.getUnsafe().getByte(baseAddress, baseOffset + offset);
   }
 
   @Override
   public short getShort(int rowId) {
-    long offset = rowId << shortBits;
+    long offset = ((long)rowId) << shortBits;
     return CarbonUnsafe.getUnsafe().getShort(baseAddress, baseOffset + offset);
   }
 
@@ -156,25 +156,25 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
 
   @Override
   public int getInt(int rowId) {
-    long offset = rowId << intBits;
+    long offset = ((long)rowId) << intBits;
     return CarbonUnsafe.getUnsafe().getInt(baseAddress, baseOffset + offset);
   }
 
   @Override
   public long getLong(int rowId) {
-    long offset = rowId << longBits;
+    long offset = ((long)rowId) << longBits;
     return CarbonUnsafe.getUnsafe().getLong(baseAddress, baseOffset + offset);
   }
 
   @Override
   public float getFloat(int rowId) {
-    long offset = rowId << floatBits;
+    long offset = ((long)rowId) << floatBits;
     return CarbonUnsafe.getUnsafe().getFloat(baseAddress, baseOffset + offset);
   }
 
   @Override
   public double getDouble(int rowId) {
-    long offset = rowId << doubleBits;
+    long offset = ((long)rowId) << doubleBits;
     return CarbonUnsafe.getUnsafe().getDouble(baseAddress, baseOffset + offset);
   }
 
@@ -195,9 +195,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public byte[] getBytePage() {
     byte[] data = new byte[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << byteBits;
-      data[i] = CarbonUnsafe.getUnsafe().getByte(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getByte(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -205,9 +205,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public short[] getShortPage() {
     short[] data = new short[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << shortBits;
-      data[i] = CarbonUnsafe.getUnsafe().getShort(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getShort(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -223,9 +223,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public int[] getIntPage() {
     int[] data = new int[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << intBits;
-      data[i] = CarbonUnsafe.getUnsafe().getInt(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getInt(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -233,9 +233,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public long[] getLongPage() {
     long[] data = new long[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << longBits;
-      data[i] = CarbonUnsafe.getUnsafe().getLong(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getLong(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -243,9 +243,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public float[] getFloatPage() {
     float[] data = new float[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << floatBits;
-      data[i] = CarbonUnsafe.getUnsafe().getFloat(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getFloat(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -253,9 +253,9 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
   @Override
   public double[] getDoublePage() {
     double[] data = new double[getPageSize()];
-    for (int i = 0; i < data.length; i++) {
+    for (long i = 0; i < data.length; i++) {
       long offset = i << doubleBits;
-      data[i] = CarbonUnsafe.getUnsafe().getDouble(baseAddress, baseOffset + offset);
+      data[(int)i] = CarbonUnsafe.getUnsafe().getDouble(baseAddress, baseOffset + offset);
     }
     return data;
   }
@@ -331,39 +331,42 @@ public class UnsafeFixLengthColumnPage extends ColumnPage {
     int pageSize = getPageSize();
     switch (dataType) {
       case BYTE:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << byteBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getByte(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getByte(baseAddress, baseOffset + offset));
         }
         break;
       case SHORT:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << shortBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getShort(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getShort(baseAddress, baseOffset +
+              offset));
         }
         break;
       case INT:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << intBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getInt(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getInt(baseAddress, baseOffset + offset));
         }
         break;
       case LONG:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << longBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getLong(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getLong(baseAddress, baseOffset + offset));
         }
         break;
       case FLOAT:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << floatBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getFloat(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getFloat(baseAddress, baseOffset +
+              offset));
         }
         break;
       case DOUBLE:
-        for (int i = 0; i < pageSize; i++) {
+        for (long i = 0; i < pageSize; i++) {
           long offset = i << doubleBits;
-          codec.encode(i, CarbonUnsafe.getUnsafe().getDouble(baseAddress, baseOffset + offset));
+          codec.encode((int)i, CarbonUnsafe.getUnsafe().getDouble(baseAddress, baseOffset +
+              offset));
         }
         break;
       default:

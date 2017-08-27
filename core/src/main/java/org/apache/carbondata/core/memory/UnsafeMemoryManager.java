@@ -146,7 +146,7 @@ public class UnsafeMemoryManager {
     return memoryUsed > totalMemory;
   }
 
-  public long getUsableMemory() {
+  public synchronized long getUsableMemory() {
     return totalMemory;
   }
 

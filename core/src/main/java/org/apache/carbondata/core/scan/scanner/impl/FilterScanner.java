@@ -99,6 +99,10 @@ public class FilterScanner extends AbstractBlockletScanner {
         totalPagesScanned.getCount() + blocksChunkHolder.getDataBlock().numberOfPages());
     // apply min max
     if (isMinMaxEnabled) {
+      if (null == blocksChunkHolder.getDataBlock().getColumnsMaxValue()
+          || null == blocksChunkHolder.getDataBlock().getColumnsMinValue()) {
+        return true;
+      }
       BitSet bitSet = this.filterExecuter
           .isScanRequired(blocksChunkHolder.getDataBlock().getColumnsMaxValue(),
               blocksChunkHolder.getDataBlock().getColumnsMinValue());

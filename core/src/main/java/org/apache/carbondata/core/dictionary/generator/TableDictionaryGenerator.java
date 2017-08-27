@@ -62,6 +62,9 @@ public class TableDictionaryGenerator
     CarbonDimension dimension = carbonTable.getPrimitiveDimensionByName(
             value.getTableUniqueName(), value.getColumnName());
 
+    if (null == dimension) {
+      throw new DictionaryGenerationException("Dictionary Generation Failed");
+    }
     DictionaryGenerator<Integer, String> generator =
             columnMap.get(dimension.getColumnId());
     return generator.generateKey(value.getData());
@@ -73,6 +76,9 @@ public class TableDictionaryGenerator
     CarbonDimension dimension = carbonTable.getPrimitiveDimensionByName(
             key.getTableUniqueName(), key.getColumnName());
 
+    if (null == dimension) {
+      return 0;
+    }
     DictionaryGenerator<Integer, String> generator =
             columnMap.get(dimension.getColumnId());
     return ((BiDictionary) generator).size();
@@ -105,7 +111,7 @@ public class TableDictionaryGenerator
 
   public void updateGenerator(CarbonDimension dimension) {
     // reuse dictionary generator
-    if (null == columnMap.get(dimension.getColumnId())) {
+    if (null != dimension && null == columnMap.get(dimension.getColumnId())) {
       synchronized (columnMap) {
         if (null == columnMap.get(dimension.getColumnId())) {
           columnMap.put(dimension.getColumnId(),

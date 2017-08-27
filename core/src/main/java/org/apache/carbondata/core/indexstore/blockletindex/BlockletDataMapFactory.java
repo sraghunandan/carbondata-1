@@ -17,10 +17,7 @@
 package org.apache.carbondata.core.indexstore.blockletindex;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.carbondata.core.cache.Cache;
 import org.apache.carbondata.core.cache.CacheProvider;
@@ -128,8 +125,20 @@ public class BlockletDataMapFactory implements DataMapFactory {
 
   @Override
   public void clear() {
-    for (String segmentId: segmentMap.keySet()) {
-      clear(segmentId);
+    Iterator<Map.Entry<String, List<TableBlockIndexUniqueIdentifier>>> it =
+        segmentMap.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry<String, List<TableBlockIndexUniqueIdentifier>> segmentId = it.next();
+      List<TableBlockIndexUniqueIdentifier> blockIndexes = segmentMap.get(segmentId.getKey());
+      if (blockIndexes != null) {
+        for (TableBlockIndexUniqueIdentifier blockIndex : blockIndexes) {
+          DataMap dataMap = cache.getIfPresent(blockIndex);
+          dataMap.clear();
+          cache.invalidate(blockIndex);
+        }
+      }
+
+      it.remove();
     }
   }
 

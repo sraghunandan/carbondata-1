@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.AbstractQueue;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 import org.apache.carbondata.common.logging.LogService;
@@ -255,7 +256,12 @@ public class UnsafeIntermediateFileMerger implements Runnable {
    * @throws CarbonSortKeyAndGroupByException
    */
   private Object[] next() throws CarbonSortKeyAndGroupByException {
-    return getSortedRecordFromFile();
+    if (hasNext()) {
+      return getSortedRecordFromFile();
+    } else {
+      throw new NoSuchElementException("No more elements to return");
+    }
+
   }
 
   /**

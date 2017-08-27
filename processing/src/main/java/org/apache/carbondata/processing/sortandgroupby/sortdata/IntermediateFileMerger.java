@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.AbstractQueue;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 import org.apache.carbondata.common.logging.LogService;
@@ -283,7 +284,11 @@ public class IntermediateFileMerger implements Runnable {
    * @throws CarbonSortKeyAndGroupByException
    */
   private Object[] next() throws CarbonSortKeyAndGroupByException {
-    return getSortedRecordFromFile();
+    if (hasNext()) {
+      return getSortedRecordFromFile();
+    } else {
+      throw new NoSuchElementException("No more elements to return");
+    }
   }
 
   /**

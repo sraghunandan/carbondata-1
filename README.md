@@ -31,6 +31,10 @@ Spark2.1:
 [![Build Status](https://builds.apache.org/buildStatus/icon?job=carbondata-master-spark-2.1)](https://builds.apache.org/view/CarbonData/job/carbondata-master-spark-2.1/)
 Spark1.6:
 [![Build Status](https://builds.apache.org/buildStatus/icon?job=carbondata-master-spark-1.6)](https://builds.apache.org/view/CarbonData/job/carbondata-master-spark-1.6/)
+<a href="https://scan.coverity.com/projects/carbondata">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/13444/badge.svg"/>
+</a>
 
 ## Features
 CarbonData file format is a columnar store in HDFS, it has many features that a modern columnar format has, such as splittable, compression schema ,complex data type etc, and CarbonData has following unique features:

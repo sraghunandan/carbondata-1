@@ -150,7 +150,7 @@ public class FilterExpressionProcessor implements FilterProcessor {
     DataRefNode endBlock = blockFinder.findLastDataBlock(btreeNode, searchEndKey);
     FilterExecuter filterExecuter =
         FilterUtil.getFilterExecuterTree(filterResolver, tableSegment.getSegmentProperties(),null);
-    while (startBlock != endBlock) {
+    while ((null != startBlock) && (startBlock != endBlock)) {
       addBlockBasedOnMinMaxValue(filterExecuter, listOfDataBlocksToScan, startBlock);
       startBlock = startBlock.getNextDataRefNode();
     }
@@ -298,12 +298,14 @@ public class FilterExpressionProcessor implements FilterProcessor {
    */
   private void addBlockBasedOnMinMaxValue(FilterExecuter filterExecuter,
       List<DataRefNode> listOfDataBlocksToScan, DataRefNode dataRefNode) {
-
+    if (null == dataRefNode.getColumnsMinValue() || null == dataRefNode.getColumnsMaxValue()) {
+      listOfDataBlocksToScan.add(dataRefNode);
+      return;
+    }
     BitSet bitSet = filterExecuter
         .isScanRequired(dataRefNode.getColumnsMaxValue(), dataRefNode.getColumnsMinValue());
     if (!bitSet.isEmpty()) {
       listOfDataBlocksToScan.add(dataRefNode);
-
     }
   }
 

@@ -366,7 +366,7 @@ public class CarbonMetadataUtil {
         return DataTypeUtil.byteToBigDecimal(first)
             .compareTo(DataTypeUtil.byteToBigDecimal(second));
       default:
-        throw new IllegalArgumentException("Invalid data type");
+        throw new IllegalArgumentException("Invalid data type:" + dataType);
     }
   }
 

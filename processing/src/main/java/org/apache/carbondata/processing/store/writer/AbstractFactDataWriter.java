@@ -49,7 +49,6 @@ import org.apache.carbondata.core.metadata.converter.ThriftWrapperSchemaConverte
 import org.apache.carbondata.core.metadata.index.BlockIndexInfo;
 import org.apache.carbondata.core.metadata.schema.table.column.ColumnSchema;
 import org.apache.carbondata.core.util.ByteUtil;
-import org.apache.carbondata.core.util.CarbonMergerUtil;
 import org.apache.carbondata.core.util.CarbonMetadataUtil;
 import org.apache.carbondata.core.util.CarbonProperties;
 import org.apache.carbondata.core.util.CarbonUtil;
@@ -61,7 +60,6 @@ import org.apache.carbondata.format.IndexHeader;
 import org.apache.carbondata.processing.datamap.DataMapWriterListener;
 import org.apache.carbondata.processing.store.file.FileData;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.io.IOUtils;
 
 public abstract class AbstractFactDataWriter<T> implements CarbonFactDataWriter<T> {
@@ -182,19 +180,13 @@ public abstract class AbstractFactDataWriter<T> implements CarbonFactDataWriter<
     //TODO: We should delete the levelmetadata file after reading here.
     // so only data loading flow will need to read from cardinality file.
     if (null == this.localCardinality) {
-      this.localCardinality = CarbonMergerUtil
-          .getCardinalityFromLevelMetadata(dataWriterVo.getStoreLocation(),
-              dataWriterVo.getTableName());
-      List<Integer> cardinalityList = new ArrayList<Integer>();
-      thriftColumnSchemaList = getColumnSchemaListAndCardinality(cardinalityList, localCardinality,
-          dataWriterVo.getWrapperColumnSchemaList());
-      localCardinality =
-          ArrayUtils.toPrimitive(cardinalityList.toArray(new Integer[cardinalityList.size()]));
-    } else { // for compaction case
-      List<Integer> cardinalityList = new ArrayList<Integer>();
-      thriftColumnSchemaList = getColumnSchemaListAndCardinality(cardinalityList, localCardinality,
-          dataWriterVo.getWrapperColumnSchemaList());
+      throw new IllegalStateException("Dictionary cardinality value is null");
     }
+
+    List<Integer> cardinalityList = new ArrayList<Integer>();
+    thriftColumnSchemaList = getColumnSchemaListAndCardinality(cardinalityList, localCardinality,
+        dataWriterVo.getWrapperColumnSchemaList());
+
     this.numberCompressor = new NumberCompressor(Integer.parseInt(CarbonProperties.getInstance()
         .getProperty(CarbonCommonConstants.BLOCKLET_SIZE,
             CarbonCommonConstants.BLOCKLET_SIZE_DEFAULT_VAL)));

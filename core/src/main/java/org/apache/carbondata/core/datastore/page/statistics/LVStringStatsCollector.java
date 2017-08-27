@@ -85,16 +85,20 @@ public class LVStringStatsCollector implements ColumnPageStatsCollector {
     assert (length > 0);
     byte[] v = new byte[value.length - 2];
     System.arraycopy(value, 2, v, 0, v.length);
-    if (min == null && max == null) {
+
+    if (null == min) {
       min = v;
+    }
+
+    if (null == max) {
       max = v;
-    } else {
-      if (ByteUtil.UnsafeComparer.INSTANCE.compareTo(min, v) > 0) {
-        min = v;
-      }
-      if (ByteUtil.UnsafeComparer.INSTANCE.compareTo(max, v) < 0) {
-        max = v;
-      }
+    }
+
+    if (ByteUtil.UnsafeComparer.INSTANCE.compareTo(min, v) > 0) {
+      min = v;
+    }
+    if (ByteUtil.UnsafeComparer.INSTANCE.compareTo(max, v) < 0) {
+      max = v;
     }
   }
 

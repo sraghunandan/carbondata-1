@@ -129,7 +129,7 @@ public class BlockletDataMapIndexStore
    * @return map of taks id to segment mapping
    * @throws IOException
    */
-  private BlockletDataMap loadAndGetDataMap(
+  private synchronized BlockletDataMap loadAndGetDataMap(
       TableBlockIndexUniqueIdentifier tableSegmentUniqueIdentifier)
       throws IOException, MemoryException {
     String uniqueTableSegmentIdentifier =

@@ -522,24 +522,20 @@ public final class DataTypeUtil {
       return null;
     }
     try {
-      Object parsedValue = null;
       switch (actualDataType) {
         case SHORT:
-          parsedValue = Short.parseShort(data);
+          Short.parseShort(data);
           break;
         case INT:
-          parsedValue = Integer.parseInt(data);
+          Integer.parseInt(data);
           break;
         case LONG:
-          parsedValue = Long.parseLong(data);
+          Long.parseLong(data);
           break;
         default:
           return data;
       }
-      if (null != parsedValue) {
-        return data;
-      }
-      return null;
+      return data;
     } catch (NumberFormatException ex) {
       return null;
     }

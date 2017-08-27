@@ -171,20 +171,6 @@ public abstract class AbstractBTreeLeafNode implements BTreeNode {
   }
 
   /**
-   * Below method will be used to get the dimension chunks
-   *
-   * @param fileReader   file reader to read the chunks from file
-   * @param blockIndexes indexes of the blocks need to be read
-   * @return dimension data chunks
-   */
-  @Override public DimensionRawColumnChunk[] getDimensionChunks(FileHolder fileReader,
-      int[][] blockIndexes) throws IOException {
-    // No required here as leaf which will will be use this class will implement its own get
-    // dimension chunks
-    return null;
-  }
-
-  /**
    * Below method will be used to get the dimension chunk
    *
    * @param fileReader file reader to read the chunk from file
@@ -209,7 +195,7 @@ public abstract class AbstractBTreeLeafNode implements BTreeNode {
       int[][] blockIndexes) throws IOException {
     // No required here as leaf which will will be use this class will implement its own get
     // measure chunks
-    return null;
+    throw new UnsupportedOperationException("Unsupported operation");
   }
 
   /**

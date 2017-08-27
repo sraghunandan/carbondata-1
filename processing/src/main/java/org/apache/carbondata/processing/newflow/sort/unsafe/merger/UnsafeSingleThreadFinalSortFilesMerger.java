@@ -23,6 +23,7 @@ import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 
 import org.apache.carbondata.common.CarbonIterator;
@@ -183,7 +184,11 @@ public class UnsafeSingleThreadFinalSortFilesMerger extends CarbonIterator<Objec
    * @return sorted row
    */
   public Object[] next() {
-    return SortStepRowUtil.convertRow(getSortedRecordFromFile(), parameters, false);
+    if (hasNext()) {
+      return SortStepRowUtil.convertRow(getSortedRecordFromFile(), parameters, false);
+    } else {
+      throw new NoSuchElementException("No more elements to return");
+    }
   }
 
   /**

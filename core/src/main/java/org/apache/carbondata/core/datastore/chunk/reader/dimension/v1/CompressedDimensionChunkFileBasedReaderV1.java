@@ -102,8 +102,8 @@ public class CompressedDimensionChunkFileBasedReaderV1 extends AbstractChunkRead
       DimensionRawColumnChunk dimensionRawColumnChunk, int pageNumber) throws IOException {
     int blockIndex = dimensionRawColumnChunk.getBlockletId();
     byte[] dataPage = null;
-    int[] invertedIndexes = null;
-    int[] invertedIndexesReverse = null;
+    int[] invertedIndexes = new int[0];
+    int[] invertedIndexesReverse = new int[0];
     int[] rlePage = null;
     FileHolder fileReader = dimensionRawColumnChunk.getFileReader();
 

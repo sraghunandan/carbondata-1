@@ -16,9 +16,13 @@
  */
 package org.apache.carbondata.core.datastore.impl.btree;
 
+import java.io.IOException;
+
 import org.apache.carbondata.core.datastore.BTreeBuilderInfo;
+import org.apache.carbondata.core.datastore.FileHolder;
 import org.apache.carbondata.core.datastore.block.BlockInfo;
 import org.apache.carbondata.core.datastore.block.TableBlockInfo;
+import org.apache.carbondata.core.datastore.chunk.impl.DimensionRawColumnChunk;
 import org.apache.carbondata.core.metadata.blocklet.DataFileFooter;
 import org.apache.carbondata.core.metadata.blocklet.index.BlockletMinMaxIndex;
 
@@ -57,6 +61,12 @@ public class BlockBTreeLeafNode extends AbstractBTreeLeafNode {
    */
   public TableBlockInfo getTableBlockInfo() {
     return blockInfo.getTableBlockInfo();
+  }
+
+  @Override
+  public DimensionRawColumnChunk[] getDimensionChunks(FileHolder fileReader, int[][] blockIndexes)
+      throws IOException {
+    throw new UnsupportedOperationException("Unsupported operation");
   }
 
   /**

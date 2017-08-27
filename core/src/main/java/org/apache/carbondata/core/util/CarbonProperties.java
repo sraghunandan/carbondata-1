@@ -106,6 +106,32 @@ public final class CarbonProperties {
     validateEnableVectorReader();
     validateLockType();
     validateCarbonCSVReadBufferSizeByte();
+    validateSortIntermediateFileLimit();
+  }
+
+  private void validateSortIntermediateFileLimit() {
+    String limit =
+        carbonProperties.getProperty(CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT);
+    if (null != limit) {
+      try {
+        int fileLimit = Integer.parseInt(limit);
+        if (fileLimit <= 0) {
+          carbonProperties.setProperty(CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT,
+              CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT_DEFAULT_VALUE);
+          LOGGER.warn("The value \"" + limit + "\" configured for key "
+              + CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT
+              + "\" Cannot be 0. Using the default value \""
+              + CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT_DEFAULT_VALUE);
+        }
+      } catch (NumberFormatException e) {
+        LOGGER.warn("The value \"" + limit + "\" configured for key "
+            + CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT
+            + "\" is invalid. Using the default value \""
+            + CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT_DEFAULT_VALUE);
+        carbonProperties.setProperty(CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT,
+            CarbonCommonConstants.SORT_INTERMEDIATE_FILES_LIMIT_DEFAULT_VALUE);
+      }
+    }
   }
 
   private void validateCarbonCSVReadBufferSizeByte() {

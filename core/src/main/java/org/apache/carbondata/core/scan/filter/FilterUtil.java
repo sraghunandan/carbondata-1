@@ -211,7 +211,7 @@ public final class FilterUtil {
             msrColResolvedFilterInfo, true);
       }
     }
-    if (null != dimColResolvedFilterInfo && dimColResolvedFilterInfo.getDimension().isColumnar()) {
+    if (dimColResolvedFilterInfo.getDimension().isColumnar()) {
       CarbonDimension dimensionFromCurrentBlock =
           segmentProperties.getDimensionFromCurrentBlock(dimColResolvedFilterInfo.getDimension());
       if (null != dimensionFromCurrentBlock) {
@@ -260,8 +260,7 @@ public final class FilterUtil {
             msrColResolvedFilterInfo, true);
       }
     }
-    if ((null != dimColResolvedFilterInfo) && (dimColResolvedFilterInfo.getDimension()
-        .isColumnar())) {
+    if (dimColResolvedFilterInfo.getDimension().isColumnar()) {
       CarbonDimension dimensionFromCurrentBlock =
           segmentProperties.getDimensionFromCurrentBlock(dimColResolvedFilterInfo.getDimension());
       if (null != dimensionFromCurrentBlock) {
@@ -1107,13 +1106,8 @@ public final class FilterUtil {
    */
   public static Dictionary getForwardDictionaryCache(AbsoluteTableIdentifier tableIdentifier,
       CarbonDimension carbonDimension, TableProvider tableProvider) throws IOException {
-    CarbonTablePath carbonTablePath = null;
-    if (null != tableProvider) {
-      CarbonTable carbonTable =
-          tableProvider.getCarbonTable(tableIdentifier.getCarbonTableIdentifier());
-      carbonTablePath =
-          CarbonStorePath.getCarbonTablePath(carbonTable.getAbsoluteTableIdentifier());
-    }
+
+    CarbonTablePath carbonTablePath = getCarbonTablePath(tableProvider, tableIdentifier);
     DictionaryColumnUniqueIdentifier dictionaryColumnUniqueIdentifier =
         new DictionaryColumnUniqueIdentifier(tableIdentifier.getCarbonTableIdentifier(),
             carbonDimension.getColumnIdentifier(), carbonDimension.getDataType(), carbonTablePath);
@@ -1122,6 +1116,17 @@ public final class FilterUtil {
         cacheProvider.createCache(CacheType.FORWARD_DICTIONARY, tableIdentifier.getStorePath());
     // get the forward dictionary object
     return forwardDictionaryCache.get(dictionaryColumnUniqueIdentifier);
+  }
+
+  private static CarbonTablePath getCarbonTablePath(TableProvider tableProvider,
+      AbsoluteTableIdentifier tableIdentifier) throws IOException {
+    if (null != tableProvider) {
+      CarbonTable carbonTable =
+          tableProvider.getCarbonTable(tableIdentifier.getCarbonTableIdentifier());
+      return CarbonStorePath.getCarbonTablePath(carbonTable.getAbsoluteTableIdentifier());
+    } else {
+      return CarbonStorePath.getCarbonTablePath(tableIdentifier);
+    }
   }
 
   public static IndexKey createIndexKeyFromResolvedFilterVal(long[] startOrEndKey,

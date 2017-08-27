@@ -111,8 +111,8 @@ public class RowLevelFilterExecuterImpl implements FilterExecuter {
       this.dimColEvaluatorInfoList = dimColEvaluatorInfoList;
     }
     if (this.dimColEvaluatorInfoList.size() > 0) {
-      this.isDimensionPresentInCurrentBlock = new boolean[dimColEvaluatorInfoList.size()];
-      this.dimensionBlocksIndex = new int[dimColEvaluatorInfoList.size()];
+      this.isDimensionPresentInCurrentBlock = new boolean[this.dimColEvaluatorInfoList.size()];
+      this.dimensionBlocksIndex = new int[this.dimColEvaluatorInfoList.size()];
     } else {
       this.isDimensionPresentInCurrentBlock = new boolean[]{false};
       this.dimensionBlocksIndex = new int[]{0};
@@ -123,8 +123,8 @@ public class RowLevelFilterExecuterImpl implements FilterExecuter {
       this.msrColEvalutorInfoList = msrColEvalutorInfoList;
     }
     if (this.msrColEvalutorInfoList.size() > 0) {
-      this.isMeasurePresentInCurrentBlock = new boolean[msrColEvalutorInfoList.size()];
-      this.measureBlocksIndex = new int[msrColEvalutorInfoList.size()];
+      this.isMeasurePresentInCurrentBlock = new boolean[this.msrColEvalutorInfoList.size()];
+      this.measureBlocksIndex = new int[this.msrColEvalutorInfoList.size()];
     } else {
       this.isMeasurePresentInCurrentBlock = new boolean[]{false};
       this.measureBlocksIndex = new int[] {0};
@@ -507,13 +507,11 @@ public class RowLevelFilterExecuterImpl implements FilterExecuter {
       }
     }
 
-    if (null != msrColEvalutorInfoList) {
-      for (MeasureColumnResolvedFilterInfo msrColumnEvalutorInfo : msrColEvalutorInfoList) {
-        if (null == blockChunkHolder.getMeasureRawDataChunk()[measureBlocksIndex[0]]) {
-          blockChunkHolder.getMeasureRawDataChunk()[measureBlocksIndex[0]] =
+    for (int i = 0; i < measureBlocksIndex.length; i++) {
+      if (null == blockChunkHolder.getMeasureRawDataChunk()[measureBlocksIndex[i]]) {
+        blockChunkHolder.getMeasureRawDataChunk()[measureBlocksIndex[i]] =
               blockChunkHolder.getDataBlock()
-                  .getMeasureChunk(blockChunkHolder.getFileReader(), measureBlocksIndex[0]);
-        }
+                .getMeasureChunk(blockChunkHolder.getFileReader(), measureBlocksIndex[i]);
       }
     }
   }

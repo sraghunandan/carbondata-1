@@ -71,7 +71,7 @@ public class RowLevelRangeLessThanFiterExecuterImpl extends RowLevelFilterExecut
       comparator = Comparator.getComparatorByDataTypeForMeasure(measure.getDataType());
     }
     ifDefaultValueMatchesFilter();
-    if (isDimensionPresentInCurrentBlock[0] == true) {
+    if (isDimensionPresentInCurrentBlock[0]) {
       isNaturalSorted = dimColEvaluatorInfoList.get(0).getDimension().isUseInvertedIndex()
           && dimColEvaluatorInfoList.get(0).getDimension().isSortColumn();
     }
@@ -97,12 +97,14 @@ public class RowLevelRangeLessThanFiterExecuterImpl extends RowLevelFilterExecut
     } else if (!msrColEvalutorInfoList.isEmpty() && !isMeasurePresentInCurrentBlock[0]) {
       CarbonMeasure measure = this.msrColEvalutorInfoList.get(0).getMeasure();
       byte[] defaultValue = measure.getDefaultValue();
+      SerializableComparator comparatorTmp =
+          Comparator.getComparatorByDataTypeForMeasure(measure.getDataType());
       if (null != defaultValue) {
         for (int k = 0; k < msrFilterRangeValues.length; k++) {
           Object convertedValue =
               DataTypeUtil.getMeasureObjectFromDataType(defaultValue, measure.getDataType());
           int maxCompare =
-              comparator.compare(msrFilterRangeValues[k], convertedValue);
+              comparatorTmp.compare(msrFilterRangeValues[k], convertedValue);
           if (maxCompare > 0) {
             isDefaultValuePresentInFilter = true;
             break;

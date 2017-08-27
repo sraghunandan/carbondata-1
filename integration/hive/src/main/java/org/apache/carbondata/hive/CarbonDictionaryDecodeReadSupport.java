@@ -197,12 +197,15 @@ public class CarbonDictionaryDecodeReadSupport<T> implements CarbonReadSupport<T
       if (carbonColumn.isDimension() && carbonColumn.getColumnSchema().getNumberOfChild() > 0) {
         childCarbonDimensions = ((CarbonDimension) carbonColumn).getListOfChildDimensions();
       }
-      Writable[] arr = new Writable[objArray.length];
-      for (int i = 0; i < objArray.length; i++) {
 
-        arr[i] = createWritableObject(objArray[i], childCarbonDimensions.get(i));
+      if (null != childCarbonDimensions) {
+        Writable[] arr = new Writable[objArray.length];
+        for (int i = 0; i < objArray.length; i++) {
+
+          arr[i] = createWritableObject(objArray[i], childCarbonDimensions.get(i));
+        }
+        return new ArrayWritable(Writable.class, arr);
       }
-      return new ArrayWritable(Writable.class, arr);
     }
     throw new IOException("DataType not supported in Carbondata");
   }
@@ -245,50 +248,4 @@ public class CarbonDictionaryDecodeReadSupport<T> implements CarbonReadSupport<T
         throw new IOException("unsupported data type:" + dataType);
     }
   }
-
-  /**
-   * If we need to use the same Writable[] then we can use this method
-   *
-   * @param writable
-   * @param obj
-   * @param carbonColumn
-   * @throws IOException
-   */
-  private void setPrimitive(Writable writable, Object obj, CarbonColumn carbonColumn)
-      throws IOException {
-    DataType dataType = carbonColumn.getDataType();
-    if (obj == null) {
-      writable.write(null);
-    }
-    switch (dataType) {
-      case DOUBLE:
-        ((DoubleWritable) writable).set((double) obj);
-        break;
-      case INT:
-        ((IntWritable) writable).set((int) obj);
-        break;
-      case LONG:
-        ((LongWritable) writable).set((long) obj);
-        break;
-      case SHORT:
-        ((ShortWritable) writable).set((short) obj);
-        break;
-      case DATE:
-        ((DateWritable) writable).set(new Date((Long) obj));
-        break;
-      case TIMESTAMP:
-        ((TimestampWritable) writable).set(new Timestamp((long) obj));
-        break;
-      case STRING:
-        ((Text) writable).set(obj.toString());
-        break;
-      case DECIMAL:
-        ((HiveDecimalWritable) writable)
-            .set(HiveDecimal.create(new java.math.BigDecimal(obj.toString())));
-        break;
-      default:
-        throw new IOException("unsupported data type:" + dataType);
-    }
-  }
-
 }
