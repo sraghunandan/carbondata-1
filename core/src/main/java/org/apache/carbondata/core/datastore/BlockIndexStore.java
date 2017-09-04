@@ -131,14 +131,12 @@ public class BlockIndexStore<K, V> extends AbstractBlockIndexStoreCache<K, V> {
     List<BlockInfo> blockInfos =
         segmentIdToBlockListMap.get(uniqueTableSegmentIdentifier);
     if (null == blockInfos) {
-      Object segmentLockObject = segmentIDLock.get(uniqueTableSegmentIdentifier);
-      if (null == segmentLockObject) {
-        synchronized (segmentIDLock) {
-          segmentLockObject = segmentIDLock.get(uniqueTableSegmentIdentifier);
-          if (null == segmentLockObject) {
-            segmentLockObject = new Object();
-            segmentIDLock.put(uniqueTableSegmentIdentifier, segmentLockObject);
-          }
+      Object segmentLockObject = null;
+      synchronized (segmentIDLock) {
+        segmentLockObject = segmentIDLock.get(uniqueTableSegmentIdentifier);
+        if (null == segmentLockObject) {
+          segmentLockObject = new Object();
+          segmentIDLock.put(uniqueTableSegmentIdentifier, segmentLockObject);
         }
       }
       synchronized (segmentLockObject) {

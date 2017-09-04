@@ -62,7 +62,7 @@ public class SegmentTaskIndexStore
   /**
    * CarbonLRU cache
    */
-  protected CarbonLRUCache lruCache;
+  protected volatile CarbonLRUCache lruCache;
 
   /**
    * map of block info to lock object map, while loading the btree this will be filled
@@ -144,22 +144,6 @@ public class SegmentTaskIndexStore
    */
   @Override public void invalidate(TableSegmentUniqueIdentifier tableSegmentUniqueIdentifier) {
     lruCache.remove(tableSegmentUniqueIdentifier.getUniqueTableSegmentIdentifier());
-  }
-
-  /**
-   * returns block timestamp value from the given task
-   * @param taskKey
-   * @param listOfUpdatedFactFiles
-   * @return
-   */
-  private String getTimeStampValueFromBlock(String taskKey, List<String> listOfUpdatedFactFiles) {
-    for (String blockName : listOfUpdatedFactFiles) {
-      if (taskKey.equals(CarbonTablePath.DataFileUtil.getTaskNo(blockName))) {
-        blockName = blockName.substring(blockName.lastIndexOf('-') + 1, blockName.lastIndexOf('.'));
-        return blockName;
-      }
-    }
-    return null;
   }
 
   /**

@@ -288,13 +288,6 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
         .set(CarbonInputFormat.INPUT_SEGMENT_NUMBERS, CarbonUtil.getSegmentString(validSegments));
   }
 
-  /**
-   * Set list of files to access
-   */
-  public static void setFilesToAccess(Configuration configuration, List<String> validFiles) {
-    configuration.set(CarbonInputFormat.INPUT_FILES, CarbonUtil.getSegmentString(validFiles));
-  }
-
   private AbsoluteTableIdentifier getAbsoluteTableIdentifier(Configuration configuration)
       throws IOException {
     String dirs = configuration.get(INPUT_DIR, "");
@@ -356,7 +349,7 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
       PartitionInfo partitionInfo = carbonTable.getPartitionInfo(carbonTable.getFactTableName());
       if (partitionInfo != null) {
         // prune partitions for filter query on partition table
-        matchedPartitions = setMatchedPartitions(null, carbonTable, filter, partitionInfo);
+        matchedPartitions = setMatchedPartitions(filter, partitionInfo);
         if (matchedPartitions != null) {
           if (matchedPartitions.cardinality() == 0) {
             // no partition is required
@@ -405,20 +398,11 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
     return carbonSplits;
   }
 
-  private BitSet setMatchedPartitions(String partitionIds, CarbonTable carbonTable,
-      Expression filter, PartitionInfo partitionInfo) {
+  private BitSet setMatchedPartitions(Expression filter, PartitionInfo partitionInfo) {
     BitSet matchedPartitions = null;
-    if (null != partitionIds) {
-      String[] partList = partitionIds.replace("[","").replace("]","").split(",");
-      matchedPartitions = new BitSet(Integer.parseInt(partList[0]));
-      for (String partitionId : partList) {
-        matchedPartitions.set(Integer.parseInt(partitionId));
-      }
-    } else {
-      if (null != filter) {
-        matchedPartitions = new FilterExpressionProcessor()
-            .getFilteredPartitions(filter, partitionInfo);
-      }
+    if (null != filter) {
+      matchedPartitions =
+          new FilterExpressionProcessor().getFilteredPartitions(filter, partitionInfo);
     }
     return matchedPartitions;
   }

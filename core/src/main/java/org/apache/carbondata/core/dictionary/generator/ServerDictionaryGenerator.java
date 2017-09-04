@@ -36,7 +36,7 @@ public class ServerDictionaryGenerator implements DictionaryGenerator<Integer, D
   /**
    * the map of tableName to TableDictionaryGenerator
    */
-  private Map<String, TableDictionaryGenerator> tableMap = new ConcurrentHashMap<>();
+  private volatile Map<String, TableDictionaryGenerator> tableMap = new ConcurrentHashMap<>();
 
   @Override
   public Integer generateKey(DictionaryMessage value)

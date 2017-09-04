@@ -47,7 +47,7 @@ public class CacheProvider {
   /**
    * a map that will hold the entry for cache type to cache object mapping
    */
-  private Map<CacheType, Cache> cacheTypeToCacheMap =
+  private volatile Map<CacheType, Cache> cacheTypeToCacheMap =
       new HashMap<>(CarbonCommonConstants.DEFAULT_COLLECTION_SIZE);
 
   /**

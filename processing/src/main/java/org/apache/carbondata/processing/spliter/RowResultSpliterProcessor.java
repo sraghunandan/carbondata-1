@@ -65,17 +65,12 @@ public class RowResultSpliterProcessor {
     boolean isDataPresent = false;
 
     try {
-      if (!isDataPresent) {
-        dataHandler.initialise();
-        isDataPresent = true;
-      }
-      for (Object[] row: resultList) {
+      dataHandler.initialise();
+      isDataPresent = true;
+      for (Object[] row : resultList) {
         addRow(row);
       }
-      if (isDataPresent)
-      {
-        this.dataHandler.finish();
-      }
+      this.dataHandler.finish();
       splitStatus = true;
     } catch (SliceSpliterException e) {
       LOGGER.error(e, e.getMessage());

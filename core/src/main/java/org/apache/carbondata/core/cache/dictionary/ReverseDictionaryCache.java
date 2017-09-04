@@ -204,16 +204,12 @@ public class ReverseDictionaryCache<K extends DictionaryColumnUniqueIdentifier,
    */
   private ColumnReverseDictionaryInfo getColumnReverseDictionaryInfo(
       DictionaryColumnUniqueIdentifier dictionaryColumnUniqueIdentifier, String columnIdentifier) {
-    ColumnReverseDictionaryInfo columnReverseDictionaryInfo =
-        (ColumnReverseDictionaryInfo) carbonLRUCache
-            .get(getLruCacheKey(columnIdentifier, CacheType.REVERSE_DICTIONARY));
-    if (null == columnReverseDictionaryInfo) {
-      synchronized (dictionaryColumnUniqueIdentifier) {
-        columnReverseDictionaryInfo = (ColumnReverseDictionaryInfo) carbonLRUCache
-            .get(getLruCacheKey(columnIdentifier, CacheType.REVERSE_DICTIONARY));
-        if (null == columnReverseDictionaryInfo) {
-          columnReverseDictionaryInfo = new ColumnReverseDictionaryInfo();
-        }
+    ColumnReverseDictionaryInfo columnReverseDictionaryInfo = null;
+    synchronized (dictionaryColumnUniqueIdentifier) {
+      columnReverseDictionaryInfo = (ColumnReverseDictionaryInfo) carbonLRUCache
+          .get(getLruCacheKey(columnIdentifier, CacheType.REVERSE_DICTIONARY));
+      if (null == columnReverseDictionaryInfo) {
+        columnReverseDictionaryInfo = new ColumnReverseDictionaryInfo();
       }
     }
     return columnReverseDictionaryInfo;

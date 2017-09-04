@@ -47,7 +47,8 @@ public class TableDictionaryGenerator
   /**
    * the map of columnName to dictionaryGenerator
    */
-  private Map<String, DictionaryGenerator<Integer, String>> columnMap = new ConcurrentHashMap<>();
+  private volatile Map<String, DictionaryGenerator<Integer, String>> columnMap = new
+      ConcurrentHashMap<>();
 
   public TableDictionaryGenerator(CarbonDimension dimension) {
     columnMap.put(dimension.getColumnId(),

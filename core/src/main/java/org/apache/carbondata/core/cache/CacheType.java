@@ -79,4 +79,24 @@ public class CacheType<K, V> {
   public String getCacheName() {
     return cacheName;
   }
+
+  @Override public boolean equals(Object obj) {
+    if (null == obj) {
+      return false;
+    }
+
+    if (this == obj) {
+      return true;
+    }
+
+    if (!(obj instanceof CacheType)) {
+      return false;
+    }
+
+    return this.cacheName.equals(((CacheType)obj).cacheName);
+  }
+
+  @Override public int hashCode() {
+    return cacheName.hashCode();
+  }
 }

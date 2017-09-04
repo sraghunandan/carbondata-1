@@ -225,16 +225,13 @@ public class ForwardDictionaryCache<K extends
    */
   private ColumnDictionaryInfo getColumnDictionaryInfo(
       DictionaryColumnUniqueIdentifier dictionaryColumnUniqueIdentifier, String columnIdentifier) {
-    ColumnDictionaryInfo columnDictionaryInfo = (ColumnDictionaryInfo) carbonLRUCache
-        .get(getLruCacheKey(columnIdentifier, CacheType.FORWARD_DICTIONARY));
-    if (null == columnDictionaryInfo) {
-      synchronized (dictionaryColumnUniqueIdentifier) {
-        columnDictionaryInfo = (ColumnDictionaryInfo) carbonLRUCache
-            .get(getLruCacheKey(columnIdentifier, CacheType.FORWARD_DICTIONARY));
-        if (null == columnDictionaryInfo) {
-          columnDictionaryInfo =
-              new ColumnDictionaryInfo(dictionaryColumnUniqueIdentifier.getDataType());
-        }
+    ColumnDictionaryInfo columnDictionaryInfo = null;
+    synchronized (dictionaryColumnUniqueIdentifier) {
+      columnDictionaryInfo = (ColumnDictionaryInfo) carbonLRUCache
+          .get(getLruCacheKey(columnIdentifier, CacheType.FORWARD_DICTIONARY));
+      if (null == columnDictionaryInfo) {
+        columnDictionaryInfo =
+            new ColumnDictionaryInfo(dictionaryColumnUniqueIdentifier.getDataType());
       }
     }
     return columnDictionaryInfo;

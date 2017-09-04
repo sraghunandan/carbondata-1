@@ -175,16 +175,13 @@ public abstract class AbstractDetailQueryResultIterator<E> extends CarbonIterato
     CarbonDeleteFilesDataReader carbonDeleteDeltaFileReader = null;
     // get the lock object so in case of concurrent query only one task will read the delete delta
     // files other tasks will wait
-    Object lockObject = deleteDeltaToLockObjectMap.get(deleteDeltaInfo);
+    Object lockObject = null;
     // if lock object is null then add a lock object
-    if (null == lockObject) {
-      synchronized (deleteDeltaToLockObjectMap) {
-        // double checking
-        lockObject = deleteDeltaToLockObjectMap.get(deleteDeltaInfo);
-        if (null == lockObject) {
-          lockObject = new Object();
-          deleteDeltaToLockObjectMap.put(deleteDeltaInfo, lockObject);
-        }
+    synchronized (deleteDeltaToLockObjectMap) {
+      lockObject = deleteDeltaToLockObjectMap.get(deleteDeltaInfo);
+      if (null == lockObject) {
+        lockObject = new Object();
+        deleteDeltaToLockObjectMap.put(deleteDeltaInfo, lockObject);
       }
     }
     // double checking to check the deleted rows is already present or not

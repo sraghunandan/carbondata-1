@@ -28,6 +28,7 @@ import org.apache.carbondata.core.datastore.impl.FileFactory;
 import org.apache.carbondata.core.metadata.CarbonTableIdentifier;
 import org.apache.carbondata.core.util.CarbonProperties;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.hadoop.conf.Configuration;
 
 /**
@@ -54,6 +55,7 @@ public class HdfsFileLock extends AbstractCarbonLock {
     // If can not get the STORE_LOCATION, then use hadoop.tmp.dir .
     tmpPath = CarbonProperties.getInstance().getProperty(CarbonCommonConstants.STORE_LOCATION,
                System.getProperty(CarbonCommonConstants.HDFS_TEMP_LOCATION));
+    tmpPath = FilenameUtils.normalize(tmpPath);
     if (!tmpPath.startsWith(CarbonCommonConstants.HDFSURL_PREFIX) && !tmpPath
         .startsWith(CarbonCommonConstants.VIEWFSURL_PREFIX) && !tmpPath
         .startsWith(CarbonCommonConstants.ALLUXIOURL_PREFIX)) {

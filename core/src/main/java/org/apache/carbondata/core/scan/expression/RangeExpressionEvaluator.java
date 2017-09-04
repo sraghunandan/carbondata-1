@@ -47,10 +47,6 @@ public class RangeExpressionEvaluator {
   private static final LogService LOG =
       LogServiceFactory.getLogService(RangeExpressionEvaluator.class.getName());
   private Expression expr;
-  private Expression srcNode;
-  private Expression srcParentNode;
-  private Expression tarNode;
-  private Expression tarParentNode;
 
   public RangeExpressionEvaluator(Expression expr) {
     this.expr = expr;
@@ -58,22 +54,6 @@ public class RangeExpressionEvaluator {
 
   public Expression getExpr() {
     return expr;
-  }
-
-  public void setExpr(Expression expr) {
-    this.expr = expr;
-  }
-
-  public Expression getSrcNode() {
-    return srcNode;
-  }
-
-  public void setTarNode(Expression expr) {
-    this.tarNode = expr;
-  }
-
-  public void setTarParentNode(Expression expr) {
-    this.tarParentNode = expr;
   }
 
   /**
@@ -373,67 +353,6 @@ public class RangeExpressionEvaluator {
     } else {
       return FALSE;
     }
-  }
-
-  /**
-   * This method checks if the Source Expression matches with Target Expression.
-   *
-   * @param src
-   * @param tar
-   * @return
-   */
-  private boolean matchExpType(ExpressionType src, ExpressionType tar) {
-    if ((((src == LESSTHAN) || (src == LESSTHAN_EQUALTO)) && ((tar == GREATERTHAN) || (tar
-        == GREATERTHAN_EQUALTO))) || (((src == GREATERTHAN) || (src == GREATERTHAN_EQUALTO)) && (
-        (tar == LESSTHAN) || (tar == LESSTHAN_EQUALTO)))) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * This Method Traverses the Expression Tree to find the corresponding node of the Range
-   * Expression. If one node of Range Expression is LessThan then a corresponding GreaterThan
-   * will be choosen or vice versa.
-   *
-   * @param currentNode
-   * @param parentNode
-   * @return
-   */
-  private Expression traverseTree(Expression currentNode, Expression parentNode) {
-    Expression result = null;
-
-    if (null == parentNode) {
-      currentNode = this.getExpr();
-      parentNode = currentNode;
-    }
-
-    if (!this.getSrcNode().equals(currentNode) && isLessThanGreaterThanExp(currentNode)) {
-      String srcColumnName = getColumnName(this.getSrcNode());
-      String tarColumnName = getColumnName(currentNode);
-      ExpressionType srcExpType = getExpressionType(this.getSrcNode());
-      ExpressionType tarExpType = getExpressionType(currentNode);
-
-      if ((null != srcColumnName) && (null != tarColumnName) && (srcColumnName
-          .equals(tarColumnName)) && (srcExpType != ExpressionType.FALSE) && (tarExpType
-          != ExpressionType.FALSE) && ((matchExpType(srcExpType, tarExpType)) && checkLiteralValue(
-          this.getSrcNode(), currentNode))) {
-        this.setTarNode(currentNode);
-        this.setTarParentNode(parentNode);
-        return parentNode;
-      }
-    }
-
-    for (Expression exp : currentNode.getChildren()) {
-      if (null != exp && !(exp instanceof RangeExpression)) {
-        result = traverseTree(exp, currentNode);
-        if (null != result) {
-          return result;
-        }
-      }
-    }
-    return null;
   }
 
   /**

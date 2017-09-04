@@ -196,28 +196,6 @@ public class CarbonMetadataUtil {
   }
 
   /**
-   * @param blockIndex
-   * @param encoding
-   * @param columnSchemas
-   * @param segmentProperties
-   * @return return true if given encoding is present in column
-   */
-  private static boolean containsEncoding(int blockIndex, Encoding encoding,
-      List<ColumnSchema> columnSchemas, SegmentProperties segmentProperties) {
-    Set<Integer> dimOrdinals = segmentProperties.getDimensionOrdinalForBlock(blockIndex);
-    // column groups will always have dictionary encoding
-    if (dimOrdinals.size() > 1 && Encoding.DICTIONARY == encoding) {
-      return true;
-    }
-    for (Integer dimOrdinal : dimOrdinals) {
-      if (columnSchemas.get(dimOrdinal).encoders.contains(encoding)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
    * Right now it is set to default values. We may use this in future
    */
   public static ChunkCompressionMeta getSnappyChunkCompressionMeta() {
