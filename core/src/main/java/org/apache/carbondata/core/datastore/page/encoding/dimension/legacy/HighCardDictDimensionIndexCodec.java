@@ -38,11 +38,6 @@ public class HighCardDictDimensionIndexCodec  extends IndexStorageCodec {
   }
 
   @Override
-  public String getName() {
-    return "HighCardDictDimensionIndexCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     return new IndexStorageEncoder() {
 

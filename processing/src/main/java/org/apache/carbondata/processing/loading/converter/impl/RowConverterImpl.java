@@ -131,14 +131,6 @@ public class RowConverterImpl implements RowConverter {
       });
 
       try {
-        // wait for client initialization finished, or will raise null pointer exception
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        LOGGER.error(e);
-        throw new RuntimeException(e);
-      }
-
-      try {
         return result.get();
       } catch (InterruptedException | ExecutionException e) {
         throw new RuntimeException(e);

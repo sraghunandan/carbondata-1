@@ -58,11 +58,6 @@ public class AdaptiveFloatingCodec extends AdaptiveCodec {
   }
 
   @Override
-  public String getName() {
-    return "AdaptiveFloatingCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     final Compressor compressor = CompressorFactory.getInstance().getCompressor();
     return new ColumnPageEncoder() {

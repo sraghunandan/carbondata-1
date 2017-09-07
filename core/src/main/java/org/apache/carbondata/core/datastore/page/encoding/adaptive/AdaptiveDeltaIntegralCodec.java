@@ -79,11 +79,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
   }
 
   @Override
-  public String getName() {
-    return "DeltaIntegralCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     return new ColumnPageEncoder() {
       final Compressor compressor = CompressorFactory.getInstance().getCompressor();

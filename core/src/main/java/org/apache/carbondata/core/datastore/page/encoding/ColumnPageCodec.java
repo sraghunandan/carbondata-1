@@ -24,11 +24,6 @@ import java.util.Map;
  */
 public interface ColumnPageCodec {
   /**
-   * Return the codec name
-   */
-  String getName();
-
-  /**
    * Return a new Encoder which will be used to encode one column page.
    * This will be called for every column page
    */

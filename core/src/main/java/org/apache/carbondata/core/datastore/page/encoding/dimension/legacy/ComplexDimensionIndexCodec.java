@@ -37,11 +37,6 @@ public class ComplexDimensionIndexCodec extends IndexStorageCodec {
   }
 
   @Override
-  public String getName() {
-    return "ComplexDimensionIndexCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     return new IndexStorageEncoder() {
       @Override

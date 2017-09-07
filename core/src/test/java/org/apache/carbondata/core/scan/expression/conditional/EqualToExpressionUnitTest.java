@@ -43,6 +43,8 @@ public class EqualToExpressionUnitTest {
 
   static EqualToExpression equalToExpression;
 
+  static int i = 0;
+
   @Test public void testForEqualToExpressionWithGetString() throws Exception {
     ColumnExpression right = new ColumnExpression("name", DataType.STRING);
     right.setColIndex(0);
@@ -237,6 +239,29 @@ public class EqualToExpressionUnitTest {
     assertTrue(result.getBoolean());
   }
 
+  @Test public void testEvaluateForEqualToExpressionWithLeftAndRightDifferentDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression left = new ColumnExpression("name", DataType.INT);
+    left.setColIndex(0);
+    ColumnExpression right = new ColumnExpression("number", DataType.STRING);
+    right.setColIndex(0);
+    equalToExpression = new EqualToExpression(left, right);
+    RowImpl value = new RowImpl();
+    String[] row1 = { "String1" };
+    Integer[] row = { 14 };
+    Object objectRow[] = { row1, row };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      @Mock public Integer getInt() {
+        return 14;
+      }
+    };
+
+    ExpressionResult result = equalToExpression.evaluate(value);
+    assertTrue(result.getBoolean());
+  }
+
   @Test public void testEvaluateForEqualToExpressionWithIsNullReturnFalse()
       throws FilterUnsupportedException, FilterIllegalMemberException {
     ColumnExpression right = new ColumnExpression("id", DataType.SHORT);
@@ -309,5 +334,31 @@ public class EqualToExpressionUnitTest {
 
     ExpressionResult result = equalToExpression.evaluate(value);
     assertTrue(result.getBoolean());
+  }
+
+  @Test public void testEvaluateForEqualToExpressionWithDecimalDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression right = new ColumnExpression("contact", DataType.DECIMAL);
+    right.setColIndex(0);
+    equalToExpression = new EqualToExpression(right, right);
+    RowImpl value = new RowImpl();
+    Decimal[] row = new Decimal[] { Decimal.apply(12345.0) };
+    Decimal[] row1 = new Decimal[] { Decimal.apply(12346.0) };
+    Object objectRow[] = { row, row1 };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      @Mock public BigDecimal getDecimal() {
+        if (i == 0) {
+          i++;
+          return new BigDecimal(12346.0);
+        } else {
+          return new BigDecimal(12345.0);
+        }
+      }
+    };
+
+    ExpressionResult result = equalToExpression.evaluate(value);
+    assertFalse(result.getBoolean());
   }
 }

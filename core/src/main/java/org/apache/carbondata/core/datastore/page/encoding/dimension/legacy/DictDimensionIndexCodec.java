@@ -37,11 +37,6 @@ public class DictDimensionIndexCodec extends IndexStorageCodec {
   }
 
   @Override
-  public String getName() {
-    return "DictDimensionIndexCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     return new IndexStorageEncoder() {
       @Override

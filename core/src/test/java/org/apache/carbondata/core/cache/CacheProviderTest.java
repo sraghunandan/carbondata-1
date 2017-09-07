@@ -28,8 +28,10 @@ import org.apache.carbondata.core.constants.CarbonCommonConstants;
 import org.apache.carbondata.core.datastore.BlockIndexStore;
 import org.apache.carbondata.core.datastore.SegmentTaskIndexStore;
 import org.apache.carbondata.core.datastore.TableSegmentUniqueIdentifier;
-import org.apache.carbondata.core.datastore.block.SegmentTaskIndexWrapper;
 import org.apache.carbondata.core.datastore.block.TableBlockUniqueIdentifier;
+import org.apache.carbondata.core.indexstore.BlockletDataMapIndexStore;
+import org.apache.carbondata.core.indexstore.TableBlockIndexUniqueIdentifier;
+import org.apache.carbondata.core.indexstore.blockletindex.BlockletDataMap;
 import org.apache.carbondata.core.util.CarbonProperties;
 
 import org.apache.avro.Schema;
@@ -73,6 +75,11 @@ public class CacheProviderTest {
         cacheProvider.createCache(CacheType.REVERSE_DICTIONARY, "carbonStore");
     // assert that dictionary cache is an instance of Reverse dictionary cache
     assertTrue(reverseDictionaryCache instanceof ReverseDictionaryCache);
+    assertFalse(reverseDictionaryCache instanceof ForwardDictionaryCache);
+    Cache<TableBlockIndexUniqueIdentifier, BlockletDataMap> driverBlockletCache =
+        cacheProvider.createCache(CacheType.DRIVER_BLOCKLET_DATAMAP, "carbonStore");
+    // assert that dictionary cache is an instance of Reverse dictionary cache
+    assertTrue(driverBlockletCache instanceof BlockletDataMapIndexStore);
     assertFalse(reverseDictionaryCache instanceof ForwardDictionaryCache);
     cacheProvider.dropAllCache();
   }

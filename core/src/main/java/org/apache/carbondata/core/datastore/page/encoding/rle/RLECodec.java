@@ -52,11 +52,6 @@ public class RLECodec implements ColumnPageCodec {
   enum RUN_STATE { INIT, START, REPEATED_RUN, NONREPEATED_RUN }
 
   @Override
-  public String getName() {
-    return "RLECodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     return new RLEEncoder();
   }

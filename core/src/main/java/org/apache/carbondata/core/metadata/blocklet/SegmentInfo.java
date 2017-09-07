@@ -40,13 +40,6 @@ public class SegmentInfo implements Serializable {
   private int[] columnCardinality;
 
   /**
-   * @return the numberOfColumns
-   */
-  public int getNumberOfColumns() {
-    return numberOfColumns;
-  }
-
-  /**
    * @param numberOfColumns the numberOfColumns to set
    */
   public void setNumberOfColumns(int numberOfColumns) {

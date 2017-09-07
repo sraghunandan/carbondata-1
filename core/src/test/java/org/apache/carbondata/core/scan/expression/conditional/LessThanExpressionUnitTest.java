@@ -73,6 +73,37 @@ public class LessThanExpressionUnitTest {
     assertTrue(result.getBoolean());
   }
 
+  @Test public void testEvaluateForLessThanExpressionWithStringDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression left = new ColumnExpression("left_name", DataType.STRING);
+    left.setColIndex(0);
+    ColumnExpression right = new ColumnExpression("right_name", DataType.STRING);
+    right.setColIndex(1);
+    lessThanExpression = new LessThanExpression(left, right);
+    RowImpl value = new RowImpl();
+    String[] row = { "First String Value" };
+    String[] row1 = { "string1" };
+    Object objectRow[] = { row, row1 };
+    new MockUp<ExpressionResult>() {
+      Boolean returnMockFlag = true;
+
+      @Mock public String getString() {
+        if (returnMockFlag) {
+          returnMockFlag = false;
+          return "string1";
+
+        } else {
+          return "First String Value";
+
+        }
+
+      }
+    };
+    value.setValues(objectRow);
+    ExpressionResult result = lessThanExpression.evaluate(value);
+    assertFalse(result.getBoolean());
+  }
+
   @Test public void testEvaluateForLessThanExpressionWithShortDataType()
       throws FilterUnsupportedException, FilterIllegalMemberException {
     ColumnExpression right = new ColumnExpression("id", DataType.SHORT);
@@ -104,6 +135,40 @@ public class LessThanExpressionUnitTest {
 
     ExpressionResult result = lessThanExpression.evaluate(value);
     assertTrue(result.getBoolean());
+
+  }
+
+  @Test public void testEvaluateForLessThanExpressionWithShortDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression right = new ColumnExpression("id", DataType.SHORT);
+    right.setColIndex(0);
+    ColumnExpression left = new ColumnExpression("id", DataType.SHORT);
+    left.setColIndex(1);
+    lessThanExpression = new LessThanExpression(left, right);
+    RowImpl value = new RowImpl();
+    Short[] row = { 7052 };
+    Short[] row1 = { 7450 };
+    Object objectRow[] = { row, row1 };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      Boolean returnMockFlag = true;
+
+      @Mock public Short getShort() {
+        if (returnMockFlag) {
+          returnMockFlag = false;
+          return 7450;
+
+        } else {
+          return 7052;
+
+        }
+
+      }
+    };
+
+    ExpressionResult result = lessThanExpression.evaluate(value);
+    assertFalse(result.getBoolean());
 
   }
 
@@ -218,6 +283,51 @@ public class LessThanExpressionUnitTest {
     }
   }
 
+  @Test public void testEvaluateForLessThanExpressionWithTimestampDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    try {
+      ColumnExpression left = new ColumnExpression("timestamp", DataType.TIMESTAMP);
+      left.setColIndex(0);
+      ColumnExpression right = new ColumnExpression("timestamp", DataType.TIMESTAMP);
+      right.setColIndex(1);
+
+      lessThanExpression = new LessThanExpression(left, right);
+
+      RowImpl value = new RowImpl();
+
+      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+      Date date = dateFormat.parse("23/09/2007");
+      long time = date.getTime();
+      Timestamp[] row = { new Timestamp(time) };
+
+      Date date1 = dateFormat.parse("24/09/2007");
+      long time1 = date1.getTime();
+      Timestamp[] row1 = { new Timestamp(time1) };
+
+      Object objectRow[] = { row, row1 };
+      value.setValues(objectRow);
+
+      new MockUp<ExpressionResult>() {
+        Boolean returnMockFlag = true;
+
+        @Mock public Long getTime() {
+          if (returnMockFlag) {
+            returnMockFlag = false;
+            return 1190592000L;
+          } else {
+            return 1190505600L;
+          }
+        }
+      };
+
+      ExpressionResult result = lessThanExpression.evaluate(value);
+      assertFalse(result.getBoolean());
+    } catch (ParseException e) {
+      System.out.println("Error while parsing " + e.getMessage());
+    }
+  }
+
  @Test public void testEvaluateForLessThanExpressionWithLongDataType()
       throws FilterUnsupportedException, FilterIllegalMemberException {
     ColumnExpression right = new ColumnExpression("contact", DataType.LONG);
@@ -246,6 +356,36 @@ public class LessThanExpressionUnitTest {
 
     ExpressionResult result = lessThanExpression.evaluate(value);
     assertTrue(result.getBoolean());
+  }
+
+  @Test public void testEvaluateForLessThanExpressionWithLongDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression right = new ColumnExpression("contact", DataType.LONG);
+    right.setColIndex(0);
+    ColumnExpression left = new ColumnExpression("contact", DataType.LONG);
+    left.setColIndex(1);
+    lessThanExpression = new LessThanExpression(left, right);
+    RowImpl value = new RowImpl();
+    Long[] row = { 14523656L };
+    Long[] row1 = { 12456325L };
+    Object objectRow[] = { row1, row };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      Boolean returnMockFlag = true;
+
+      @Mock public Long getLong() {
+        if (returnMockFlag) {
+          returnMockFlag = false;
+          return 14523656L;
+        } else {
+          return 12456325L;
+        }
+      }
+    };
+
+    ExpressionResult result = lessThanExpression.evaluate(value);
+    assertFalse(result.getBoolean());
   }
 
  @Test public void testEvaluateForLessThanExpressionWithDecimalDataType()
@@ -317,6 +457,38 @@ public class LessThanExpressionUnitTest {
 
   }
 
+  @Test public void testEvaluateForLessThanExpressionWithIsNullReturnTrue1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression right = new ColumnExpression("id", DataType.SHORT);
+    right.setColIndex(0);
+    lessThanExpression = new LessThanExpression(right, right);
+    RowImpl value = new RowImpl();
+    Short[] row = { 15 };
+    Object objectRow[] = { row };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      boolean isFirst = true;
+      @Mock public boolean isNull() {
+        if (isFirst) {
+          isFirst = false;
+          return false;
+        }
+        return true;
+      }
+    };
+
+    new MockUp<ExpressionResult>() {
+      @Mock public Short getShort() {
+        return 15;
+      }
+    };
+
+    ExpressionResult result = lessThanExpression.evaluate(value);
+    assertFalse(result.getBoolean());
+
+  }
+
   @Test public void testEvaluateForLessThanExpressionWithLeftAndRightDifferentDataType()
       throws FilterUnsupportedException, FilterIllegalMemberException {
     ColumnExpression left = new ColumnExpression("name", DataType.STRING);
@@ -328,6 +500,38 @@ public class LessThanExpressionUnitTest {
     String[] row = { "S" };
     Integer[] row1 = { 1864 };
     Object objectRow[] = { row, row1 };
+    value.setValues(objectRow);
+
+    new MockUp<ExpressionResult>() {
+      Boolean returnMockFlag = true;
+
+      @Mock public Integer getInt() {
+        if (returnMockFlag) {
+          returnMockFlag = false;
+          return 84;
+        } else {
+          return 1864;
+
+        }
+
+      }
+    };
+
+    ExpressionResult result = lessThanExpression.evaluate(value);
+    assertTrue(result.getBoolean());
+  }
+
+  @Test public void testEvaluateForLessThanExpressionWithLeftAndRightDifferentDataType1()
+      throws FilterUnsupportedException, FilterIllegalMemberException {
+    ColumnExpression left = new ColumnExpression("name", DataType.INT);
+    left.setColIndex(0);
+    ColumnExpression right = new ColumnExpression("number", DataType.STRING);
+    right.setColIndex(1);
+    lessThanExpression = new LessThanExpression(left, right);
+    RowImpl value = new RowImpl();
+    String[] row = { "S" };
+    Integer[] row1 = { 1864 };
+    Object objectRow[] = { row1, row };
     value.setValues(objectRow);
 
     new MockUp<ExpressionResult>() {

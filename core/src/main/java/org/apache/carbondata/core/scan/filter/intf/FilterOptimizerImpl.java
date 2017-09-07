@@ -19,15 +19,11 @@ package org.apache.carbondata.core.scan.filter.intf;
 
 import org.apache.carbondata.core.scan.expression.Expression;
 
-public class FilterOptimizerImpl implements FilterOptimizer {
+public abstract class FilterOptimizerImpl implements FilterOptimizer {
 
   protected Expression filterExpression;
 
   public FilterOptimizerImpl(Expression filterExpression) {
     this.filterExpression = filterExpression;
-  }
-
-  @Override public Expression optimizeFilter() {
-    return filterExpression;
   }
 }

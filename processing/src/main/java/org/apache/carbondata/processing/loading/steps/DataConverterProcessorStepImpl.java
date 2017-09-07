@@ -25,6 +25,8 @@ import java.util.List;
 
 import org.apache.carbondata.common.CarbonIterator;
 import org.apache.carbondata.common.constants.LoggerAction;
+import org.apache.carbondata.common.logging.LogService;
+import org.apache.carbondata.common.logging.LogServiceFactory;
 import org.apache.carbondata.core.constants.CarbonCommonConstants;
 import org.apache.carbondata.core.constants.CarbonLoadOptionConstants;
 import org.apache.carbondata.core.datastore.row.CarbonRow;
@@ -45,6 +47,8 @@ import org.apache.carbondata.processing.util.CarbonDataProcessorUtil;
  * And nondictionary columns as well as complex columns will be converted to byte[].
  */
 public class DataConverterProcessorStepImpl extends AbstractDataLoadProcessorStep {
+  private static final LogService LOGGER =
+      LogServiceFactory.getLogService(DataConverterProcessorStepImpl.class.getName());
 
   private List<RowConverter> converters;
   private BadRecordsLogger badRecordLogger;
@@ -136,6 +140,7 @@ public class DataConverterProcessorStepImpl extends AbstractDataLoadProcessorSte
       } catch (IllegalArgumentException e) {
         loggerAction = LoggerAction.FORCE;
       }
+      LOGGER.info("Bad Record action is :" + loggerAction);
       switch (loggerAction) {
         case FORCE:
           badRecordConvertNullDisable = false;

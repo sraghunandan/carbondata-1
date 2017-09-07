@@ -66,7 +66,4 @@ public class BlockletDataHolder {
     return encodedTablePage;
   }
 
-  public List<TablePage> getRawTablePages() {
-    return rawTablePages;
-  }
 }

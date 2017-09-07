@@ -49,11 +49,6 @@ public class AdaptiveIntegralCodec extends AdaptiveCodec {
   }
 
   @Override
-  public String getName() {
-    return "AdaptiveIntegralCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     final Compressor compressor = CompressorFactory.getInstance().getCompressor();
     return new ColumnPageEncoder() {

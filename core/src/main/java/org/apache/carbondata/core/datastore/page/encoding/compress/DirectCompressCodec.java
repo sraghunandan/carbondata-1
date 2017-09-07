@@ -48,11 +48,6 @@ public class DirectCompressCodec implements ColumnPageCodec {
   }
 
   @Override
-  public String getName() {
-    return "DirectCompressCodec";
-  }
-
-  @Override
   public ColumnPageEncoder createEncoder(Map<String, String> parameter) {
     // TODO: make compressor configurable in create table
     return new DirectCompressor(CarbonCommonConstants.DEFAULT_COMPRESSOR);
