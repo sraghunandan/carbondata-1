@@ -18,7 +18,6 @@ package org.apache.carbondata.core.datastore;
 
 import java.io.IOException;
 
-import org.apache.carbondata.core.cache.update.BlockletLevelDeleteDeltaDataCache;
 import org.apache.carbondata.core.datastore.chunk.impl.DimensionRawColumnChunk;
 import org.apache.carbondata.core.datastore.chunk.impl.MeasureRawColumnChunk;
 
@@ -112,16 +111,6 @@ public interface DataRefNode {
    * @return measure data chunk
    */
   MeasureRawColumnChunk getMeasureChunk(FileHolder fileReader, int blockIndex) throws IOException;
-
-  /**
-   * @param deleteDeltaDataCache
-   */
-  void setDeleteDeltaDataCache(BlockletLevelDeleteDeltaDataCache deleteDeltaDataCache);
-
-  /**
-   * @return
-   */
-  BlockletLevelDeleteDeltaDataCache getDeleteDeltaDataCache();
 
   /**
    * number of pages in blocklet

@@ -46,11 +46,6 @@ public class AdaptiveFloatingCodec extends AdaptiveCodec {
   private ColumnPage encodedPage;
   private Double factor;
 
-  public static ColumnPageCodec newInstance(DataType srcDataType, DataType targetDataType,
-      SimpleStatsResult stats) {
-    return new AdaptiveFloatingCodec(srcDataType, targetDataType, stats);
-  }
-
   public AdaptiveFloatingCodec(DataType srcDataType, DataType targetDataType,
       SimpleStatsResult stats) {
     super(srcDataType, targetDataType, stats);

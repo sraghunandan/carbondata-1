@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.carbondata.core.constants.CarbonCommonConstants;
-import org.apache.carbondata.core.datastore.columnar.ColumnGroupModel;
 import org.apache.carbondata.core.keygenerator.KeyGenerator;
 import org.apache.carbondata.core.keygenerator.columnar.ColumnarSplitter;
 import org.apache.carbondata.core.keygenerator.columnar.impl.MultiDimKeyVarLengthVariableSplitGenerator;
@@ -154,11 +153,6 @@ public class SegmentProperties {
    */
   private int numberOfNoDictionaryDimension;
 
-  /**
-   * column group model
-   */
-  private ColumnGroupModel colGroupModel;
-
   private int numberOfSortColumns = 0;
 
   private int numberOfNoDictSortColumns = 0;
@@ -217,7 +211,6 @@ public class SegmentProperties {
         colGroups[i][j] = colGrpList.get(i).get(j);
       }
     }
-    this.colGroupModel = CarbonUtil.getColGroupModel(colGroups);
   }
 
   /**
@@ -777,20 +770,6 @@ public class SegmentProperties {
    */
   public int getNumberOfNoDictionaryDimension() {
     return numberOfNoDictionaryDimension;
-  }
-
-  /**
-   * @return
-   */
-  public int[][] getColumnGroups() {
-    return colGroupModel.getColumnGroup();
-  }
-
-  /**
-   * @return colGroupModel
-   */
-  public ColumnGroupModel getColumnGroupModel() {
-    return this.colGroupModel;
   }
 
   /**

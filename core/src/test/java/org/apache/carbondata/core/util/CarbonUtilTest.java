@@ -31,7 +31,6 @@ import java.util.Map;
 
 import org.apache.carbondata.core.datastore.block.TableBlockInfo;
 import org.apache.carbondata.core.datastore.chunk.impl.FixedLengthDimensionDataChunk;
-import org.apache.carbondata.core.datastore.columnar.ColumnGroupModel;
 import org.apache.carbondata.core.datastore.filesystem.LocalCarbonFile;
 import org.apache.carbondata.core.datastore.impl.FileFactory;
 import org.apache.carbondata.core.metadata.ColumnarFormatVersion;
@@ -98,16 +97,6 @@ public class CarbonUtilTest {
     int[] expectedResult = { 4, 5, 1, 3 };
     for (int i = 0; i < cardinality.length; i++) {
       assertEquals(actualResult[i], expectedResult[i]);
-    }
-  }
-
-  @Test public void testToGetColGroupModel() {
-    int[][] cardinality = { { 10, 20, 30 }, { 20, 30 }, {} };
-    ColumnGroupModel actualResult = CarbonUtil.getColGroupModel(cardinality);
-    assertEquals(actualResult.getNoOfColumnStore(), 3);
-    int[] expectedResult = { 3, 2, 0 };
-    for (int i = 0; i < actualResult.getColumnSplit().length; i++) {
-      assertEquals(actualResult.getColumnSplit()[i], expectedResult[i]);
     }
   }
 

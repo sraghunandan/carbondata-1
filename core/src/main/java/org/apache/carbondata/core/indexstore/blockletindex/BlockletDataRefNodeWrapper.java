@@ -19,7 +19,6 @@ package org.apache.carbondata.core.indexstore.blockletindex;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.carbondata.core.cache.update.BlockletLevelDeleteDeltaDataCache;
 import org.apache.carbondata.core.datastore.DataRefNode;
 import org.apache.carbondata.core.datastore.FileHolder;
 import org.apache.carbondata.core.datastore.block.TableBlockInfo;
@@ -40,8 +39,6 @@ public class BlockletDataRefNodeWrapper implements DataRefNode {
   private int index;
 
   private int[] dimensionLens;
-
-  private BlockletLevelDeleteDeltaDataCache deleteDeltaDataCache;
 
   public BlockletDataRefNodeWrapper(List<TableBlockInfo> blockInfos, int index,
       int[] dimensionLens) {
@@ -116,15 +113,6 @@ public class BlockletDataRefNodeWrapper implements DataRefNode {
     return CarbonDataReaderFactory.getInstance().getMeasureColumnChunkReader(version,
         blockInfos.get(index).getDetailInfo().getBlockletInfo(),
         blockInfos.get(index).getFilePath());
-  }
-
-  @Override
-  public void setDeleteDeltaDataCache(BlockletLevelDeleteDeltaDataCache deleteDeltaDataCache) {
-    this.deleteDeltaDataCache = deleteDeltaDataCache;
-  }
-
-  @Override public BlockletLevelDeleteDeltaDataCache getDeleteDeltaDataCache() {
-    return deleteDeltaDataCache;
   }
 
   @Override public int numberOfPages() {

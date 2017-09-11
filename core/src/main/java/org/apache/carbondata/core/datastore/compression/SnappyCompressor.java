@@ -94,15 +94,6 @@ public class SnappyCompressor implements Compressor {
     }
   }
 
-  @Override public short[] unCompressShort(byte[] compInput) {
-    try {
-      return Snappy.uncompressShortArray(compInput);
-    } catch (IOException e) {
-      LOGGER.error(e, e.getMessage());
-    }
-    return null;
-  }
-
   @Override public short[] unCompressShort(byte[] compInput, int offset, int lenght) {
     try {
       return Snappy.uncompressShortArray(compInput, offset, lenght);
@@ -119,15 +110,6 @@ public class SnappyCompressor implements Compressor {
       LOGGER.error(e, e.getMessage());
       return null;
     }
-  }
-
-  @Override public int[] unCompressInt(byte[] compInput) {
-    try {
-      return Snappy.uncompressIntArray(compInput);
-    } catch (IOException e) {
-      LOGGER.error(e, e.getMessage());
-    }
-    return null;
   }
 
   @Override public int[] unCompressInt(byte[] compInput, int offset, int length) {
@@ -148,15 +130,6 @@ public class SnappyCompressor implements Compressor {
     }
   }
 
-  @Override public long[] unCompressLong(byte[] compInput) {
-    try {
-      return Snappy.uncompressLongArray(compInput);
-    } catch (IOException e) {
-      LOGGER.error(e, e.getMessage());
-    }
-    return null;
-  }
-
   @Override public long[] unCompressLong(byte[] compInput, int offset, int length) {
     try {
       return Snappy.uncompressLongArray(compInput, offset, length);
@@ -175,15 +148,6 @@ public class SnappyCompressor implements Compressor {
     }
   }
 
-  @Override public float[] unCompressFloat(byte[] compInput) {
-    try {
-      return Snappy.uncompressFloatArray(compInput);
-    } catch (IOException e) {
-      LOGGER.error(e, e.getMessage());
-    }
-    return null;
-  }
-
   @Override public float[] unCompressFloat(byte[] compInput, int offset, int length) {
     try {
       return Snappy.uncompressFloatArray(compInput, offset, length);
@@ -200,15 +164,6 @@ public class SnappyCompressor implements Compressor {
       LOGGER.error(e, e.getMessage());
       return null;
     }
-  }
-
-  @Override public double[] unCompressDouble(byte[] compInput) {
-    try {
-      return Snappy.uncompressDoubleArray(compInput);
-    } catch (IOException e) {
-      LOGGER.error(e, e.getMessage());
-    }
-    return null;
   }
 
   @Override public double[] unCompressDouble(byte[] compInput, int offset, int length) {

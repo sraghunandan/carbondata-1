@@ -54,11 +54,4 @@ public class MemoryBlock extends MemoryLocation {
   public void setFreedStatus(boolean freedStatus) {
     this.isFreed = freedStatus;
   }
-
-  /**
-   * Creates a memory block pointing to the memory used by the long array.
-   */
-  public static MemoryBlock fromLongArray(final long[] array) {
-    return new MemoryBlock(array, Platform.LONG_ARRAY_OFFSET, array.length * 8);
-  }
 }

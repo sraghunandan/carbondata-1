@@ -294,7 +294,7 @@ public class RowLevelFilterExecuterImpl implements FilterExecuter {
           }
         } else {
           int dictionaryValue = readSurrogatesFromColumnBlock(blockChunkHolder, index, pageIndex,
-              dimColumnEvaluatorInfo, dimensionBlocksIndex[i]);
+              dimensionBlocksIndex[i]);
           if (dimColumnEvaluatorInfo.getDimension().hasEncoding(Encoding.DICTIONARY)
               && !dimColumnEvaluatorInfo.getDimension().hasEncoding(Encoding.DIRECT_DICTIONARY)) {
             memberString =
@@ -462,45 +462,16 @@ public class RowLevelFilterExecuterImpl implements FilterExecuter {
    *
    * @param blockChunkHolder
    * @param index
-   * @param dimColumnEvaluatorInfo
    * @return
    */
   private int readSurrogatesFromColumnBlock(BlocksChunkHolder blockChunkHolder, int index, int page,
-      DimColumnResolvedFilterInfo dimColumnEvaluatorInfo, int blockIndex) {
+      int blockIndex) {
     DimensionColumnDataChunk dataChunk =
         blockChunkHolder.getDimensionRawDataChunk()[blockIndex].convertToDimColDataChunk(page);
-    if (dimColumnEvaluatorInfo.getDimension().isColumnar()) {
-      byte[] rawData = dataChunk.getChunkData(index);
-      ByteBuffer byteBuffer = ByteBuffer.allocate(CarbonCommonConstants.INT_SIZE_IN_BYTE);
-      return CarbonUtil.getSurrogateKey(rawData, byteBuffer);
-    } else {
-      return readSurrogatesFromColumnGroupBlock(dataChunk, index, dimColumnEvaluatorInfo);
-    }
-
+    byte[] rawData = dataChunk.getChunkData(index);
+    ByteBuffer byteBuffer = ByteBuffer.allocate(CarbonCommonConstants.INT_SIZE_IN_BYTE);
+    return CarbonUtil.getSurrogateKey(rawData, byteBuffer);
   }
-
-  /**
-   * @param index
-   * @param dimColumnEvaluatorInfo
-   * @return read surrogate of given row of given column group dimension
-   */
-  private int readSurrogatesFromColumnGroupBlock(DimensionColumnDataChunk chunk, int index,
-      DimColumnResolvedFilterInfo dimColumnEvaluatorInfo) {
-    try {
-      KeyStructureInfo keyStructureInfo =
-          QueryUtil.getKeyStructureInfo(segmentProperties, dimColumnEvaluatorInfo);
-      byte[] colData = chunk.getChunkData(index);
-      long[] result = keyStructureInfo.getKeyGenerator().getKeyArray(colData);
-      int colGroupId =
-          QueryUtil.getColumnGroupId(segmentProperties, dimensionBlocksIndex[0]);
-      return (int) result[segmentProperties
-          .getColumnGroupMdKeyOrdinal(colGroupId, dimensionBlocksIndex[0])];
-    } catch (KeyGenException e) {
-      LOGGER.error(e);
-    }
-    return 0;
-  }
-
 
   @Override public BitSet isScanRequired(byte[][] blockMaxValue, byte[][] blockMinValue) {
     BitSet bitSet = new BitSet(1);

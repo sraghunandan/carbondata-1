@@ -48,9 +48,12 @@ public class ComplexColumnPage {
   }
 
   public void putComplexData(int rowId, int depth, List<byte[]> value) {
-    assert (depth <= this.depth);
-    ArrayList<byte[]> subColumnPage = complexColumnData.get(depth);
-    subColumnPage.addAll(value);
+    if (depth <= this.depth) {
+      ArrayList<byte[]> subColumnPage = complexColumnData.get(depth);
+      subColumnPage.addAll(value);
+    } else {
+      throw new IllegalArgumentException("depth more than the Complex Page depth");
+    }
   }
 
   // iterate on the sub-column after complex type is expanded, return columnar page of
@@ -74,9 +77,5 @@ public class ComplexColumnPage {
 
   public int getDepth() {
     return depth;
-  }
-
-  public int getPageSize() {
-    return pageSize;
   }
 }

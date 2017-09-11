@@ -111,20 +111,6 @@ public class CarbonTablePath extends Path {
     }
     return false;
   }
-  /**
-   * check if it is carbon data file matching extension
-   *
-   * @param fileNameWithPath
-   * @return boolean
-   */
-  public static boolean isCarbonDataFileOrUpdateFile(String fileNameWithPath) {
-    int pos = fileNameWithPath.lastIndexOf('.');
-    if (pos != -1) {
-      return fileNameWithPath.substring(pos).startsWith(CARBON_DATA_EXT) || fileNameWithPath
-          .substring(pos).startsWith(CARBON_UPDATE_DELTA_EXT);
-    }
-    return false;
-  }
 
   /**
    * check if it is carbon index file matching extension
@@ -203,15 +189,6 @@ public class CarbonTablePath extends Path {
    */
   public String getSchemaFilePath() {
     return getMetaDataDir() + File.separator + SCHEMA_FILE;
-  }
-
-  /**
-   * return the schema file path
-   * @param tablePath path to table files
-   * @return schema file path
-   */
-  public static String getSchemaFilePath(String tablePath) {
-    return tablePath + File.separator + METADATA_DIR + File.separator + SCHEMA_FILE;
   }
 
   /**
@@ -321,64 +298,6 @@ public class CarbonTablePath extends Path {
       String factUpdatedtimeStamp) {
     return taskNo + "-" + bucketNumber + "-" + factUpdatedtimeStamp + INDEX_FILE_EXT;
   }
-  /**
-   * Below method will be used to get the index file present in the segment folder
-   * based on task id
-   *
-   * @param taskId      task id of the file
-   * @param partitionId partition number
-   * @param segmentId   segment number
-   * @return full qualified carbon index path
-   */
-  public String getCarbonUpdatedIndexFilePath(final String taskId, final String partitionId,
-      final String segmentId) {
-    String segmentDir = getSegmentDir(partitionId, segmentId);
-    CarbonFile carbonFile =
-        FileFactory.getCarbonFile(segmentDir, FileFactory.getFileType(segmentDir));
-
-    CarbonFile[] files = carbonFile.listFiles(new CarbonFileFilter() {
-      @Override public boolean accept(CarbonFile file) {
-        return file.getName().startsWith(taskId) && file.getName().endsWith(INDEX_FILE_EXT);
-      }
-    });
-    if (files.length > 0) {
-      return files[0].getAbsolutePath();
-    } else {
-      throw new RuntimeException(
-          "Missing Carbon Updated index file for partition[" + partitionId
-              + "] Segment[" + segmentId + "], taskId[" + taskId + "]");
-    }
-  }
-
-  /**
-   * Below method will be used to get the index file present in the segment folder
-   * based on task id
-   *
-   * @param taskId      task id of the file
-   * @param partitionId partition number
-   * @param segmentId   segment number
-   * @return full qualified carbon index path
-   */
-  public String getCarbonDeleteDeltaFilePath(final String taskId, final String partitionId,
-      final String segmentId) {
-    String segmentDir = getSegmentDir(partitionId, segmentId);
-    CarbonFile carbonFile =
-        FileFactory.getCarbonFile(segmentDir, FileFactory.getFileType(segmentDir));
-
-    CarbonFile[] files = carbonFile.listFiles(new CarbonFileFilter() {
-      @Override public boolean accept(CarbonFile file) {
-        return file.getName().startsWith(taskId) && file.getName().endsWith(DELETE_DELTA_FILE_EXT);
-      }
-    });
-    if (files.length > 0) {
-      return files[0].getAbsolutePath();
-    } else {
-      throw new RuntimeException(
-          "Missing Carbon delete delta file index file for partition["
-              + partitionId + "] Segment[" + segmentId + "], taskId[" + taskId
-              + "]");
-    }
-  }
 
   /**
    * Gets absolute path of data file
@@ -416,18 +335,6 @@ public class CarbonTablePath extends Path {
       String factUpdatedTimeStamp) {
     return taskNo + BATCH_PREFIX + batchNo + "-" + bucketNumber + "-" + factUpdatedTimeStamp
         + INDEX_FILE_EXT;
-  }
-
-  /**
-   * Below method will be used to get the carbon index filename
-   *
-   * @param taskNo               task number
-   * @param factUpdatedTimeStamp time stamp
-   * @return filename
-   */
-  public String getCarbonIndexFileName(int taskNo, String factUpdatedTimeStamp,
-      String indexFileExtension) {
-    return taskNo + "-" + factUpdatedTimeStamp + indexFileExtension;
   }
 
   private String getSegmentDir(String partitionId, String segmentId) {
@@ -566,21 +473,6 @@ public class CarbonTablePath extends Path {
         return carbonDataFileName;
       }
     }
-
-    /**
-     * Gets the file name of the delta files.
-     *
-     * @param filePartNo
-     * @param taskNo
-     * @param factUpdateTimeStamp
-     * @param Extension
-     * @return
-     */
-    public static String getCarbonDeltaFileName(String filePartNo, String taskNo,
-        String factUpdateTimeStamp, String Extension) {
-      return DATA_PART_PREFIX + filePartNo + "-" + taskNo + "-" + factUpdateTimeStamp
-          + Extension;
-    }
   }
 
   /**
@@ -675,40 +567,6 @@ public class CarbonTablePath extends Path {
             .replace(DATA_PART_PREFIX, "")
             .replace(CARBON_DATA_EXT, "");
   }
-
-  /**
-   * This method will append strings in path and return block id
-   *
-   * @param shortBlockId
-   * @return blockId
-   */
-  public static String getBlockId(String shortBlockId) {
-    String[] splitRecords = shortBlockId.split(CarbonCommonConstants.FILE_SEPARATOR);
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < splitRecords.length; i++) {
-      if (i == 0) {
-        sb.append(PARTITION_PREFIX);
-        sb.append(splitRecords[i]);
-      } else if (i == 1) {
-        sb.append(CarbonCommonConstants.FILE_SEPARATOR);
-        sb.append(SEGMENT_PREFIX);
-        sb.append(splitRecords[i]);
-      } else if (i == 2) {
-        sb.append(CarbonCommonConstants.FILE_SEPARATOR);
-        sb.append(DATA_PART_PREFIX);
-        sb.append(splitRecords[i]);
-      } else if (i == 3) {
-        sb.append(CarbonCommonConstants.FILE_SEPARATOR);
-        sb.append(splitRecords[i]);
-        sb.append(CARBON_DATA_EXT);
-      } else {
-        sb.append(CarbonCommonConstants.FILE_SEPARATOR);
-        sb.append(splitRecords[i]);
-      }
-    }
-    return sb.toString();
-  }
-
 
   /**
    * adds data part prefix to given value

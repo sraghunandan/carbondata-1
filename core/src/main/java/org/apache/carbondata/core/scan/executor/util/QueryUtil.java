@@ -694,52 +694,6 @@ public class QueryUtil {
   }
 
   /**
-   * Below method will be used to get the key structure for the column group
-   *
-   * @param segmentProperties      segment properties
-   * @param dimColumnEvaluatorInfo dimension evaluator info
-   * @return key structure info for column group dimension
-   * @throws KeyGenException
-   */
-  public static KeyStructureInfo getKeyStructureInfo(SegmentProperties segmentProperties,
-      DimColumnResolvedFilterInfo dimColumnEvaluatorInfo) throws KeyGenException {
-    int colGrpId = getColumnGroupId(segmentProperties, dimColumnEvaluatorInfo.getColumnIndex());
-    KeyGenerator keyGenerator = segmentProperties.getColumnGroupAndItsKeygenartor().get(colGrpId);
-    List<Integer> mdKeyOrdinal = new ArrayList<Integer>();
-
-    mdKeyOrdinal.add(segmentProperties
-        .getColumnGroupMdKeyOrdinal(colGrpId, dimColumnEvaluatorInfo.getColumnIndex()));
-    int[] maskByteRanges = QueryUtil.getMaskedByteRangeBasedOrdinal(mdKeyOrdinal, keyGenerator);
-    byte[] maxKey = QueryUtil.getMaxKeyBasedOnOrinal(mdKeyOrdinal, keyGenerator);
-    KeyStructureInfo restructureInfos = new KeyStructureInfo();
-    restructureInfos.setKeyGenerator(keyGenerator);
-    restructureInfos.setMaskByteRanges(maskByteRanges);
-    restructureInfos.setMaxKey(maxKey);
-    return restructureInfos;
-  }
-
-  /**
-   * Below method will be used to get the column group id based on the ordinal
-   *
-   * @param segmentProperties segment properties
-   * @param ordinal           ordinal to be searched
-   * @return column group id
-   */
-  public static int getColumnGroupId(SegmentProperties segmentProperties, int ordinal) {
-    int[][] columnGroups = segmentProperties.getColumnGroups();
-    int colGrpId = -1;
-    for (int i = 0; i < columnGroups.length; i++) {
-      if (columnGroups[i].length > 1) {
-        colGrpId++;
-        if (QueryUtil.searchInArray(columnGroups[i], ordinal)) {
-          break;
-        }
-      }
-    }
-    return colGrpId;
-  }
-
-  /**
    * Below method will be used to get the map of for complex dimension and its type
    * which will be used to during query execution to
    *

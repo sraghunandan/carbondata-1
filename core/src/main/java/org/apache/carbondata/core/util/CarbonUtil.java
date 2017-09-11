@@ -50,7 +50,6 @@ import org.apache.carbondata.core.datastore.block.TableBlockInfo;
 import org.apache.carbondata.core.datastore.chunk.DimensionColumnDataChunk;
 import org.apache.carbondata.core.datastore.chunk.impl.DimensionRawColumnChunk;
 import org.apache.carbondata.core.datastore.chunk.impl.MeasureRawColumnChunk;
-import org.apache.carbondata.core.datastore.columnar.ColumnGroupModel;
 import org.apache.carbondata.core.datastore.columnar.UnBlockIndexer;
 import org.apache.carbondata.core.datastore.filesystem.CarbonFile;
 import org.apache.carbondata.core.datastore.impl.FileFactory;
@@ -215,29 +214,6 @@ public final class CarbonUtil {
     // get the log bits of cardinality
 
     return newDimsC;
-  }
-
-  /**
-   * return ColumnGroupModel. check ColumnGroupModel for detail
-   *
-   * @param columnGroups : column groups
-   * @return ColumnGroupModel  model
-   */
-  public static ColumnGroupModel getColGroupModel(int[][] columnGroups) {
-    int[] columnSplit = new int[columnGroups.length];
-    int noOfColumnStore = columnSplit.length;
-    boolean[] columnarStore = new boolean[noOfColumnStore];
-
-    for (int i = 0; i < columnGroups.length; i++) {
-      columnSplit[i] = columnGroups[i].length;
-      columnarStore[i] = columnGroups[i].length <= 1;
-    }
-    ColumnGroupModel colGroupModel = new ColumnGroupModel();
-    colGroupModel.setNoOfColumnStore(noOfColumnStore);
-    colGroupModel.setColumnSplit(columnSplit);
-    colGroupModel.setColumnarStore(columnarStore);
-    colGroupModel.setColumnGroup(columnGroups);
-    return colGroupModel;
   }
 
   /**

@@ -100,7 +100,7 @@ public class FilterScannerTest {
 //      @Mock @SuppressWarnings("unused") DimensionColumnDataChunk[] getDimensionChunks(
 //          FileHolder fileReader, int[][] blockIndexes) {
 //        DimensionColumnDataChunk[] dimensionChunkAttributes =
-//            { new ColumnGroupDimensionDataChunk(null, null) };
+//            { new FixedLengthDimensionDataChunk(null, null) };
 //        return dimensionChunkAttributes;
 //      }
 //
