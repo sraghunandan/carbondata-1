@@ -61,6 +61,6 @@ public class TrueExpression extends BinaryConditionalExpression {
     return ExpressionType.TRUE;
   }
   @Override public String getString() {
-    return null;
+    return "True(" + left.getString();
   }
 }

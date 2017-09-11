@@ -60,7 +60,7 @@ public class RangeExpression extends BinaryConditionalExpression {
   }
 
   @Override public String getString() {
-    return null;
+    return "Range(" + left.getString() + ',' + right.getString() + ')';
   }
 
   @Override public List<ExpressionResult> getLiterals() {

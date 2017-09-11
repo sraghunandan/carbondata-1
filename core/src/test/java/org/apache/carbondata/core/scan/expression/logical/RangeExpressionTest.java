@@ -17,6 +17,8 @@
 
 package org.apache.carbondata.core.scan.expression.logical;
 
+import mockit.Mock;
+import mockit.MockUp;
 import org.apache.carbondata.core.metadata.datatype.DataType;
 import org.apache.carbondata.core.scan.expression.ColumnExpression;
 import org.apache.carbondata.core.scan.expression.ExpressionResult;
@@ -24,27 +26,24 @@ import org.apache.carbondata.core.scan.expression.exception.FilterIllegalMemberE
 import org.apache.carbondata.core.scan.expression.exception.FilterUnsupportedException;
 import org.apache.carbondata.core.scan.filter.intf.RowImpl;
 import org.apache.carbondata.core.scan.filter.intf.RowIntf;
-
-import mockit.Mock;
-import mockit.MockUp;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-public class OrExpressionTest {
-  private OrExpression orExpression;
+public class RangeExpressionTest {
+  private RangeExpression rangeExpression;
 
   @Before public void setUp() {
     ColumnExpression leftExpression = new ColumnExpression("IMEI", DataType.BOOLEAN);
     ColumnExpression rightExpression = new ColumnExpression("IMEI", DataType.BOOLEAN);
-    orExpression = new OrExpression(leftExpression, rightExpression);
+    rangeExpression = new RangeExpression(leftExpression, rightExpression);
   }
 
   @Test public void testGetString() {
-    String actualValue = orExpression.getString();
-    String expectedValue = "Or(ColumnExpression(IMEI),ColumnExpression(IMEI))";
+    String actualValue = rangeExpression.getString();
+    String expectedValue = "Range(ColumnExpression(IMEI),ColumnExpression(IMEI))";
     assertEquals(expectedValue, actualValue);
   }
 
@@ -58,7 +57,7 @@ public class OrExpressionTest {
       }
     };
 
-    assertTrue(orExpression.evaluate(rowImpl) instanceof ExpressionResult);
+    assertTrue(rangeExpression.evaluate(rowImpl) instanceof ExpressionResult);
   }
 
   @Test public void testEvaluate1() throws FilterIllegalMemberException,
@@ -72,7 +71,7 @@ public class OrExpressionTest {
       }
     };
 
-    assertTrue(orExpression.evaluate(rowImpl) instanceof ExpressionResult);
+    assertTrue(rangeExpression.evaluate(rowImpl) instanceof ExpressionResult);
   }
 
   @Test public void testEvaluate2() throws FilterIllegalMemberException,
@@ -92,7 +91,7 @@ public class OrExpressionTest {
       }
     };
 
-    assertTrue(orExpression.evaluate(rowImpl) instanceof ExpressionResult);
+    assertTrue(rangeExpression.evaluate(rowImpl) instanceof ExpressionResult);
   }
 
   @Test public void testEvaluate3() throws FilterIllegalMemberException,
@@ -112,7 +111,7 @@ public class OrExpressionTest {
       }
     };
 
-    assertTrue(orExpression.evaluate(rowImpl) instanceof ExpressionResult);
+    assertTrue(rangeExpression.evaluate(rowImpl) instanceof ExpressionResult);
   }
 
   @Test public void testEvaluate4()
@@ -126,7 +125,7 @@ public class OrExpressionTest {
       }
     };
 
-    assertTrue(orExpression.evaluate(rowImpl) instanceof ExpressionResult);
+    assertTrue(rangeExpression.evaluate(rowImpl) instanceof ExpressionResult);
   }
 
   @Test(expected = Exception.class) public void testEvaluateForDefault()
@@ -140,6 +139,6 @@ public class OrExpressionTest {
         return expressionResult;
       }
     };
-    orExpression.evaluate(rowImpl);
+    rangeExpression.evaluate(rowImpl);
   }
 }

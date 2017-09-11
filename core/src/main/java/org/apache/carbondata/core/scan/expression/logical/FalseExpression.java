@@ -63,6 +63,6 @@ public class FalseExpression  extends BinaryConditionalExpression {
     return ExpressionType.FALSE;
   }
   @Override public String getString() {
-    return null;
+    return "False(" + left.getString();
   }
 }
