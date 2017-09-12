@@ -134,8 +134,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
     public void encode(int rowId, byte value) {
       switch (targetDataType) {
         case BYTE:
-          encodedPage.putByte(rowId, (byte)(max - value));
-          break;
         default:
           throw new RuntimeException("internal error");
       }
@@ -148,8 +146,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
           encodedPage.putByte(rowId, (byte)(max - value));
           break;
         case SHORT:
-          encodedPage.putShort(rowId, (short)(max - value));
-          break;
         default:
           throw new RuntimeException("internal error");
       }
@@ -168,8 +164,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
           encodedPage.putShortInt(rowId, (int)(max - value));
           break;
         case INT:
-          encodedPage.putInt(rowId, (int)(max - value));
-          break;
         default:
           throw new RuntimeException("internal error");
       }
@@ -191,31 +185,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
           encodedPage.putInt(rowId, (int)(max - value));
           break;
         case LONG:
-          encodedPage.putLong(rowId, max - value);
-          break;
-        default:
-          throw new RuntimeException("internal error");
-      }
-    }
-
-    @Override
-    public void encode(int rowId, float value) {
-      switch (targetDataType) {
-        case BYTE:
-          encodedPage.putByte(rowId, (byte)(max - value));
-          break;
-        case SHORT:
-          encodedPage.putShort(rowId, (short)(max - value));
-          break;
-        case SHORT_INT:
-          encodedPage.putShortInt(rowId, (int)(max - value));
-          break;
-        case INT:
-          encodedPage.putInt(rowId, (int)(max - value));
-          break;
-        case LONG:
-          encodedPage.putLong(rowId, (long)(max - value));
-          break;
         default:
           throw new RuntimeException("internal error");
       }
@@ -225,20 +194,20 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
     public void encode(int rowId, double value) {
       switch (targetDataType) {
         case BYTE:
-          encodedPage.putByte(rowId, (byte)(max - value));
-          break;
+//          encodedPage.putByte(rowId, (byte)(max - value));
+//          break;
         case SHORT:
-          encodedPage.putShort(rowId, (short)(max - value));
-          break;
+//          encodedPage.putShort(rowId, (short)(max - value));
+//          break;
         case SHORT_INT:
-          encodedPage.putShortInt(rowId, (int)(max - value));
-          break;
+//          encodedPage.putShortInt(rowId, (int)(max - value));
+//          break;
         case INT:
-          encodedPage.putInt(rowId, (int)(max - value));
-          break;
+//          encodedPage.putInt(rowId, (int)(max - value));
+//          break;
         case LONG:
-          encodedPage.putLong(rowId, (long)(max - value));
-          break;
+//          encodedPage.putLong(rowId, (long)(max - value));
+//          break;
         default:
           throw new RuntimeException("internal error");
       }
@@ -277,12 +246,6 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
     @Override
     public double decodeDouble(long value) {
       return max - value;
-    }
-
-    @Override
-    public double decodeDouble(float value) {
-      // this codec is for integer type only
-      throw new RuntimeException("internal error");
     }
 
     @Override

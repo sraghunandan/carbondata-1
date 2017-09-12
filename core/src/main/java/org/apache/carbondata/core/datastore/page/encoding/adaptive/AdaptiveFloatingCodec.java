@@ -123,29 +123,6 @@ public class AdaptiveFloatingCodec extends AdaptiveCodec {
     }
 
     @Override
-    public void encode(int rowId, float value) {
-      switch (targetDataType) {
-        case BYTE:
-          encodedPage.putByte(rowId, (byte) (value * factor));
-          break;
-        case SHORT:
-          encodedPage.putShort(rowId, (short) (value * factor));
-          break;
-        case SHORT_INT:
-          encodedPage.putShortInt(rowId, (int) (value * factor));
-          break;
-        case INT:
-          encodedPage.putInt(rowId, (int) (value * factor));
-          break;
-        case LONG:
-          encodedPage.putLong(rowId, (long) (value * factor));
-          break;
-        default:
-          throw new RuntimeException("internal error: " + debugInfo());
-      }
-    }
-
-    @Override
     public void encode(int rowId, double value) {
       switch (targetDataType) {
         case BYTE:
@@ -161,11 +138,7 @@ public class AdaptiveFloatingCodec extends AdaptiveCodec {
           encodedPage.putInt(rowId, (int) (value * factor));
           break;
         case LONG:
-          encodedPage.putLong(rowId, (long) (value * factor));
-          break;
         case DOUBLE:
-          encodedPage.putDouble(rowId, value);
-          break;
         default:
           throw new RuntimeException("internal error: " + debugInfo());
       }
@@ -204,11 +177,6 @@ public class AdaptiveFloatingCodec extends AdaptiveCodec {
     @Override
     public double decodeDouble(long value) {
       return value / factor;
-    }
-
-    @Override
-    public double decodeDouble(float value) {
-      throw new RuntimeException("internal error: " + debugInfo());
     }
 
     @Override

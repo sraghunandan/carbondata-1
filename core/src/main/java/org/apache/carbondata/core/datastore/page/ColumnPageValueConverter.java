@@ -23,7 +23,6 @@ public interface ColumnPageValueConverter {
   void encode(int rowId, short value);
   void encode(int rowId, int value);
   void encode(int rowId, long value);
-  void encode(int rowId, float value);
   void encode(int rowId, double value);
 
   long decodeLong(byte value);
@@ -33,6 +32,5 @@ public interface ColumnPageValueConverter {
   double decodeDouble(short value);
   double decodeDouble(int value);
   double decodeDouble(long value);
-  double decodeDouble(float value);
   double decodeDouble(double value);
 }

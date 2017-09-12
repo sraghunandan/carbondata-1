@@ -128,11 +128,6 @@ public class DirectCompressCodec implements ColumnPageCodec {
     }
 
     @Override
-    public void encode(int rowId, float value) {
-      throw new RuntimeException("internal error");
-    }
-
-    @Override
     public void encode(int rowId, double value) {
       throw new RuntimeException("internal error");
     }
@@ -169,11 +164,6 @@ public class DirectCompressCodec implements ColumnPageCodec {
 
     @Override
     public double decodeDouble(long value) {
-      return value;
-    }
-
-    @Override
-    public double decodeDouble(float value) {
       return value;
     }
 

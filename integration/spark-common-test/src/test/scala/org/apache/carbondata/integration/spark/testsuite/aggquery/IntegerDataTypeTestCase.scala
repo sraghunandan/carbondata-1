@@ -142,39 +142,370 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """.stripMargin)
   }
 
-  test("float as target type in deltaIntegerCodec") {
+  test("byte as target type in deltaIntegerCodec") {
     sql(
       """
-        | DROP TABLE IF EXISTS float_target_table
+        | DROP TABLE IF EXISTS short_int_target_table
       """.stripMargin)
 
     //begin_time column will be encoded by deltaIntegerCodec
     sql(
       """
-        | CREATE TABLE float_target_table
-        | (begin_time float, name string)
+        | CREATE TABLE short_int_target_table
+        | (begin_time bigint, name string)
         | STORED BY 'org.apache.carbondata.format'
       """.stripMargin)
 
     sql(
       s"""
-         | LOAD DATA LOCAL INPATH '$resourcesPath/float_as_target_type.csv'
-         | INTO TABLE float_target_table
+         | LOAD DATA LOCAL INPATH '$resourcesPath/byte_as_target_type.csv'
+         | INTO TABLE short_int_target_table
       """.stripMargin)
-    sql(s"""select * from float_target_table""").show()
 
     checkAnswer(
-      sql("select begin_time from float_target_table"),
+      sql("select begin_time from short_int_target_table"),
       Seq(Row(1497376581), Row(1497423838))
     )
 
     sql(
       """
-        | DROP TABLE float_target_table
+        | DROP TABLE short_int_target_table
       """.stripMargin)
   }
 
-  test("double as target type in deltaIntegerCodec") {
+  test("short as target type in deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time bigint, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_as_target_type.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("int as target type in deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time bigint, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/int_as_target_type.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  /*----------------------*/
+  test("short int as target type in int_deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time int, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_int_as_target_type.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("byte as target type in int_deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time int, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/byte_as_target_type.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("short as target type in int_deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time int, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_as_target_type.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("byte as target type in short_deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time short, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/byte_as_target_type_for_short.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+
+  /*----------------------*/
+  /*----------------------*/
+  test("short int as target type in double_deltaFloatingCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time double, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_int_as_target_type_Double_datatype.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("byte as target type in double_deltaFloatingCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time double, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/byte_as_target_type_double_datatype.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("short as target type in double_deltaFloatingCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time double, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_as_target_type_Double_datatype.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("int as target type in double_deltaFloatingCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS short_int_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE short_int_target_table
+        | (begin_time double, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/int_as_target_type_Double_datatype.csv'
+         | INTO TABLE short_int_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from short_int_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  /*----------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  test("short int as target type in deltaFloatingCodec") {
     sql(
       """
         | DROP TABLE IF EXISTS double_target_table

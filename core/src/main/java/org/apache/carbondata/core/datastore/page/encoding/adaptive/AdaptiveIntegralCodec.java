@@ -162,26 +162,6 @@ public class AdaptiveIntegralCodec extends AdaptiveCodec {
     }
 
     @Override
-    public void encode(int rowId, float value) {
-      switch (targetDataType) {
-        case BYTE:
-          encodedPage.putByte(rowId, (byte) value);
-          break;
-        case SHORT:
-          encodedPage.putShort(rowId, (short) value);
-          break;
-        case SHORT_INT:
-          encodedPage.putShortInt(rowId, (int) value);
-          break;
-        case INT:
-          encodedPage.putInt(rowId, (int) value);
-          break;
-        default:
-          throw new RuntimeException("internal error: " + debugInfo());
-      }
-    }
-
-    @Override
     public void encode(int rowId, double value) {
       switch (targetDataType) {
         case BYTE:
@@ -237,11 +217,6 @@ public class AdaptiveIntegralCodec extends AdaptiveCodec {
     @Override
     public double decodeDouble(long value) {
       return value;
-    }
-
-    @Override
-    public double decodeDouble(float value) {
-      throw new RuntimeException("internal error: " + debugInfo());
     }
 
     @Override

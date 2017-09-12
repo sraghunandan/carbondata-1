@@ -217,8 +217,14 @@ public class DefaultEncodingFactory extends EncodingFactory {
         value = (long)(int) max - (long)(int) min;
         break;
       case LONG:
-        // TODO: add overflow detection and return delta type
-        return DataType.LONG;
+        long first = (long)max;
+        long second = (long)min;
+
+        value = first - second;
+        if ((( first ^ second) & (first ^ value)) < 0) {
+          return DataType.LONG;
+        }
+        break;
       case DOUBLE:
         return DataType.LONG;
       default:
@@ -248,13 +254,8 @@ public class DefaultEncodingFactory extends EncodingFactory {
   static ColumnPageCodec selectCodecByAlgorithmForIntegral(SimpleStatsResult stats) {
     DataType srcDataType = stats.getDataType();
     DataType adaptiveDataType = fitMinMax(stats.getDataType(), stats.getMax(), stats.getMin());
-    DataType deltaDataType;
 
-    if (adaptiveDataType == DataType.LONG) {
-      deltaDataType = DataType.LONG;
-    } else {
-      deltaDataType = fitDelta(stats.getDataType(), stats.getMax(), stats.getMin());
-    }
+    DataType deltaDataType = fitDelta(stats.getDataType(), stats.getMax(), stats.getMin());
     // in case of decimal data type check if the decimal converter type is Int or Long and based on
     // that get size in bytes
     if (Math.min(adaptiveDataType.getSizeInBytes(), deltaDataType.getSizeInBytes()) == srcDataType
