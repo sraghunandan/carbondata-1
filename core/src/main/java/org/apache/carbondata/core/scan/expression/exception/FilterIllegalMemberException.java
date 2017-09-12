@@ -17,7 +17,6 @@
 
 package org.apache.carbondata.core.scan.expression.exception;
 
-import java.util.Locale;
 
 /**
  * FilterIllegalMemberException class representing exception which can cause while evaluating

@@ -17,8 +17,6 @@
 
 package org.apache.carbondata.core.scan.expression.exception;
 
-import java.util.Locale;
-
 public class FilterUnsupportedException extends Exception {
 
   /**

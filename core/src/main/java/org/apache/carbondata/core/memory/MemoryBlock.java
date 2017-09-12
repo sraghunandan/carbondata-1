@@ -19,7 +19,6 @@ package org.apache.carbondata.core.memory;
 
 import javax.annotation.Nullable;
 
-import org.apache.spark.unsafe.Platform;
 
 /**
  * Code ported from Apache Spark {org.apache.spark.unsafe.memory} package

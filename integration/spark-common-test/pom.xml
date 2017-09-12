@@ -31,6 +31,7 @@
 
   <properties>
     <dev.path>${basedir}/../../dev</dev.path>
+    <jacoco.append>true</jacoco.append>
     <build.directory.projectCommon>../../common/target</build.directory.projectCommon>
     <build.directory.projectCore>../../core/target</build.directory.projectCore>
     <build.directory.projectProcessing>../../processing/target</build.directory.projectProcessing>

@@ -31,9 +31,9 @@ import org.apache.spark.sql.test.util.QueryTest
 class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
 
   override def beforeAll {
-    sql("DROP TABLE IF EXISTS integertypetableAgg")
-    sql("CREATE TABLE integertypetableAgg (empno int, workgroupcategory string, deptno int, projectcode int, attendance int) STORED BY 'org.apache.carbondata.format'")
-    sql(s"""LOAD DATA local inpath '$resourcesPath/data.csv' INTO TABLE integertypetableAgg OPTIONS ('DELIMITER'= ',', 'QUOTECHAR'= '\"', 'FILEHEADER'='')""")
+//    sql("DROP TABLE IF EXISTS integertypetableAgg")
+//    sql("CREATE TABLE integertypetableAgg (empno int, workgroupcategory string, deptno int, projectcode int, attendance int) STORED BY 'org.apache.carbondata.format'")
+//    sql(s"""LOAD DATA local inpath '$resourcesPath/data.csv' INTO TABLE integertypetableAgg OPTIONS ('DELIMITER'= ',', 'QUOTECHAR'= '\"', 'FILEHEADER'='')""")
   }
 
   test("select empno from integertypetableAgg") {
@@ -139,6 +139,69 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
     sql(
       """
         | DROP TABLE short_int_target_table
+      """.stripMargin)
+  }
+
+  test("float as target type in deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS float_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE float_target_table
+        | (begin_time float, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/float_as_target_type.csv'
+         | INTO TABLE float_target_table
+      """.stripMargin)
+    sql(s"""select * from float_target_table""").show()
+
+    checkAnswer(
+      sql("select begin_time from float_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE float_target_table
+      """.stripMargin)
+  }
+
+  test("double as target type in deltaIntegerCodec") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS double_target_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE double_target_table
+        | (begin_time double, name string)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin)
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/short_int_as_target_type.csv'
+         | INTO TABLE double_target_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from double_target_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE double_target_table
       """.stripMargin)
   }
   

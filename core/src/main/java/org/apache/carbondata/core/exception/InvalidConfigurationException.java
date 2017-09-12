@@ -17,8 +17,6 @@
 
 package org.apache.carbondata.core.exception;
 
-import java.util.Locale;
-
 public class InvalidConfigurationException extends Exception {
 
   /**

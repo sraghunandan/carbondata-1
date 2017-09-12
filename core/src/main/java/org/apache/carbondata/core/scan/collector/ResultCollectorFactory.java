@@ -75,5 +75,6 @@ public class ResultCollectorFactory {
     return scannerResultAggregator;
   }
 
-  private ResultCollectorFactory() {}
+  private ResultCollectorFactory() {
+  }
 }
