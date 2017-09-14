@@ -86,10 +86,6 @@ public class BlockIndexerStorageForNoInvertedIndexForShort implements IndexStora
     return totalSize;
   }
 
-  @Override public boolean isAlreadySorted() {
-    return true;
-  }
-
   /**
    * no use
    *
@@ -123,13 +119,5 @@ public class BlockIndexerStorageForNoInvertedIndexForShort implements IndexStora
    */
   public byte[][] getDataPage() {
     return dataPage;
-  }
-
-  @Override public byte[] getMin() {
-    return min;
-  }
-
-  @Override public byte[] getMax() {
-    return max;
   }
 }

@@ -43,15 +43,6 @@ public class ColumnGroupModel {
   private int[][] columnGroups;
 
   /**
-   * return columnSplit
-   *
-   * @return
-   */
-  public int[] getColumnSplit() {
-    return columnSplit;
-  }
-
-  /**
    * set columnSplit
    *
    * @param split
@@ -93,22 +84,4 @@ public class ColumnGroupModel {
   public void setColumnGroup(int[][] columnGroups) {
     this.columnGroups = columnGroups;
   }
-
-  /**
-   * check if given column group is columnar
-   *
-   * @param colGroup
-   * @return true if given block is columnar
-   */
-  public boolean isColumnar(int colGroup) {
-    return columnarStore[colGroup];
-  }
-
-  /**
-   * @return columngroups
-   */
-  public int[][] getColumnGroup() {
-    return this.columnGroups;
-  }
-
 }

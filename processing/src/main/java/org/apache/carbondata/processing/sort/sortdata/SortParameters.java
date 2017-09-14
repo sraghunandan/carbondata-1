@@ -72,10 +72,6 @@ public class SortParameters implements Serializable {
    */
   private SortObserver observer;
   /**
-   * sortTempFileNoOFRecordsInCompression
-   */
-  private int sortTempFileNoOFRecordsInCompression;
-  /**
    * bufferSize
    */
   private int bufferSize;
@@ -129,7 +125,6 @@ public class SortParameters implements Serializable {
     parameters.numberOfIntermediateFileToBeMerged = numberOfIntermediateFileToBeMerged;
     parameters.fileWriteBufferSize = fileWriteBufferSize;
     parameters.observer = observer;
-    parameters.sortTempFileNoOFRecordsInCompression = sortTempFileNoOFRecordsInCompression;
     parameters.bufferSize = bufferSize;
     parameters.databaseName = databaseName;
     parameters.tableName = tableName;
@@ -217,14 +212,6 @@ public class SortParameters implements Serializable {
 
   public void setObserver(SortObserver observer) {
     this.observer = observer;
-  }
-
-  public int getSortTempFileNoOFRecordsInCompression() {
-    return sortTempFileNoOFRecordsInCompression;
-  }
-
-  public void setSortTempFileNoOFRecordsInCompression(int sortTempFileNoOFRecordsInCompression) {
-    this.sortTempFileNoOFRecordsInCompression = sortTempFileNoOFRecordsInCompression;
   }
 
   public int getBufferSize() {
@@ -407,30 +394,6 @@ public class SortParameters implements Serializable {
         .getProperty(CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE,
             CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE_DEFAULT_VALUE)));
 
-    int sortTempFileNoOFRecordsInCompression;
-    try {
-      sortTempFileNoOFRecordsInCompression = Integer.parseInt(carbonProperties
-          .getProperty(CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION,
-              CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE));
-      if (sortTempFileNoOFRecordsInCompression < 1) {
-        LOGGER.error("Invalid value for: "
-            + CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION
-            + ":Only Positive Integer value(greater than zero) is allowed.Default value will "
-            + "be used");
-
-        sortTempFileNoOFRecordsInCompression = Integer.parseInt(
-            CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE);
-      }
-    } catch (NumberFormatException e) {
-      LOGGER.error(
-          "Invalid value for: " + CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION
-              + ", only Positive Integer value is allowed. Default value will be used");
-
-      sortTempFileNoOFRecordsInCompression = Integer
-          .parseInt(CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE);
-    }
-    parameters.setSortTempFileNoOFRecordsInCompression(sortTempFileNoOFRecordsInCompression);
-
     parameters.setBufferSize(Integer.parseInt(carbonProperties.getProperty(
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE,
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE_DEFAULT)));
@@ -518,30 +481,6 @@ public class SortParameters implements Serializable {
     parameters.setFileWriteBufferSize(Integer.parseInt(carbonProperties
         .getProperty(CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE,
             CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE_DEFAULT_VALUE)));
-
-    int sortTempFileNoOFRecordsInCompression;
-    try {
-      sortTempFileNoOFRecordsInCompression = Integer.parseInt(carbonProperties
-          .getProperty(CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION,
-              CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE));
-      if (sortTempFileNoOFRecordsInCompression < 1) {
-        LOGGER.error("Invalid value for: "
-            + CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION
-            + ":Only Positive Integer value(greater than zero) is allowed.Default value will "
-            + "be used");
-
-        sortTempFileNoOFRecordsInCompression = Integer.parseInt(
-            CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE);
-      }
-    } catch (NumberFormatException e) {
-      LOGGER.error(
-          "Invalid value for: " + CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORDS_FOR_COMPRESSION
-              + ", only Positive Integer value is allowed. Default value will be used");
-
-      sortTempFileNoOFRecordsInCompression = Integer
-          .parseInt(CarbonCommonConstants.SORT_TEMP_FILE_NO_OF_RECORD_FOR_COMPRESSION_DEFAULTVALUE);
-    }
-    parameters.setSortTempFileNoOFRecordsInCompression(sortTempFileNoOFRecordsInCompression);
 
     parameters.setBufferSize(Integer.parseInt(carbonProperties.getProperty(
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE,

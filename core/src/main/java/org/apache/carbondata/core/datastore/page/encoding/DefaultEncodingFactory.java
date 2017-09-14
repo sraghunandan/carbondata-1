@@ -221,7 +221,7 @@ public class DefaultEncodingFactory extends EncodingFactory {
         long second = (long)min;
 
         value = first - second;
-        if ((( first ^ second) & (first ^ value)) < 0) {
+        if (((first ^ second) & (first ^ value)) < 0) {
           return DataType.LONG;
         }
         break;

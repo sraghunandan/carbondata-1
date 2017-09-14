@@ -780,13 +780,6 @@ public class SegmentProperties {
   }
 
   /**
-   * @return
-   */
-  public int[][] getColumnGroups() {
-    return colGroupModel.getColumnGroup();
-  }
-
-  /**
    * @return colGroupModel
    */
   public ColumnGroupModel getColumnGroupModel() {

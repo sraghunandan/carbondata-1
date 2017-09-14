@@ -22,7 +22,6 @@ import org.apache.carbondata.core.datastore.block.SegmentProperties;
 import org.apache.carbondata.core.metadata.schema.table.column.ColumnSchema;
 import org.apache.carbondata.processing.datamap.DataMapWriterListener;
 import org.apache.carbondata.processing.store.CarbonDataFileAttributes;
-import org.apache.carbondata.processing.store.file.IFileManagerComposite;
 
 /**
  * Value object for writing the data
@@ -34,8 +33,6 @@ public class CarbonDataWriterVo {
   private int measureCount;
 
   private String tableName;
-
-  private IFileManagerComposite fileManager;
 
   private boolean[] rleEncodingForDictDim;
 
@@ -107,20 +104,6 @@ public class CarbonDataWriterVo {
    */
   public void setTableName(String tableName) {
     this.tableName = tableName;
-  }
-
-  /**
-   * @return the fileManager
-   */
-  public IFileManagerComposite getFileManager() {
-    return fileManager;
-  }
-
-  /**
-   * @param fileManager the fileManager to set
-   */
-  public void setFileManager(IFileManagerComposite fileManager) {
-    this.fileManager = fileManager;
   }
 
   /**

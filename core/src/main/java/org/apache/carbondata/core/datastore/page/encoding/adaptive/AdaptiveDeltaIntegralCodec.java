@@ -194,20 +194,10 @@ public class AdaptiveDeltaIntegralCodec extends AdaptiveCodec {
     public void encode(int rowId, double value) {
       switch (targetDataType) {
         case BYTE:
-//          encodedPage.putByte(rowId, (byte)(max - value));
-//          break;
         case SHORT:
-//          encodedPage.putShort(rowId, (short)(max - value));
-//          break;
         case SHORT_INT:
-//          encodedPage.putShortInt(rowId, (int)(max - value));
-//          break;
         case INT:
-//          encodedPage.putInt(rowId, (int)(max - value));
-//          break;
         case LONG:
-//          encodedPage.putLong(rowId, (long)(max - value));
-//          break;
         default:
           throw new RuntimeException("internal error");
       }

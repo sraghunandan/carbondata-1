@@ -17,7 +17,6 @@
 
 package org.apache.carbondata.processing.store;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +50,6 @@ import org.apache.carbondata.core.util.CarbonProperties;
 import org.apache.carbondata.core.util.CarbonUtil;
 import org.apache.carbondata.processing.datatypes.GenericDataType;
 import org.apache.carbondata.processing.loading.sort.SortScopeOptions;
-import org.apache.carbondata.processing.store.file.FileManager;
-import org.apache.carbondata.processing.store.file.IFileManagerComposite;
 import org.apache.carbondata.processing.store.writer.CarbonDataWriterVo;
 import org.apache.carbondata.processing.store.writer.CarbonFactDataWriter;
 
@@ -74,10 +71,6 @@ public class CarbonFactDataHandlerColumnar implements CarbonFactHandler {
    */
   private CarbonFactDataWriter dataWriter;
 
-  /**
-   * File manager
-   */
-  private IFileManagerComposite fileManager;
   /**
    * total number of entries in blocklet
    */
@@ -288,9 +281,6 @@ public class CarbonFactDataHandlerColumnar implements CarbonFactHandler {
    * @throws CarbonDataWriterException
    */
   public void initialise() throws CarbonDataWriterException {
-    fileManager = new FileManager();
-    // todo: the fileManager seems to be useless, remove it later
-    fileManager.setName(new File(model.getStoreLocation()[0]).getName());
     setWritingConfiguration();
   }
 
@@ -568,7 +558,6 @@ public class CarbonFactDataHandlerColumnar implements CarbonFactHandler {
     carbonDataWriterVo.setStoreLocation(model.getStoreLocation());
     carbonDataWriterVo.setMeasureCount(model.getMeasureCount());
     carbonDataWriterVo.setTableName(model.getTableName());
-    carbonDataWriterVo.setFileManager(fileManager);
     carbonDataWriterVo.setRleEncodingForDictDim(rleEncodingForDictDimension);
     carbonDataWriterVo.setIsComplexType(isComplexTypes());
     carbonDataWriterVo.setNoDictionaryCount(model.getNoDictionaryCount());

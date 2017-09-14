@@ -254,13 +254,4 @@ public class BlockIndexerStorageForShort implements IndexStorage<short[]> {
   @Override public int getTotalSize() {
     return totalSize;
   }
-
-  @Override public byte[] getMin() {
-    return dataPage[0];
-  }
-
-  @Override public byte[] getMax() {
-    return dataPage[dataPage.length - 1];
-  }
-
 }

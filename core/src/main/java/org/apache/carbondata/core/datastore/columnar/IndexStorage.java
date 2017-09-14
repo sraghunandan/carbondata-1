@@ -18,9 +18,6 @@
 package org.apache.carbondata.core.datastore.columnar;
 
 public interface IndexStorage<T> {
-
-  boolean isAlreadySorted();
-
   T getRowIdPage();
 
   int getRowIdPageLengthInBytes();
@@ -36,14 +33,4 @@ public interface IndexStorage<T> {
   int getDataRlePageLengthInBytes();
 
   int getTotalSize();
-
-  /**
-   * @return min value of block
-   */
-  byte[] getMin();
-
-  /**
-   * @return max value of block
-   */
-  byte[] getMax();
 }

@@ -67,11 +67,6 @@ public class UnsafeIntermediateFileMerger implements Runnable {
    */
   private int totalNumberOfRecords;
 
-  /**
-   * writer
-   */
-  private TempSortFileWriter writer;
-
   private SortParameters mergerParameters;
 
   private File[] intermediateFiles;
@@ -119,9 +114,6 @@ public class UnsafeIntermediateFileMerger implements Runnable {
       isFailed = true;
     } finally {
       CarbonUtil.closeStreams(this.stream);
-      if (null != writer) {
-        writer.finish();
-      }
       if (!isFailed) {
         try {
           finish();
@@ -142,24 +134,14 @@ public class UnsafeIntermediateFileMerger implements Runnable {
    * @throws CarbonSortKeyAndGroupByException
    */
   private void initialize() throws CarbonSortKeyAndGroupByException {
-    if (!mergerParameters.isSortFileCompressionEnabled() && !mergerParameters.isPrefetch()) {
-      try {
-        this.stream = new DataOutputStream(
-            new BufferedOutputStream(new FileOutputStream(outPutFile),
-                mergerParameters.getFileWriteBufferSize()));
-        this.stream.writeInt(this.totalNumberOfRecords);
-      } catch (FileNotFoundException e) {
-        throw new CarbonSortKeyAndGroupByException("Problem while getting the file", e);
-      } catch (IOException e) {
-        throw new CarbonSortKeyAndGroupByException("Problem while writing the data to file", e);
-      }
-    } else {
-      writer = TempSortFileWriterFactory.getInstance()
-          .getTempSortFileWriter(mergerParameters.isSortFileCompressionEnabled(),
-              mergerParameters.getDimColCount(), mergerParameters.getComplexDimColCount(),
-              mergerParameters.getMeasureColCount(), mergerParameters.getNoDictionaryCount(),
-              mergerParameters.getFileWriteBufferSize());
-      writer.initiaize(outPutFile, totalNumberOfRecords);
+    try {
+      this.stream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outPutFile),
+          mergerParameters.getFileWriteBufferSize()));
+      this.stream.writeInt(this.totalNumberOfRecords);
+    } catch (FileNotFoundException e) {
+      throw new CarbonSortKeyAndGroupByException("Problem while getting the file", e);
+    } catch (IOException e) {
+      throw new CarbonSortKeyAndGroupByException("Problem while writing the data to file", e);
     }
   }
 
