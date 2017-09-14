@@ -111,7 +111,7 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """.stripMargin)
   }
 
-  test("short int as target type in deltaIntegerCodec") {
+  /*test("short int as target type in deltaIntegerCodec") {
     sql(
       """
         | DROP TABLE IF EXISTS short_int_target_table
@@ -235,7 +235,6 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """.stripMargin)
   }
 
-  /*----------------------*/
   test("short int as target type in int_deltaIntegerCodec") {
     sql(
       """
@@ -360,9 +359,6 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """.stripMargin)
   }
 
-
-  /*----------------------*/
-  /*----------------------*/
   test("short int as target type in double_deltaFloatingCodec") {
     sql(
       """
@@ -487,9 +483,6 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """.stripMargin)
   }
 
-  /*----------------------*/
-
-/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
   test("short int as target type in AdaptiveIntegerCodec") {
     sql(
       """
@@ -613,21 +606,6 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
         | DROP TABLE short_int_target_table
       """.stripMargin)
   }
-/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   test("short int as target type in deltaFloatingCodec") {
     sql(
@@ -658,8 +636,43 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
       """
         | DROP TABLE double_target_table
       """.stripMargin)
+  }*/
+
+  test("test all codecs") {
+    sql(
+      """
+        | DROP TABLE IF EXISTS all_encoding_table
+      """.stripMargin)
+
+    //begin_time column will be encoded by deltaIntegerCodec
+    sql(
+      """
+        | CREATE TABLE all_encoding_table
+        | (begin_time bigint, name string,begin_time1 long,begin_time2 long,begin_time3 long,
+        | begin_time4 long,begin_time5 int,begin_time6 int,begin_time7 int,begin_time8 short,
+        | begin_time9 bigint,begin_time10 bigint,begin_time11 bigint,begin_time12 int,
+        | begin_time13 int,begin_time14 short,begin_time15 double,begin_time16 double,
+        | begin_time17 double,begin_time18 double,begin_time19 int,begin_time20 double)
+        | STORED BY 'org.apache.carbondata.format'
+      """.stripMargin.replaceAll(System.lineSeparator, ""))
+
+    sql(
+      s"""
+         | LOAD DATA LOCAL INPATH '$resourcesPath/encoding_types.csv'
+         | INTO TABLE all_encoding_table
+      """.stripMargin)
+
+    checkAnswer(
+      sql("select begin_time from all_encoding_table"),
+      Seq(Row(1497376581), Row(1497423838))
+    )
+
+    sql(
+      """
+        | DROP TABLE double_target_table
+      """.stripMargin)
   }
-  
+
   override def afterAll {
     sql("drop table if exists integertypetableAgg")
     CarbonProperties.getInstance().addProperty(

@@ -224,31 +224,9 @@ public class SortDataRows {
    */
   private void writeDataTofile(Object[][] recordHolderList, int entryCountLocal, File file)
       throws CarbonSortKeyAndGroupByException {
-    // stream
-    if (parameters.isSortFileCompressionEnabled() || parameters.isPrefetch()) {
-      writeSortTempFile(recordHolderList, entryCountLocal, file);
-      return;
-    }
     writeData(recordHolderList, entryCountLocal, file);
   }
 
-  private void writeSortTempFile(Object[][] recordHolderList, int entryCountLocal, File file)
-      throws CarbonSortKeyAndGroupByException {
-    TempSortFileWriter writer = null;
-
-    try {
-      writer = getWriter();
-      writer.initiaize(file, entryCountLocal);
-      writer.writeSortTempFile(recordHolderList);
-    } catch (CarbonSortKeyAndGroupByException e) {
-      LOGGER.error(e, "Problem while writing the sort temp file");
-      throw e;
-    } finally {
-      if (writer != null) {
-        writer.finish();
-      }
-    }
-  }
 
   private void writeData(Object[][] recordHolderList, int entryCountLocal, File file)
       throws CarbonSortKeyAndGroupByException {

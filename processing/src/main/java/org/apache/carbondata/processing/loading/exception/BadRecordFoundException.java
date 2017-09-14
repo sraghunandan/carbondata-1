@@ -38,25 +38,6 @@ public class BadRecordFoundException extends CarbonDataLoadingException {
   }
 
   /**
-   * Constructor
-   *
-   * @param msg The error message for this exception.
-   */
-  public BadRecordFoundException(String msg, Throwable t) {
-    super(msg, t);
-    this.msg = msg;
-  }
-
-  /**
-   * Constructor
-   *
-   * @param t
-   */
-  public BadRecordFoundException(Throwable t) {
-    super(t);
-  }
-
-  /**
    * getMessage
    */
   public String getMessage() {

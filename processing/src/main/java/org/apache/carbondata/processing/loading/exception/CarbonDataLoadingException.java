@@ -41,16 +41,6 @@ public class CarbonDataLoadingException extends RuntimeException {
   /**
    * Constructor
    *
-   * @param msg The error message for this exception.
-   */
-  public CarbonDataLoadingException(String msg, Throwable t) {
-    super(msg, t);
-    this.msg = msg;
-  }
-
-  /**
-   * Constructor
-   *
    * @param t
    */
   public CarbonDataLoadingException(Throwable t) {

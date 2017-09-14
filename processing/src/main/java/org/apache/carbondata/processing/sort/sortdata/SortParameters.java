@@ -76,14 +76,6 @@ public class SortParameters implements Serializable {
    */
   private int sortTempFileNoOFRecordsInCompression;
   /**
-   * isSortTempFileCompressionEnabled
-   */
-  private boolean isSortFileCompressionEnabled;
-  /**
-   * prefetch
-   */
-  private boolean prefetch;
-  /**
    * bufferSize
    */
   private int bufferSize;
@@ -138,8 +130,6 @@ public class SortParameters implements Serializable {
     parameters.fileWriteBufferSize = fileWriteBufferSize;
     parameters.observer = observer;
     parameters.sortTempFileNoOFRecordsInCompression = sortTempFileNoOFRecordsInCompression;
-    parameters.isSortFileCompressionEnabled = isSortFileCompressionEnabled;
-    parameters.prefetch = prefetch;
     parameters.bufferSize = bufferSize;
     parameters.databaseName = databaseName;
     parameters.tableName = tableName;
@@ -235,22 +225,6 @@ public class SortParameters implements Serializable {
 
   public void setSortTempFileNoOFRecordsInCompression(int sortTempFileNoOFRecordsInCompression) {
     this.sortTempFileNoOFRecordsInCompression = sortTempFileNoOFRecordsInCompression;
-  }
-
-  public boolean isSortFileCompressionEnabled() {
-    return isSortFileCompressionEnabled;
-  }
-
-  public void setSortFileCompressionEnabled(boolean sortFileCompressionEnabled) {
-    isSortFileCompressionEnabled = sortFileCompressionEnabled;
-  }
-
-  public boolean isPrefetch() {
-    return prefetch;
-  }
-
-  public void setPrefetch(boolean prefetch) {
-    this.prefetch = prefetch;
   }
 
   public int getBufferSize() {
@@ -433,10 +407,6 @@ public class SortParameters implements Serializable {
         .getProperty(CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE,
             CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE_DEFAULT_VALUE)));
 
-    parameters.setSortFileCompressionEnabled(Boolean.parseBoolean(carbonProperties
-        .getProperty(CarbonCommonConstants.IS_SORT_TEMP_FILE_COMPRESSION_ENABLED,
-            CarbonCommonConstants.IS_SORT_TEMP_FILE_COMPRESSION_ENABLED_DEFAULTVALUE)));
-
     int sortTempFileNoOFRecordsInCompression;
     try {
       sortTempFileNoOFRecordsInCompression = Integer.parseInt(carbonProperties
@@ -461,11 +431,6 @@ public class SortParameters implements Serializable {
     }
     parameters.setSortTempFileNoOFRecordsInCompression(sortTempFileNoOFRecordsInCompression);
 
-    if (parameters.isSortFileCompressionEnabled()) {
-      LOGGER.info("Compression will be used for writing the sort temp File");
-    }
-
-    parameters.setPrefetch(CarbonCommonConstants.CARBON_PREFETCH_IN_MERGE_VALUE);
     parameters.setBufferSize(Integer.parseInt(carbonProperties.getProperty(
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE,
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE_DEFAULT)));
@@ -554,10 +519,6 @@ public class SortParameters implements Serializable {
         .getProperty(CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE,
             CarbonCommonConstants.CARBON_SORT_FILE_WRITE_BUFFER_SIZE_DEFAULT_VALUE)));
 
-    parameters.setSortFileCompressionEnabled(Boolean.parseBoolean(carbonProperties
-        .getProperty(CarbonCommonConstants.IS_SORT_TEMP_FILE_COMPRESSION_ENABLED,
-            CarbonCommonConstants.IS_SORT_TEMP_FILE_COMPRESSION_ENABLED_DEFAULTVALUE)));
-
     int sortTempFileNoOFRecordsInCompression;
     try {
       sortTempFileNoOFRecordsInCompression = Integer.parseInt(carbonProperties
@@ -582,11 +543,6 @@ public class SortParameters implements Serializable {
     }
     parameters.setSortTempFileNoOFRecordsInCompression(sortTempFileNoOFRecordsInCompression);
 
-    if (parameters.isSortFileCompressionEnabled()) {
-      LOGGER.info("Compression will be used for writing the sort temp File");
-    }
-
-    parameters.setPrefetch(CarbonCommonConstants. CARBON_PREFETCH_IN_MERGE_VALUE);
     parameters.setBufferSize(Integer.parseInt(carbonProperties.getProperty(
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE,
         CarbonCommonConstants.CARBON_PREFETCH_BUFFERSIZE_DEFAULT)));
