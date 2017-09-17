@@ -33,33 +33,4 @@ public class CarbonMergerUtil {
    */
   private static final LogService LOGGER =
       LogServiceFactory.getLogService(CarbonMergerUtil.class.getName());
-
-  public static int[] getCardinalityFromLevelMetadata(String path, String tableName) {
-    int[] localCardinality = null;
-    try {
-      localCardinality = CarbonUtil.getCardinalityFromLevelMetadataFile(
-          path + '/' + CarbonCommonConstants.LEVEL_METADATA_FILE + tableName + ".metadata");
-    } catch (IOException e) {
-      LOGGER.error("Error occurred :: " + e.getMessage());
-    }
-
-    return localCardinality;
-  }
-
-  /**
-   * read from the first non-empty level metadata
-   * @param paths paths
-   * @param tableName table name
-   * @return cardinality
-   */
-  public static int[] getCardinalityFromLevelMetadata(String[] paths, String tableName) {
-    int[] localCardinality = null;
-    for (String path : paths) {
-      localCardinality = getCardinalityFromLevelMetadata(path, tableName);
-      if (null != localCardinality) {
-        break;
-      }
-    }
-    return localCardinality;
-  }
 }

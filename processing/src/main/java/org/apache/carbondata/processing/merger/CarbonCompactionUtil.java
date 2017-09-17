@@ -379,35 +379,4 @@ public class CarbonCompactionUtil {
     }
     return restructuredBlockExists;
   }
-
-  /**
-   * This method will check for any restructured block in the blocks selected for compaction
-   *
-   * @param segmentMapping
-   * @param tableLastUpdatedTime
-   * @return
-   */
-  public static boolean checkIfAnyRestructuredBlockExists(Map<String, TaskBlockInfo> segmentMapping,
-      long tableLastUpdatedTime) {
-    boolean restructuredBlockExists = false;
-    for (Map.Entry<String, TaskBlockInfo> taskMap : segmentMapping.entrySet()) {
-      String segmentId = taskMap.getKey();
-      TaskBlockInfo taskBlockInfo = taskMap.getValue();
-      Collection<List<TableBlockInfo>> infoList = taskBlockInfo.getAllTableBlockInfoList();
-      for (List<TableBlockInfo> listMetadata : infoList) {
-        for (TableBlockInfo blockInfo : listMetadata) {
-          // if schema modified timestamp is greater than footer stored schema timestamp,
-          // it indicates it is a restructured block
-          if (tableLastUpdatedTime > blockInfo.getDetailInfo().getSchemaUpdatedTimeStamp()) {
-            restructuredBlockExists = true;
-            break;
-          }
-        }
-      }
-      if (restructuredBlockExists) {
-        break;
-      }
-    }
-    return restructuredBlockExists;
-  }
 }

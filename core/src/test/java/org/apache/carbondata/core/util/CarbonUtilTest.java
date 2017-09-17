@@ -294,13 +294,6 @@ public class CarbonUtilTest {
     assertEquals(result, 5);
   }
 
-
-  @Test public void testToGetCardinalityFromLevelMetadataFileForInvalidPath()
-      throws IOException, InterruptedException {
-    int[] cardinality = CarbonUtil.getCardinalityFromLevelMetadataFile("");
-    assertEquals(cardinality, null);
-  }
-
   @Test public void testToUnescapeChar() {
     String[] input = { "\\001", "\\t", "\\r", "\\b", "\\n", "\\f" };
     String[] output = { "\001", "\t", "\r", "\b", "\n", "\f" };

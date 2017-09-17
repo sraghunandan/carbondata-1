@@ -1154,11 +1154,8 @@ public final class CarbonDataMergerUtil {
     blockDetails.setDeleteDeltaEndTimestamp(timestamp.toString());
 
     try {
-      if (startCompactionDeleteDeltaFiles(deleteFilePathList, blockName, fullBlockFilePath)) {
-        blockDetails.setCompactionStatus(true);
-      } else {
-        blockDetails.setCompactionStatus(false);
-      }
+      startCompactionDeleteDeltaFiles(deleteFilePathList, blockName, fullBlockFilePath);
+      blockDetails.setCompactionStatus(true);
       resultList.add(blockDetails);
     } catch (IOException e) {
       LOGGER.error("Compaction of Delete Delta Files failed. The complete file path is "
@@ -1175,7 +1172,7 @@ public final class CarbonDataMergerUtil {
    * @param fullBlockFilePath
    * @return
    */
-  public static Boolean startCompactionDeleteDeltaFiles(List<String> deleteDeltaFiles,
+  public static void startCompactionDeleteDeltaFiles(List<String> deleteDeltaFiles,
       String blockName, String fullBlockFilePath) throws IOException {
 
     DeleteDeltaBlockDetails deleteDeltaBlockDetails = null;
@@ -1198,7 +1195,6 @@ public final class CarbonDataMergerUtil {
       LOGGER.error("Error while writing compacted delete delta file " + fullBlockFilePath);
       throw new IOException();
     }
-    return true;
   }
 
   public static Boolean updateStatusFile(

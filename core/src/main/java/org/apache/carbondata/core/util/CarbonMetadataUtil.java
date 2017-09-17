@@ -50,6 +50,9 @@ import org.apache.carbondata.format.SegmentInfo;
  */
 public class CarbonMetadataUtil {
 
+  private CarbonMetadataUtil() {
+  }
+
   /**
    * Below method prepares the file footer object for carbon data file version 3
    *
@@ -193,28 +196,6 @@ public class CarbonMetadataUtil {
     blockletIndex.setMin_max_index(blockletMinMaxIndex);
     blockletIndex.setB_tree_index(blockletBTreeIndex);
     return blockletIndex;
-  }
-
-  /**
-   * @param blockIndex
-   * @param encoding
-   * @param columnSchemas
-   * @param segmentProperties
-   * @return return true if given encoding is present in column
-   */
-  private static boolean containsEncoding(int blockIndex, Encoding encoding,
-      List<ColumnSchema> columnSchemas, SegmentProperties segmentProperties) {
-    Set<Integer> dimOrdinals = segmentProperties.getDimensionOrdinalForBlock(blockIndex);
-    // column groups will always have dictionary encoding
-    if (dimOrdinals.size() > 1 && Encoding.DICTIONARY == encoding) {
-      return true;
-    }
-    for (Integer dimOrdinal : dimOrdinals) {
-      if (columnSchemas.get(dimOrdinal).encoders.contains(encoding)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   /**
