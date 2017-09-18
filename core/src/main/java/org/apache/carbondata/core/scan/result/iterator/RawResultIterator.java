@@ -76,11 +76,7 @@ public class RawResultIterator extends CarbonIterator<Object[]> {
       }
     }
 
-    if (!checkIfBatchIsProcessedCompletely(batch)) {
-      return true;
-    } else {
-      return false;
-    }
+    return !checkIfBatchIsProcessedCompletely(batch);
   }
 
   @Override public Object[] next() {
@@ -156,10 +152,6 @@ public class RawResultIterator extends CarbonIterator<Object[]> {
    * @return
    */
   private boolean checkIfBatchIsProcessedCompletely(BatchResult batch) {
-    if (counter < batch.getSize()) {
-      return false;
-    } else {
-      return true;
-    }
+    return counter >= batch.getSize();
   }
 }

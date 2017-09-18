@@ -749,10 +749,7 @@ public class CarbonInputFormat<T> extends FileInputFormat<Void, T> {
       UpdateVO updateDetails) {
     Long refreshedTime = segmentTaskIndexWrapper.getRefreshedTimeStamp();
     Long updateTimeStamp = updateDetails.getLatestUpdateTimestamp();
-    if (null != refreshedTime && null != updateTimeStamp && updateTimeStamp > refreshedTime) {
-      return true;
-    }
-    return false;
+    return null != refreshedTime && null != updateTimeStamp && updateTimeStamp > refreshedTime;
   }
 
   /**

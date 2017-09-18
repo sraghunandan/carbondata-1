@@ -26,7 +26,6 @@ import org.apache.carbondata.core.fileoperations.AtomicFileOperationsImpl;
 import org.apache.carbondata.core.fileoperations.FileWriteOperation;
 import org.apache.carbondata.core.util.CarbonUtil;
 
-import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;
@@ -103,10 +102,7 @@ public class ThriftWriter {
    * @return
    */
   public boolean isOpen() {
-    if (null != binaryOut && null != dataOutputStream) {
-      return true;
-    }
-    return false;
+    return null != binaryOut && null != dataOutputStream;
   }
 
   /**

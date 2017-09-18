@@ -58,10 +58,7 @@ public class HDFSLeaseUtils {
    */
   public static boolean checkExceptionMessageForLeaseRecovery(String message) {
     // depending on the scenario few more cases can be added for validating lease recovery exception
-    if (null != message && message.contains("Failed to APPEND_FILE")) {
-      return true;
-    }
-    return false;
+    return null != message && message.contains("Failed to APPEND_FILE");
   }
 
   /**

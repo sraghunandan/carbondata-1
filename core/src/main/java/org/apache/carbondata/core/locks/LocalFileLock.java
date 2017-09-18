@@ -119,11 +119,7 @@ public class LocalFileLock extends AbstractCarbonLock {
       } catch (OverlappingFileLockException e) {
         return false;
       }
-      if (null != fileLock) {
-        return true;
-      } else {
-        return false;
-      }
+      return null != fileLock;
     } catch (IOException e) {
       LOGGER.error(e, e.getMessage());
       return false;

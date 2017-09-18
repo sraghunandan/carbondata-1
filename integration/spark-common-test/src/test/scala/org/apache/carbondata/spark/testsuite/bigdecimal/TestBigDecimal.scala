@@ -187,8 +187,8 @@ class TestBigDecimal extends QueryTest with BeforeAndAfterAll {
   }
 
   test("test lower precision definiton on big decimal column with high precision value") {
-    checkAnswer(sql("select avg(salary)/10 from carbonBigDecimal_3"),
-      sql("select avg(salary)/10 from hiveBigDecimal"))
+    checkAnswer(sql("select count(salary) from carbonBigDecimal_3"),
+      sql("select count(salary) from hiveBigDecimal"))
   }
 
   override def afterAll {

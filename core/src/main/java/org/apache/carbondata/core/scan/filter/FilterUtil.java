@@ -151,7 +151,7 @@ public final class FilterUtil {
                   segmentProperties);
         case RANGE:
           return new RangeValueFilterExecuterImpl(
-              ((ConditionalFilterResolverImpl) filterExpressionResolverTree)
+              filterExpressionResolverTree
                   .getDimColResolvedFilterInfo(),
               null, filterExpressionResolverTree.getFilterExpression(),
               ((ConditionalFilterResolverImpl) filterExpressionResolverTree).getTableIdentifier(),
@@ -1584,10 +1584,7 @@ public final class FilterUtil {
    * @return boolean after comparing two double values.
    */
   public static boolean nanSafeEqualsDoubles(Double d1, Double d2) {
-    if ((d1.doubleValue() == d2.doubleValue()) || (Double.isNaN(d1) && Double.isNaN(d2))) {
-      return true;
-    }
-    return false;
+    return (d1.doubleValue() == d2.doubleValue()) || (Double.isNaN(d1) && Double.isNaN(d2));
 
   }
 

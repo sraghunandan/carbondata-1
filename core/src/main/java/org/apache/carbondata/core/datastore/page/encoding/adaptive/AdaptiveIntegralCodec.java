@@ -154,7 +154,7 @@ public class AdaptiveIntegralCodec extends AdaptiveCodec {
           encodedPage.putInt(rowId, (int) value);
           break;
         case LONG:
-          encodedPage.putLong(rowId, (long) value);
+          encodedPage.putLong(rowId, value);
           break;
         default:
           throw new RuntimeException("internal error: " + debugInfo());

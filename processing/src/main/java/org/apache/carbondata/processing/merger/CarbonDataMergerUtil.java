@@ -102,10 +102,7 @@ public final class CarbonDataMergerUtil {
     String isLoadMergeEnabled = CarbonProperties.getInstance()
         .getProperty(CarbonCommonConstants.ENABLE_AUTO_LOAD_MERGE,
             CarbonCommonConstants.DEFAULT_ENABLE_AUTO_LOAD_MERGE);
-    if (isLoadMergeEnabled.equalsIgnoreCase("false")) {
-      return false;
-    }
-    return true;
+    return !isLoadMergeEnabled.equalsIgnoreCase("false");
   }
 
   /**
@@ -243,7 +240,7 @@ public final class CarbonDataMergerUtil {
           }
 
           LoadMetadataDetails[] loadDetails =
-              segmentStatusManager.readLoadMetadata(metaDataFilepath);
+              SegmentStatusManager.readLoadMetadata(metaDataFilepath);
 
           for (LoadMetadataDetails loadDetail : loadDetails) {
             if (loadsToMerge.contains(loadDetail)) {
@@ -258,7 +255,7 @@ public final class CarbonDataMergerUtil {
 
           segmentUpdateStatusManager
               .writeLoadDetailsIntoFile(Arrays.asList(updateLists), timestamp);
-          segmentStatusManager
+          SegmentStatusManager
               .writeLoadDetailsIntoFile(carbonTablePath.getTableStatusFilePath(), loadDetails);
           status = true;
         } else {
@@ -561,10 +558,7 @@ public final class CarbonDataMergerUtil {
 
     long diff = cal2.getTimeInMillis() - cal1.getTimeInMillis();
 
-    if ((diff / (24 * 60 * 60 * 1000)) < numberOfDaysAllowedToMerge) {
-      return true;
-    }
-    return false;
+    return (diff / (24 * 60 * 60 * 1000)) < numberOfDaysAllowedToMerge;
   }
 
   /**
@@ -734,10 +728,7 @@ public final class CarbonDataMergerUtil {
    * @return
    */
   private static boolean isMergedSegment(String segName) {
-    if (segName.contains(".")) {
-      return true;
-    }
-    return false;
+    return segName.contains(".");
   }
 
   /**
@@ -1020,11 +1011,7 @@ public final class CarbonDataMergerUtil {
       String taskAndTimeStamp = task + "-" + timestamp;
       uniqueBlocks.add(taskAndTimeStamp);
     }
-    if (uniqueBlocks.size() > numberDeltaFilesThreshold) {
-      return true;
-    } else {
-      return false;
-    }
+    return uniqueBlocks.size() > numberDeltaFilesThreshold;
   }
 
   /**
@@ -1102,13 +1089,9 @@ public final class CarbonDataMergerUtil {
    * @return
    */
   public static boolean isHorizontalCompactionEnabled() {
-    if ((CarbonProperties.getInstance()
+    return (CarbonProperties.getInstance()
         .getProperty(CarbonCommonConstants.isHorizontalCompactionEnabled,
-            CarbonCommonConstants.defaultIsHorizontalCompactionEnabled)).equalsIgnoreCase("true")) {
-      return true;
-    } else {
-      return false;
-    }
+            CarbonCommonConstants.defaultIsHorizontalCompactionEnabled)).equalsIgnoreCase("true");
   }
 
   /**
@@ -1259,7 +1242,7 @@ public final class CarbonDataMergerUtil {
                         + " for table status updation");
 
         LoadMetadataDetails[] listOfLoadFolderDetailsArray =
-                segmentStatusManager.readLoadMetadata(metaDataFilepath);
+                SegmentStatusManager.readLoadMetadata(metaDataFilepath);
 
         for (LoadMetadataDetails loadMetadata : listOfLoadFolderDetailsArray) {
           if (loadMetadata.getLoadName().equalsIgnoreCase("0")) {
@@ -1268,7 +1251,7 @@ public final class CarbonDataMergerUtil {
           }
         }
         try {
-          segmentStatusManager
+          SegmentStatusManager
                   .writeLoadDetailsIntoFile(tableStatusPath, listOfLoadFolderDetailsArray);
         } catch (IOException e) {
           return false;

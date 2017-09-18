@@ -72,10 +72,7 @@ public class ManageDictionaryAndBTree {
       // with a given column ID need to be listed
       CarbonFile[] listFiles = metadataDir.listFiles(new CarbonFileFilter() {
         @Override public boolean accept(CarbonFile path) {
-          if (path.getName().startsWith(columnSchema.getColumnUniqueId())) {
-            return true;
-          }
-          return false;
+          return path.getName().startsWith(columnSchema.getColumnUniqueId());
         }
       });
       for (CarbonFile file : listFiles) {

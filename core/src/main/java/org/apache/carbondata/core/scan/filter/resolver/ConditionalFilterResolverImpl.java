@@ -296,11 +296,7 @@ public class ConditionalFilterResolverImpl implements FilterResolverIntf {
     RangeExpression condExp = (RangeExpression) exp;
     List<ColumnExpression> columnList = condExp.getColumnList();
     if (columnList.get(0).getDimension().hasEncoding(Encoding.DICTIONARY)) {
-      if (columnList.get(0).getDimension().hasEncoding(Encoding.DIRECT_DICTIONARY)) {
-        return false;
-      } else {
-        return true;
-      }
+      return !columnList.get(0).getDimension().hasEncoding(Encoding.DIRECT_DICTIONARY);
     } else {
       return false;
     }

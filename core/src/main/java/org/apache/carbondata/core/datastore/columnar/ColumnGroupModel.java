@@ -17,39 +17,10 @@
 package org.apache.carbondata.core.datastore.columnar;
 
 public class ColumnGroupModel {
-
-  /**
-   * number of columns in columnar block
-   */
-  private int[] columnSplit;
-
   /**
    * total number of columns
    */
   private int noOfColumnsStore;
-
-  /**
-   * whether given index is columnar or not
-   * true: columnar
-   * false: row block
-   */
-  private boolean[] columnarStore;
-
-  /**
-   * column groups
-   * e.g
-   * {{0,1,2},3,4,{5,6}}
-   */
-  private int[][] columnGroups;
-
-  /**
-   * set columnSplit
-   *
-   * @param split
-   */
-  public void setColumnSplit(int[] split) {
-    this.columnSplit = split;
-  }
 
   /**
    * @return no of columnar block
@@ -65,23 +36,5 @@ public class ColumnGroupModel {
    */
   public void setNoOfColumnStore(int noOfColumnsStore) {
     this.noOfColumnsStore = noOfColumnsStore;
-  }
-
-  /**
-   * it's an identifier for row block or single column block
-   *
-   * @param columnarStore
-   */
-  public void setColumnarStore(boolean[] columnarStore) {
-    this.columnarStore = columnarStore;
-  }
-
-  /**
-   * set column groups
-   *
-   * @param columnGroups
-   */
-  public void setColumnGroup(int[][] columnGroups) {
-    this.columnGroups = columnGroups;
   }
 }

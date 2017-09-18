@@ -193,10 +193,7 @@ public class TableInfo implements Serializable, Writable {
       return false;
     }
 
-    if (!tableUniqueName.equals(other.tableUniqueName)) {
-      return false;
-    }
-    return true;
+    return tableUniqueName.equals(other.tableUniqueName);
   }
 
   /**

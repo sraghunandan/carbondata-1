@@ -137,7 +137,6 @@ class SparkPartitionLoader(model: CarbonLoadModel,
     CarbonProperties.getInstance().addProperty("aggregate.columnar.keyblock", "true")
     CarbonProperties.getInstance().addProperty("high.cardinality.value", "100000")
     CarbonProperties.getInstance().addProperty("is.compressed.keyblock", "false")
-    CarbonProperties.getInstance().addProperty("carbon.leaf.node.size", "120000")
 
     // this property is used to determine whether temp location for carbon is inside
     // container temp dir or is yarn application directory.

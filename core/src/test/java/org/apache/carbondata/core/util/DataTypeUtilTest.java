@@ -85,7 +85,7 @@ public class DataTypeUtilTest {
         DataTypeUtil.getDataTypeConverter().convertToDecimal(scalaDecVal));
     assertEquals(getDataBasedOnDataType("default", DataType.NULL),
         DataTypeUtil.getDataTypeConverter().convertFromStringToUTF8String("default"));
-    assertEquals(getDataBasedOnDataType((String) null, DataType.NULL), null);
+    assertEquals(getDataBasedOnDataType(null, DataType.NULL), null);
   }
 
   @Test public void testGetMeasureValueBasedOnDataType() {

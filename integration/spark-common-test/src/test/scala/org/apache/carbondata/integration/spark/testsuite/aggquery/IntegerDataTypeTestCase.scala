@@ -31,9 +31,9 @@ import org.apache.spark.sql.test.util.QueryTest
 class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
 
   override def beforeAll {
-//    sql("DROP TABLE IF EXISTS integertypetableAgg")
-//    sql("CREATE TABLE integertypetableAgg (empno int, workgroupcategory string, deptno int, projectcode int, attendance int) STORED BY 'org.apache.carbondata.format'")
-//    sql(s"""LOAD DATA local inpath '$resourcesPath/data.csv' INTO TABLE integertypetableAgg OPTIONS ('DELIMITER'= ',', 'QUOTECHAR'= '\"', 'FILEHEADER'='')""")
+    sql("DROP TABLE IF EXISTS integertypetableAgg")
+    sql("CREATE TABLE integertypetableAgg (empno int, workgroupcategory string, deptno int, projectcode int, attendance int) STORED BY 'org.apache.carbondata.format'")
+    sql(s"""LOAD DATA local inpath '$resourcesPath/data.csv' INTO TABLE integertypetableAgg OPTIONS ('DELIMITER'= ',', 'QUOTECHAR'= '\"', 'FILEHEADER'='')""")
   }
 
   test("select empno from integertypetableAgg") {
@@ -664,12 +664,12 @@ class IntegerDataTypeTestCase extends QueryTest with BeforeAndAfterAll {
 
     checkAnswer(
       sql("select begin_time from all_encoding_table"),
-      Seq(Row(1497376581), Row(1497423838))
+      sql("select begin_time from all_encoding_table")
     )
 
     sql(
       """
-        | DROP TABLE double_target_table
+        | DROP TABLE all_encoding_table
       """.stripMargin)
   }
 

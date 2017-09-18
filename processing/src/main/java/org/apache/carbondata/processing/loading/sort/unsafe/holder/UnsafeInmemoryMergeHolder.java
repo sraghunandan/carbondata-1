@@ -56,10 +56,7 @@ public class UnsafeInmemoryMergeHolder implements Comparable<UnsafeInmemoryMerge
   }
 
   public boolean hasNext() {
-    if (counter < actualSize) {
-      return true;
-    }
-    return false;
+    return counter < actualSize;
   }
 
   public void readRow() {

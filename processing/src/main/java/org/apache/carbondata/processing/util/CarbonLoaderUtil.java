@@ -133,10 +133,7 @@ public final class CarbonLoaderUtil {
         return true;
       }
     }
-    if (fileCount == 0) {
-      return false;
-    }
-    return true;
+    return fileCount != 0;
   }
   public static void deletePartialLoadDataIfExist(CarbonLoadModel loadModel,
       final boolean isCompactionFlow) throws IOException {
@@ -348,7 +345,7 @@ public final class CarbonLoaderUtil {
       } else {
         LOGGER.error("Not able to acquire the lock for Table status updation for table " + loadModel
             .getDatabaseName() + "." + loadModel.getTableName());
-      };
+      }
     } finally {
       if (carbonLock.unlock()) {
         LOGGER.info(

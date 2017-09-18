@@ -244,10 +244,7 @@ public class RestructureUtil {
    * @return
    */
   private static boolean isDefaultValueNull(byte[] defaultValue) {
-    if (null == defaultValue) {
-      return true;
-    }
-    return false;
+    return null == defaultValue;
   }
 
   /**

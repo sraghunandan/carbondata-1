@@ -199,10 +199,7 @@ public class TableBlockInfo implements Distributable, Serializable {
       return false;
     }
 
-    if (blockletInfos.getStartBlockletNumber() != other.blockletInfos.getStartBlockletNumber()) {
-      return false;
-    }
-    return true;
+    return blockletInfos.getStartBlockletNumber() == other.blockletInfos.getStartBlockletNumber();
   }
 
   /**

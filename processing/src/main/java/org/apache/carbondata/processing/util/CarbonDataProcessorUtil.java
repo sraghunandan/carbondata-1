@@ -118,10 +118,7 @@ public final class CarbonDataProcessorUtil {
 
     CarbonFile[] listFiles = carbonFile.listFiles(new CarbonFileFilter() {
       @Override public boolean accept(CarbonFile pathname) {
-        if (pathname.getName().indexOf(CarbonCommonConstants.FILE_INPROGRESS_STATUS) > -1) {
-          return true;
-        }
-        return false;
+        return pathname.getName().indexOf(CarbonCommonConstants.FILE_INPROGRESS_STATUS) > -1;
       }
     });
 
@@ -586,10 +583,7 @@ public final class CarbonDataProcessorUtil {
    * @return
    */
   public static boolean isRleApplicableForColumn(ColumnType dimensionType) {
-    if (dimensionType == ColumnType.GLOBAL_DICTIONARY) {
-      return true;
-    }
-    return false;
+    return dimensionType == ColumnType.GLOBAL_DICTIONARY;
   }
 
   /**

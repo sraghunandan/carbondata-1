@@ -78,11 +78,10 @@ public class SegmentUpdateStatusManager {
     this.absoluteTableIdentifier = absoluteTableIdentifier;
     carbonTablePath = CarbonStorePath.getCarbonTablePath(absoluteTableIdentifier.getStorePath(),
         absoluteTableIdentifier.getCarbonTableIdentifier());
-    SegmentStatusManager segmentStatusManager = new SegmentStatusManager(absoluteTableIdentifier);
     // current it is used only for read function scenarios, as file update always requires to work
     // on latest file status.
     segmentDetails =
-        segmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
+        SegmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
     updateDetails = readLoadMetadata();
     populateMap();
   }
@@ -229,11 +228,7 @@ public class SegmentUpdateStatusManager {
               && Long.compare(timestamp, startTimeStampFinal) >= 0) {
 
             // if marked for delete then it is invalid.
-            if (!isBlockValid(segmentId, fileName)) {
-              return false;
-            }
-
-            return true;
+            return isBlockValid(segmentId, fileName);
           }
         }
         return false;
@@ -342,11 +337,8 @@ public class SegmentUpdateStatusManager {
 
     SegmentUpdateDetails details = getDetailsForABlock(segName, blockName);
 
-    if (details == null || !CarbonUpdateUtil.isBlockInvalid(details.getStatus())) {
-      return true;
-    }
+    return details == null || !CarbonUpdateUtil.isBlockInvalid(details.getStatus());
 
-    return false;
   }
   /**
    * Returns all delta file paths of specified block
@@ -475,13 +467,12 @@ public class SegmentUpdateStatusManager {
     CarbonTablePath carbonTablePath = CarbonStorePath
         .getCarbonTablePath(absoluteTableIdentifier.getStorePath(),
             absoluteTableIdentifier.getCarbonTableIdentifier());
-    SegmentStatusManager segmentStatusManager = new SegmentStatusManager(absoluteTableIdentifier);
     String endTimeStamp = "";
     String startTimeStamp = "";
     long factTimeStamp = 0;
 
     LoadMetadataDetails[] segmentDetails =
-        segmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
+        SegmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
 
     for (LoadMetadataDetails eachSeg : segmentDetails) {
       if (eachSeg.getLoadName().equalsIgnoreCase(segmentId)) {
@@ -715,12 +706,11 @@ public class SegmentUpdateStatusManager {
    * @return updateStatusFileName
    */
   private String getUpdatedStatusIdentifier() {
-    SegmentStatusManager ssm = new SegmentStatusManager(absoluteTableIdentifier);
     CarbonTablePath carbonTablePath = CarbonStorePath
         .getCarbonTablePath(absoluteTableIdentifier.getStorePath(),
             absoluteTableIdentifier.getCarbonTableIdentifier());
     LoadMetadataDetails[] loadDetails =
-        ssm.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
+        SegmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
     if (loadDetails.length == 0) {
       return null;
     }
@@ -832,12 +822,11 @@ public class SegmentUpdateStatusManager {
 
     // get the original fact file timestamp from the table status file.
     List<String> listOfInvalidBlocks = new ArrayList<String>();
-    SegmentStatusManager ssm = new SegmentStatusManager(absoluteTableIdentifier);
     CarbonTablePath carbonTablePath = CarbonStorePath
         .getCarbonTablePath(absoluteTableIdentifier.getStorePath(),
             absoluteTableIdentifier.getCarbonTableIdentifier());
     LoadMetadataDetails[] segmentDetails =
-        ssm.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
+        SegmentStatusManager.readLoadMetadata(carbonTablePath.getMetadataDirectoryPath());
     long timestampOfOriginalFacts = 0;
 
     String startTimestampOfUpdate = "" ;

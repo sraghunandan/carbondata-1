@@ -429,7 +429,6 @@ object CarbonDataStoreCreator {
     CarbonProperties.getInstance
       .addProperty("high.cardinality.value", "100000")
     CarbonProperties.getInstance.addProperty("is.compressed.keyblock", "false")
-    CarbonProperties.getInstance.addProperty("carbon.leaf.node.size", "120000")
     CarbonProperties.getInstance
       .addProperty("carbon.direct.dictionary", "true")
     val graphPath: String = outPutLoc + File.separator + loadModel.getDatabaseName +

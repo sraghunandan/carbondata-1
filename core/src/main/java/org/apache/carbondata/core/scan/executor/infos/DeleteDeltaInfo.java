@@ -73,10 +73,7 @@ public class DeleteDeltaInfo {
     if (!Arrays.equals(deleteDeltaFile, other.deleteDeltaFile)) {
       return false;
     }
-    if (latestDeleteDeltaFileTimestamp != other.latestDeleteDeltaFileTimestamp) {
-      return false;
-    }
-    return true;
+    return latestDeleteDeltaFileTimestamp == other.latestDeleteDeltaFileTimestamp;
   }
 
 }

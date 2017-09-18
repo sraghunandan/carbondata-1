@@ -49,7 +49,6 @@ import org.apache.carbondata.core.metadata.converter.ThriftWrapperSchemaConverte
 import org.apache.carbondata.core.metadata.index.BlockIndexInfo;
 import org.apache.carbondata.core.metadata.schema.table.column.ColumnSchema;
 import org.apache.carbondata.core.util.ByteUtil;
-import org.apache.carbondata.core.util.CarbonMergerUtil;
 import org.apache.carbondata.core.util.CarbonMetadataUtil;
 import org.apache.carbondata.core.util.CarbonProperties;
 import org.apache.carbondata.core.util.CarbonUtil;
@@ -60,7 +59,6 @@ import org.apache.carbondata.format.BlockletInfo3;
 import org.apache.carbondata.format.IndexHeader;
 import org.apache.carbondata.processing.datamap.DataMapWriterListener;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.hadoop.io.IOUtils;
 
 public abstract class AbstractFactDataWriter implements CarbonFactDataWriter {
@@ -319,11 +317,8 @@ public abstract class AbstractFactDataWriter implements CarbonFactDataWriter {
     int fileInitialCount = 0;
     FileFilter fileFilter = new FileFilter() {
       @Override public boolean accept(File pathVal) {
-        if (!pathVal.isDirectory() && pathVal.getName().startsWith(dataWriterVo.getTableName())
-            && pathVal.getName().contains(CarbonCommonConstants.FACT_FILE_EXT)) {
-          return true;
-        }
-        return false;
+        return !pathVal.isDirectory() && pathVal.getName().startsWith(dataWriterVo.getTableName())
+            && pathVal.getName().contains(CarbonCommonConstants.FACT_FILE_EXT);
       }
     };
 
