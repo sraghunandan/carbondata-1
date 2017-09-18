@@ -35,8 +35,4 @@ public final class DataLoadProcessorConstants {
   public static final String IS_EMPTY_DATA_BAD_RECORD = "IS_EMPTY_DATA_BAD_RECORD";
 
   public static final String FACT_FILE_PATH = "FACT_FILE_PATH";
-
-  private DataLoadProcessorConstants() {
-  }
-
 }

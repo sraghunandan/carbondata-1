@@ -293,13 +293,80 @@
                         <fileset dir="${classes.directory.projectProcessing}" />
                         <fileset dir="${classes.directory.projectHadoop}" />
                         <fileset dir="${classes.directory.projectFormat}" erroronmissingdir="false"/>
-                        <fileset dir="${classes.directory.projectSpark}" erroronmissingdir="false"/>
-                        <fileset dir="${classes.directory.projectSpark2}" erroronmissingdir="false"/>
-                        <fileset dir="${classes.directory.projectSparkCommon}" />
-                        <fileset dir="${classes.directory.projectSparkCommonTest}" />
+                        <fileset dir="${classes.directory.projectSpark}" erroronmissingdir="false">
+                          <exclude name="org/apache/spark/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/thriftserver/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/rdd/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/tasks/**/*.class"/>
+                          <exclude name="org/apache/carbondata/api/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/util/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/load/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSpark2}" erroronmissingdir="false">
+                          <exclude name="org/apache/spark/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/thriftserver/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/rdd/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/tasks/**/*.class"/>
+                          <exclude name="org/apache/carbondata/api/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/util/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/load/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSparkCommon}" >
+                          <exclude name="org/apache/spark/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/thriftserver/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/rdd/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/tasks/**/*.class"/>
+                          <exclude name="org/apache/carbondata/api/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/util/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/load/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSparkCommonTest}" >
+                          <exclude name="org/apache/spark/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/thriftserver/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/rdd/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/tasks/**/*.class"/>
+                          <exclude name="org/apache/carbondata/api/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/util/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/load/**/*.class"/>
+                          <exclude name="org/apache/carbondata/spark/*.class"/>
+                        </fileset>
                         <!--<fileset dir="${classes.directory.projectHive}" erroronmissingdir="false" />-->
                         <!--<fileset dir="${classes.directory.projectPresto}" erroronmissingdir="false" />-->
-
+                        <fileset dir="${classes.directory.projectSpark}" erroronmissingdir="false">
+                          <include name="org/apache/carbondata/spark/load/CarbonLoaderUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/load/DeleteLoadFolders*.class"/>
+                          <include name="org/apache/carbondata/spark/load/FailureCauses*.class"/>
+                          <include name="org/apache/carbondata/spark/util/CarbonQueryUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/LoadMetadataUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/SparkDataTypeConverterImpl*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSpark2}" erroronmissingdir="false">
+                          <include name="org/apache/carbondata/spark/load/CarbonLoaderUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/load/DeleteLoadFolders*.class"/>
+                          <include name="org/apache/carbondata/spark/load/FailureCauses*.class"/>
+                          <include name="org/apache/carbondata/spark/util/CarbonQueryUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/LoadMetadataUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/SparkDataTypeConverterImpl*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSparkCommon}" >
+                          <include name="org/apache/carbondata/spark/load/CarbonLoaderUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/load/DeleteLoadFolders*.class"/>
+                          <include name="org/apache/carbondata/spark/load/FailureCauses*.class"/>
+                          <include name="org/apache/carbondata/spark/util/CarbonQueryUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/LoadMetadataUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/SparkDataTypeConverterImpl*.class"/>
+                        </fileset>
+                        <fileset dir="${classes.directory.projectSparkCommonTest}" >
+                          <include name="org/apache/carbondata/spark/load/CarbonLoaderUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/load/DeleteLoadFolders*.class"/>
+                          <include name="org/apache/carbondata/spark/load/FailureCauses*.class"/>
+                          <include name="org/apache/carbondata/spark/util/CarbonQueryUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/LoadMetadataUtil*.class"/>
+                          <include name="org/apache/carbondata/spark/util/SparkDataTypeConverterImpl*.class"/>
+                        </fileset>
                       </classfiles>
                       <sourcefiles encoding="UTF-8">
                         <fileset dir="${sources.directory.projectCommon}" />
