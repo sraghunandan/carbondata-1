@@ -54,13 +54,6 @@ public abstract class AbstractDimensionDataChunk implements DimensionColumnDataC
   }
 
   /**
-   * @return length of each column
-   */
-  @Override public int getColumnValueSize() {
-    return dataChunkStore.getColumnValueSize();
-  }
-
-  /**
    * To compare the data
    *
    * @param index        row index to be compared

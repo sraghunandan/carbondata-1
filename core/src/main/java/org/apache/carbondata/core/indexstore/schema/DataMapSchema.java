@@ -43,7 +43,9 @@ public abstract class DataMapSchema {
    *
    * @return
    */
-  public abstract int getLength();
+  public int getLength() {
+    return dataType.getSizeInBytes();
+  }
 
   /**
    * schema type
@@ -87,10 +89,6 @@ public abstract class DataMapSchema {
       super(dataType);
     }
 
-    @Override public int getLength() {
-      return dataType.getSizeInBytes();
-    }
-
     @Override public DataMapSchemaType getSchemaType() {
       return DataMapSchemaType.VARIABLE;
     }
@@ -103,10 +101,6 @@ public abstract class DataMapSchema {
     public StructDataMapSchema(DataType dataType, DataMapSchema[] childSchemas) {
       super(dataType);
       this.childSchemas = childSchemas;
-    }
-
-    @Override public int getLength() {
-      return dataType.getSizeInBytes();
     }
 
     public DataMapSchema[] getChildSchemas() {

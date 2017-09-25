@@ -1267,7 +1267,7 @@ public final class CarbonCommonConstants {
   /**
    * default value for prefetch data while loading.
    */
-  public static final String USE_PREFETCH_WHILE_LOADING_DEFAULT = "false";
+  public static final String USE_PREFETCH_WHILE_LOADING_DEFAULT = "true";
 
   public static final String MINOR = "minor";
 

@@ -124,8 +124,4 @@ public class TableDictionaryGenerator
       }
     }
   }
-  public String getTableUniqueName() {
-    return carbonTable.getTableUniqueName();
-  }
-
 }

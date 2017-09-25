@@ -214,16 +214,7 @@ public class CarbonFactDataHandlerColumnar implements CarbonFactHandler {
         numberOfCores = Integer.parseInt(CarbonCommonConstants.NUM_CORES_DEFAULT_VAL);
       }
     } else {
-      try {
-        numberOfCores = Integer.parseInt(CarbonProperties.getInstance()
-            .getProperty(CarbonCommonConstants.NUM_CORES_LOADING,
-                CarbonCommonConstants.NUM_CORES_DEFAULT_VAL));
-      } catch (NumberFormatException exc) {
-        LOGGER.error("Configured value for property " + CarbonCommonConstants.NUM_CORES_LOADING
-            + "is wrong.Falling back to the default value "
-            + CarbonCommonConstants.NUM_CORES_DEFAULT_VAL);
-        numberOfCores = Integer.parseInt(CarbonCommonConstants.NUM_CORES_DEFAULT_VAL);
-      }
+      numberOfCores = CarbonProperties.getInstance().getNumberOfCores();
     }
 
     if (sortScope != null && sortScope.equals(SortScopeOptions.SortScope.GLOBAL_SORT)) {
@@ -243,19 +234,6 @@ public class CarbonFactDataHandlerColumnar implements CarbonFactHandler {
     // Start the consumer which will take each blocklet/page in order and write to a file
     Consumer consumer = new Consumer(tablePageList);
     consumerExecutorServiceTaskList.add(consumerExecutorService.submit(consumer));
-  }
-
-  private boolean[] arrangeUniqueBlockType(boolean[] aggKeyBlock) {
-    int counter = 0;
-    boolean[] uniqueBlock = new boolean[aggKeyBlock.length];
-    for (int i = 0; i < isDictDimension.length; i++) {
-      if (isDictDimension[i]) {
-        uniqueBlock[i] = aggKeyBlock[counter++];
-      } else {
-        uniqueBlock[i] = false;
-      }
-    }
-    return uniqueBlock;
   }
 
   private void setComplexMapSurrogateIndex(int dimensionCount) {

@@ -54,12 +54,6 @@ public class DictionaryColumnUniqueIdentifier implements Serializable {
    */
   public DictionaryColumnUniqueIdentifier(CarbonTableIdentifier carbonTableIdentifier,
       ColumnIdentifier columnIdentifier) {
-    if (carbonTableIdentifier == null) {
-      throw new IllegalArgumentException("carbonTableIdentifier is null");
-    }
-    if (columnIdentifier == null) {
-      throw new IllegalArgumentException("columnIdentifier is null");
-    }
     this.carbonTableIdentifier = carbonTableIdentifier;
     this.columnIdentifier = columnIdentifier;
     this.dataType = columnIdentifier.getDataType();

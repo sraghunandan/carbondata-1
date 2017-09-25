@@ -79,10 +79,6 @@ public class CarbonFactDataHandlerModel {
    * local store location
    */
   private String[] storeLocation;
-  /**
-   * flag to check whether use inverted index
-   */
-  private boolean[] isUseInvertedIndex;
 
   /**
    * length of each dimension, including dictionary, nodictioncy, complex dimension
@@ -248,7 +244,6 @@ public class CarbonFactDataHandlerModel {
     carbonFactDataHandlerModel.setPrimitiveDimLens(simpleDimsLen);
     carbonFactDataHandlerModel.setCarbonDataFileAttributes(carbonDataFileAttributes);
     carbonFactDataHandlerModel.setCarbonDataDirectoryPath(carbonDataDirectoryPath);
-    carbonFactDataHandlerModel.setIsUseInvertedIndex(isUseInvertedIndex);
     carbonFactDataHandlerModel.setBlockSizeInMB(carbonTable.getBlockSizeInMB());
     carbonFactDataHandlerModel.setComplexDimensionKeyGenerator(
         configuration.createKeyGeneratorForComplexDimension());
@@ -315,7 +310,6 @@ public class CarbonFactDataHandlerModel {
     for (CarbonDimension dimension : dimensionByTableName) {
       isUseInvertedIndexes[index++] = dimension.isUseInvertedIndex();
     }
-    carbonFactDataHandlerModel.setIsUseInvertedIndex(isUseInvertedIndexes);
     carbonFactDataHandlerModel.setPrimitiveDimLens(segmentProperties.getDimColumnsCardinality());
     carbonFactDataHandlerModel.setBlockSizeInMB(carbonTable.getBlockSizeInMB());
 
@@ -463,13 +457,6 @@ public class CarbonFactDataHandlerModel {
     isCompactionFlow = compactionFlow;
   }
 
-  public boolean[] getIsUseInvertedIndex() {
-    return isUseInvertedIndex;
-  }
-
-  public void setIsUseInvertedIndex(boolean[] isUseInvertedIndex) {
-    this.isUseInvertedIndex = isUseInvertedIndex;
-  }
   /**
    *
    * @return segmentProperties
@@ -514,14 +501,6 @@ public class CarbonFactDataHandlerModel {
     this.schemaUpdatedTimeStamp = schemaUpdatedTimeStamp;
   }
 
-  public String getSegmentId() {
-    return segmentId;
-  }
-
-  public void setSegmentId(String segmentId) {
-    this.segmentId = segmentId;
-  }
-
   public int getTaskExtension() {
     return taskExtension;
   }
@@ -554,10 +533,6 @@ public class CarbonFactDataHandlerModel {
       }
     }
     return count;
-  }
-
-  public boolean isSortColumn(int columnIndex) {
-    return columnIndex < segmentProperties.getNumberOfSortColumns();
   }
 
   public TableSpec getTableSpec() {

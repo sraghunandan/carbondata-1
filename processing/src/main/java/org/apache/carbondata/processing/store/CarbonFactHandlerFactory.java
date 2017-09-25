@@ -30,12 +30,7 @@ public final class CarbonFactHandlerFactory {
    */
   public static CarbonFactHandler createCarbonFactHandler(CarbonFactDataHandlerModel model,
       FactHandlerType handlerType) {
-    switch (handlerType) {
-      case COLUMNAR:
-        return new CarbonFactDataHandlerColumnar(model);
-      default:
-        return new CarbonFactDataHandlerColumnar(model);
-    }
+    return new CarbonFactDataHandlerColumnar(model);
   }
 
   public enum FactHandlerType {
