@@ -155,8 +155,7 @@ public class CarbonRowDataWriterProcessorStepImpl extends AbstractDataLoadProces
     while (iterator.hasNext()) {
       if (rowsNotExist) {
         rowsNotExist = false;
-        dataHandler = CarbonFactHandlerFactory
-            .createCarbonFactHandler(model, CarbonFactHandlerFactory.FactHandlerType.COLUMNAR);
+        dataHandler = CarbonFactHandlerFactory.createCarbonFactHandler(model);
         dataHandler.initialise();
       }
       processBatch(iterator.next(), dataHandler, iteratorIndex);

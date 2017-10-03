@@ -157,9 +157,4 @@ public class DictionaryMessage {
   public void setTableUniqueId(String tableUniqueId) {
     this.tableUniqueId = tableUniqueId;
   }
-
-  @Override public String toString() {
-    return "DictionaryKey{ columnName='" + columnName + '\'' + ", data='" + data + '\''
-        + ", dictionaryValue=" + dictionaryValue + ", type=" + type + '}';
-  }
 }

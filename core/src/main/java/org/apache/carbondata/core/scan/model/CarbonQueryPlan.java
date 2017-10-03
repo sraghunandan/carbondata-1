@@ -119,33 +119,11 @@ public class CarbonQueryPlan implements Serializable {
     this.expression = expression;
   }
 
-  /**
-   * @return the databaseName
-   */
-  public String getDatabaseName() {
-    return databaseName;
-  }
-
-  /**
-   * @return the tableName
-   */
-  public String getTableName() {
-    return tableName;
-  }
-
   public String getQueryId() {
     return queryId;
   }
 
   public void setQueryId(String queryId) {
     this.queryId = queryId;
-  }
-
-  public boolean isRawDetailQuery() {
-    return rawDetailQuery;
-  }
-
-  public void setRawDetailQuery(boolean rawDetailQuery) {
-    this.rawDetailQuery = rawDetailQuery;
   }
 }

@@ -404,14 +404,6 @@ public final class CarbonDataProcessorUtil {
     return type;
   }
 
-  public static DataType[] getMeasureDataType(int measureCount, DataField[] measureFields) {
-    DataType[] type = new DataType[measureCount];
-    for (int i = 0; i < type.length; i++) {
-      type[i] = measureFields[i].getColumn().getDataType();
-    }
-    return type;
-  }
-
   /**
    * Creates map for columns which dateformats mentioned while loading the data.
    * @param dataFormatString
@@ -574,16 +566,6 @@ public final class CarbonDataProcessorUtil {
   public static String prepareFailureReason(String columnName, DataType dataType) {
     return "The value with column name " + columnName + " and column data type " + dataType
         .getName() + " is not a valid " + dataType + " type.";
-  }
-
-  /**
-   * This method will return a flag based on whether a column is applicable for RLE encoding
-   *
-   * @param dimensionType
-   * @return
-   */
-  public static boolean isRleApplicableForColumn(ColumnType dimensionType) {
-    return dimensionType == ColumnType.GLOBAL_DICTIONARY;
   }
 
   /**

@@ -28,14 +28,8 @@ public final class CarbonFactHandlerFactory {
    * @param handlerType
    * @return
    */
-  public static CarbonFactHandler createCarbonFactHandler(CarbonFactDataHandlerModel model,
-      FactHandlerType handlerType) {
+  public static CarbonFactHandler createCarbonFactHandler(CarbonFactDataHandlerModel model) {
     return new CarbonFactDataHandlerColumnar(model);
   }
-
-  public enum FactHandlerType {
-    COLUMNAR
-  }
-
 }
 

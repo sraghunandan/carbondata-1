@@ -663,7 +663,7 @@ object CarbonDataRDDFactory {
           } else {
             // get all table Splits,when come to this, means data have been partition
             splits = CarbonQueryUtil.getTableSplits(carbonLoadModel.getDatabaseName,
-              carbonLoadModel.getTableName, null)
+              carbonLoadModel.getTableName)
             // get all partition blocks from factFilePath/uniqueID/
             blocksGroupBy = splits.map {
               split =>

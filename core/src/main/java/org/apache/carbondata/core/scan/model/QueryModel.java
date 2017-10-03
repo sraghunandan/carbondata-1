@@ -124,7 +124,7 @@ public class QueryModel implements Serializable {
 
     fillQueryModel(queryPlan, carbonTable, queryModel, factTableName);
 
-    queryModel.setForcedDetailRawQuery(queryPlan.isRawDetailQuery());
+    queryModel.setForcedDetailRawQuery(false);
     queryModel.setQueryId(queryPlan.getQueryId());
     queryModel.setConverter(converter);
     return queryModel;

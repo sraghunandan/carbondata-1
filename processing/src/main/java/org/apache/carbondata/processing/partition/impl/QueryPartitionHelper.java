@@ -42,17 +42,6 @@ public final class QueryPartitionHelper {
     return instance;
   }
 
-  /**
-   * Get partitions applicable for query based on filters applied in query
-   */
-  public List<Partition> getPartitionsForQuery(CarbonQueryPlan queryPlan) {
-    String tableUniqueName = queryPlan.getDatabaseName() + '_' + queryPlan.getTableName();
-
-    DataPartitioner dataPartitioner = partitionerMap.get(tableUniqueName);
-
-    return dataPartitioner.getPartitions();
-  }
-
   public List<Partition> getAllPartitions(String databaseName, String tableName) {
     String tableUniqueName = databaseName + '_' + tableName;
 

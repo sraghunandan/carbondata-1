@@ -200,7 +200,7 @@ class NewCarbonDataLoadRDD[K, V](
         splits = CarbonQueryUtil.getTableSplitsForDirectLoad(carbonLoadModel.getFactFilePath)
       } else {
         splits = CarbonQueryUtil.getTableSplits(carbonLoadModel.getDatabaseName,
-          carbonLoadModel.getTableName, null)
+          carbonLoadModel.getTableName)
       }
 
       splits.zipWithIndex.map { s =>

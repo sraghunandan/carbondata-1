@@ -87,8 +87,7 @@ public class DataWriterBatchProcessorStepImpl extends AbstractDataLoadProcessorS
           if (next.hasNext()) {
             CarbonFactDataHandlerModel model = CarbonFactDataHandlerModel
                 .createCarbonFactDataHandlerModel(configuration, storeLocation, i, k++);
-            CarbonFactHandler dataHandler = CarbonFactHandlerFactory
-                .createCarbonFactHandler(model, CarbonFactHandlerFactory.FactHandlerType.COLUMNAR);
+            CarbonFactHandler dataHandler = CarbonFactHandlerFactory.createCarbonFactHandler(model);
             dataHandler.initialise();
             processBatch(next, dataHandler);
             finish(tableName, dataHandler);
