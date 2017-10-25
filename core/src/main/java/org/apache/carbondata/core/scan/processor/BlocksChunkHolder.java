@@ -47,11 +47,6 @@ public class BlocksChunkHolder {
    */
   private DataRefNode dataBlock;
 
-  public BlocksChunkHolder(int numberOfDimensionBlock, int numberOfMeasureBlock) {
-    dimensionRawDataChunk = new DimensionRawColumnChunk[numberOfDimensionBlock];
-    measureRawDataChunk = new MeasureRawColumnChunk[numberOfMeasureBlock];
-  }
-
   public BlocksChunkHolder(int numberOfDimensionBlock, int numberOfMeasureBlock,
       FileHolder fileReader) {
     dimensionRawDataChunk = new DimensionRawColumnChunk[numberOfDimensionBlock];
@@ -95,13 +90,6 @@ public class BlocksChunkHolder {
   }
 
   /**
-   * @param fileReader the fileReader to set
-   */
-  public void setFileReader(FileHolder fileReader) {
-    this.fileReader = fileReader;
-  }
-
-  /**
    * @return the dataBlock
    */
   public DataRefNode getDataBlock() {
@@ -113,18 +101,5 @@ public class BlocksChunkHolder {
    */
   public void setDataBlock(DataRefNode dataBlock) {
     this.dataBlock = dataBlock;
-  }
-
-  /***
-   * To reset the measure chunk and dimension chunk
-   * array
-   */
-  public void reset() {
-    for (int i = 0; i < measureRawDataChunk.length; i++) {
-      this.measureRawDataChunk[i] = null;
-    }
-    for (int i = 0; i < dimensionRawDataChunk.length; i++) {
-      this.dimensionRawDataChunk[i] = null;
-    }
   }
 }

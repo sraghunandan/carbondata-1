@@ -40,27 +40,19 @@ public class CarbonDimension extends CarbonColumn {
   private int keyOrdinal;
 
   /**
-   * column group column ordinal
-   * for example if column is second column in the group
-   * it will store 2
-   */
-  private int columnGroupOrdinal;
-
-  /**
    * to store complex type dimension ordinal
    */
   private int complexTypeOrdinal;
 
   public CarbonDimension(ColumnSchema columnSchema, int ordinal, int keyOrdinal,
-          int columnGroupOrdinal, int complexTypeOrdinal) {
-       this(columnSchema, ordinal, 0, keyOrdinal, columnGroupOrdinal, complexTypeOrdinal);
+          int complexTypeOrdinal) {
+       this(columnSchema, ordinal, 0, keyOrdinal, complexTypeOrdinal);
   }
 
   public CarbonDimension(ColumnSchema columnSchema, int ordinal, int schemaOrdinal, int keyOrdinal,
-      int columnGroupOrdinal, int complexTypeOrdinal) {
+      int complexTypeOrdinal) {
     super(columnSchema, ordinal, schemaOrdinal);
     this.keyOrdinal = keyOrdinal;
-    this.columnGroupOrdinal = columnGroupOrdinal;
     this.complexTypeOrdinal = complexTypeOrdinal;
   }
 
@@ -97,13 +89,6 @@ public class CarbonDimension extends CarbonColumn {
   }
 
   /**
-   * @return the columnGroupOrdinal
-   */
-  public int getColumnGroupOrdinal() {
-    return columnGroupOrdinal;
-  }
-
-  /**
    * @return the complexTypeOrdinal
    */
   public int getComplexTypeOrdinal() {
@@ -120,18 +105,6 @@ public class CarbonDimension extends CarbonColumn {
 
   public boolean isGlobalDictionaryEncoding() {
     return getEncoder().contains(Encoding.DICTIONARY);
-  }
-
-  public int getNumDimensionsExpanded() {
-    if (listOfChildDimensions == null) {
-      // there is no child, return 1 column
-      return 1;
-    }
-    int columnCount = 1;
-    for (CarbonDimension dimension: listOfChildDimensions) {
-      columnCount += dimension.getNumDimensionsExpanded();
-    }
-    return columnCount;
   }
 
   /**

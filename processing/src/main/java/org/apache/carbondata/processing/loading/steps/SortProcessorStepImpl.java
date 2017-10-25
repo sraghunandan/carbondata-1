@@ -43,11 +43,6 @@ public class SortProcessorStepImpl extends AbstractDataLoadProcessorStep {
   }
 
   @Override
-  public DataField[] getOutput() {
-    return child.getOutput();
-  }
-
-  @Override
   public void initialize() throws IOException {
     super.initialize();
     child.initialize();
@@ -60,11 +55,6 @@ public class SortProcessorStepImpl extends AbstractDataLoadProcessorStep {
   public Iterator<CarbonRowBatch>[] execute() throws CarbonDataLoadingException {
     final Iterator<CarbonRowBatch>[] iterators = child.execute();
     return sorter.sort(iterators);
-  }
-
-  @Override
-  protected CarbonRow processRow(CarbonRow row) {
-    return null;
   }
 
   @Override

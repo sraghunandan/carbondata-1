@@ -73,8 +73,6 @@ public final class DecimalConverterFactory {
 
     BigDecimal getDecimal(Object valueToBeConverted);
 
-    void writeToColumnVector(byte[] bytes, CarbonColumnVector vector, int rowId);
-
     int getSize();
 
     DecimalConverterType getDecimalConverterType();
@@ -98,11 +96,6 @@ public final class DecimalConverterFactory {
       return BigDecimal.valueOf((Long) valueToBeConverted, scale);
     }
 
-    @Override public void writeToColumnVector(byte[] bytes, CarbonColumnVector vector, int rowId) {
-      long unscaled = getUnscaledLong(bytes);
-      vector.putInt(rowId, (int) unscaled);
-    }
-
     @Override public int getSize() {
       return 4;
     }
@@ -110,20 +103,6 @@ public final class DecimalConverterFactory {
     @Override public DecimalConverterType getDecimalConverterType() {
       return DecimalConverterType.DECIMAL_INT;
     }
-  }
-
-  private long getUnscaledLong(byte[] bytes) {
-    long unscaled = 0L;
-    int i = 0;
-
-    while (i < bytes.length) {
-      unscaled = (unscaled << 8) | (bytes[i] & 0xff);
-      i += 1;
-    }
-
-    int bits = 8 * bytes.length;
-    unscaled = (unscaled << (64 - bits)) >> (64 - bits);
-    return unscaled;
   }
 
   public class DecimalLongConverter implements DecimalConverter {
@@ -141,11 +120,6 @@ public final class DecimalConverterFactory {
 
     @Override public BigDecimal getDecimal(Object valueToBeConverted) {
       return BigDecimal.valueOf((Long) valueToBeConverted, scale);
-    }
-
-    @Override public void writeToColumnVector(byte[] bytes, CarbonColumnVector vector, int rowId) {
-      long unscaled = getUnscaledLong(bytes);
-      vector.putLong(rowId, unscaled);
     }
 
     @Override public int getSize() {
@@ -202,10 +176,6 @@ public final class DecimalConverterFactory {
       return new BigDecimal(bigInteger, scale);
     }
 
-    @Override public void writeToColumnVector(byte[] bytes, CarbonColumnVector vector, int rowId) {
-      vector.putBytes(rowId, bytes);
-    }
-
     @Override public int getSize() {
       return numBytes;
     }
@@ -225,10 +195,6 @@ public final class DecimalConverterFactory {
 
     @Override public BigDecimal getDecimal(Object valueToBeConverted) {
       return DataTypeUtil.byteToBigDecimal((byte[]) valueToBeConverted);
-    }
-
-    @Override public void writeToColumnVector(byte[] bytes, CarbonColumnVector vector, int rowId) {
-      throw new UnsupportedOperationException("Unsupported in vector reading for legacy format");
     }
 
     @Override public int getSize() {

@@ -69,16 +69,6 @@ public class FilterQueryScannedResult extends AbstractScannedResult {
   }
 
   /**
-   * Below method will be used to get the no dictionary key
-   * string array for all the no dictionary dimension selected in query
-   *
-   * @return no dictionary key array for all the no dictionary dimension
-   */
-  @Override public String[] getNoDictionaryKeyStringArray() {
-    return getNoDictionaryKeyStringArray(rowMapping[pageCounter][currentRow]);
-  }
-
-  /**
    * will return the current valid row id
    *
    * @return valid row id
@@ -94,8 +84,7 @@ public class FilterQueryScannedResult extends AbstractScannedResult {
     int column = 0;
     for (int i = 0; i < this.dictionaryColumnBlockIndexes.length; i++) {
       column = dimensionDataChunks[dictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillConvertedChunkData(rowMapping[pageCounter], vectorInfo, column,
-              columnGroupKeyStructureInfo.get(dictionaryColumnBlockIndexes[i]));
+          .fillConvertedChunkData(rowMapping[pageCounter], vectorInfo, column);
     }
   }
 
@@ -106,8 +95,7 @@ public class FilterQueryScannedResult extends AbstractScannedResult {
     int column = 0;
     for (int i = 0; i < this.noDictionaryColumnBlockIndexes.length; i++) {
       column = dimensionDataChunks[noDictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillConvertedChunkData(rowMapping[pageCounter], vectorInfo, column,
-              columnGroupKeyStructureInfo.get(noDictionaryColumnBlockIndexes[i]));
+          .fillConvertedChunkData(rowMapping[pageCounter], vectorInfo, column);
     }
   }
 

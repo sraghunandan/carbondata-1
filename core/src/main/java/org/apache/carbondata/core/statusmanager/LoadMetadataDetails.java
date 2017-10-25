@@ -269,15 +269,6 @@ public class LoadMetadataDetails implements Serializable {
   }
 
   /**
-   * To get isDeleted property.
-   *
-   * @return isDeleted
-   */
-  public String getIsDeleted() {
-    return isDeleted;
-  }
-
-  /**
    * To set isDeleted property.
    *
    * @param isDeleted

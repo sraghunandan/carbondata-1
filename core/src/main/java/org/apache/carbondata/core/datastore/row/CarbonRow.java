@@ -37,24 +37,12 @@ public class CarbonRow implements Serializable {
     return data;
   }
 
-  public void setData(Object[] data) {
-    this.data = data;
-  }
-
   public String getString(int ordinal) {
     return (String) data[ordinal];
   }
 
   public Object getObject(int ordinal) {
     return data[ordinal];
-  }
-
-  public Object[] getObjectArray(int ordinal) {
-    return (Object[]) data[ordinal];
-  }
-
-  public int[] getIntArray(int ordinal) {
-    return (int[]) data[ordinal];
   }
 
   public void update(Object value, int ordinal) {

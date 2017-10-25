@@ -65,10 +65,10 @@ public class SegmentUpdateStatusManager {
   private static final LogService LOG =
       LogServiceFactory.getLogService(SegmentUpdateStatusManager.class.getName());
 
-  private AbsoluteTableIdentifier absoluteTableIdentifier;
+  private final AbsoluteTableIdentifier absoluteTableIdentifier;
   private LoadMetadataDetails[] segmentDetails;
   private SegmentUpdateDetails[] updateDetails;
-  private CarbonTablePath carbonTablePath;
+  private final CarbonTablePath carbonTablePath;
   private Map<String, SegmentUpdateDetails> blockAndDetailsMap;
 
   /**
@@ -108,7 +108,7 @@ public class SegmentUpdateStatusManager {
    * @param actualBlockName
    * @return null if block is not present in segment update status.
    */
-  public SegmentUpdateDetails getDetailsForABlock(String segID, String actualBlockName) {
+  private SegmentUpdateDetails getDetailsForABlock(String segID, String actualBlockName) {
 
     String blockIdentifier = CarbonUpdateUtil
         .getSegmentBlockNameKey(segID, actualBlockName);
@@ -139,14 +139,6 @@ public class SegmentUpdateStatusManager {
   }
 
   /**
-   *
-   * @param loadMetadataDetails
-   */
-  public void setLoadMetadataDetails(LoadMetadataDetails[] loadMetadataDetails) {
-    this.segmentDetails = loadMetadataDetails;
-  }
-
-  /**
    * Returns the UpdateStatus Details.
    * @return
    */
@@ -171,18 +163,6 @@ public class SegmentUpdateStatusManager {
     return CarbonLockFactory.getCarbonLockObj(absoluteTableIdentifier.getCarbonTableIdentifier(),
         LockUsage.TABLE_UPDATE_STATUS_LOCK);
   }
-
-  /**
-   * Returns all delete delta files of specified block
-   *
-   * @param tupleId
-   * @return
-   * @throws Exception
-   */
-  public List<String> getDeleteDeltaFiles(String tupleId) throws Exception {
-    return getDeltaFiles(tupleId, CarbonCommonConstants.DELETE_DELTA_FILE_EXT);
-  }
-
 
   /**
    * Returns all update delta files of specified Segment.
@@ -243,20 +223,6 @@ public class SegmentUpdateStatusManager {
   }
 
   /**
-   * Returns all deleted records of specified block
-   *
-   * @param tupleId
-   * @return
-   * @throws Exception
-   */
-  public Map<Integer, Integer[]> getDeleteDeltaDataFromAllFiles(String tupleId) throws Exception {
-    List<String> deltaFiles = getDeltaFiles(tupleId, CarbonCommonConstants.DELETE_DELTA_FILE_EXT);
-    CarbonDeleteFilesDataReader dataReader = new CarbonDeleteFilesDataReader();
-    String blockletId = CarbonUpdateUtil.getRequiredFieldFromTID(tupleId, TupleIdEnum.BLOCKLET_ID);
-    return dataReader.getDeleteDataFromAllFiles(deltaFiles, blockletId);
-  }
-
-  /**
    * Below method will be used to get all the delete delta files based on block name
    *
    * @param blockFilePath actual block filePath
@@ -281,7 +247,7 @@ public class SegmentUpdateStatusManager {
    * @return
    * @throws Exception
    */
-  public List<String> getDeltaFiles(String tupleId, String extension) throws Exception {
+  private List<String> getDeltaFiles(String tupleId, String extension) throws Exception {
     try {
       CarbonTablePath carbonTablePath = CarbonStorePath
           .getCarbonTablePath(absoluteTableIdentifier.getStorePath(),
@@ -761,40 +727,6 @@ public class SegmentUpdateStatusManager {
   }
 
   /**
-   * compares passed time stamp with status file delete timestamp and
-   * returns latest timestamp from status file if both are not equal
-   * returns null otherwise
-   *
-   * @param completeBlockName
-   * @param timestamp
-   * @return
-   */
-  public String getTimestampForRefreshCache(String completeBlockName, String timestamp) {
-    long cacheTimestamp = 0;
-    if (null != timestamp) {
-      cacheTimestamp = CarbonUpdateUtil.getTimeStampAsLong(timestamp);
-    }
-    String blockName = CarbonTablePath.addDataPartPrefix(CarbonUpdateUtil.getBlockName(
-        CarbonUpdateUtil.getRequiredFieldFromTID(completeBlockName, TupleIdEnum.BLOCK_ID)));
-    String segmentId =
-        CarbonUpdateUtil.getRequiredFieldFromTID(completeBlockName, TupleIdEnum.SEGMENT_ID);
-    SegmentUpdateDetails[] listOfSegmentUpdateDetailsArray =
-        readLoadMetadata();
-    for (SegmentUpdateDetails block : listOfSegmentUpdateDetailsArray) {
-      if (segmentId.equalsIgnoreCase(block.getSegmentName()) && block.getBlockName()
-          .equalsIgnoreCase(blockName) && !CarbonUpdateUtil.isBlockInvalid(block.getStatus())) {
-        long deleteTimestampFromStatusFile = block.getDeleteDeltaEndTimeAsLong();
-        if (Long.compare(deleteTimestampFromStatusFile, cacheTimestamp) == 0) {
-          return null;
-        } else {
-          return block.getDeleteDeltaEndTimestamp();
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
    * This method closes the streams
    *
    * @param streams - streams to close.
@@ -921,9 +853,8 @@ public class SegmentUpdateStatusManager {
    * @param needCompleteList
    * @return
    */
-  public CarbonFile[] getDeleteDeltaInvalidFilesList(final String segmentId,
-      final SegmentUpdateDetails block, final boolean needCompleteList,
-      CarbonFile[] allSegmentFiles) {
+  public CarbonFile[] getDeleteDeltaInvalidFilesList(final SegmentUpdateDetails block,
+      final boolean needCompleteList, CarbonFile[] allSegmentFiles) {
 
     final long deltaStartTimestamp =
         getStartTimeOfDeltaFile(CarbonCommonConstants.DELETE_DELTA_FILE_EXT, block);
@@ -961,7 +892,7 @@ public class SegmentUpdateStatusManager {
    * @param allSegmentFiles
    * @return
    */
-  public CarbonFile[] getAllBlockRelatedFiles(String blockName, CarbonFile[] allSegmentFiles,
+  public CarbonFile[] getAllBlockRelatedFiles(CarbonFile[] allSegmentFiles,
                                               String actualBlockName) {
     List<CarbonFile> files = new ArrayList<>(CarbonCommonConstants.DEFAULT_COLLECTION_SIZE);
 

@@ -50,10 +50,6 @@ public class DataWriterBatchProcessorStepImpl extends AbstractDataLoadProcessorS
     super(configuration, child);
   }
 
-  @Override public DataField[] getOutput() {
-    return child.getOutput();
-  }
-
   @Override public void initialize() throws IOException {
     super.initialize();
     child.initialize();
@@ -146,9 +142,4 @@ public class DataWriterBatchProcessorStepImpl extends AbstractDataLoadProcessorS
     batch.close();
     rowCounter.getAndAdd(batchSize);
   }
-
-  @Override protected CarbonRow processRow(CarbonRow row) {
-    return null;
-  }
-
 }

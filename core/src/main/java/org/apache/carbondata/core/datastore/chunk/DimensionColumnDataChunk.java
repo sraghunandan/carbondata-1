@@ -16,7 +16,6 @@
  */
 package org.apache.carbondata.core.datastore.chunk;
 
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.apache.carbondata.core.scan.result.vector.ColumnVectorInfo;
 
 /**
@@ -31,7 +30,7 @@ public interface DimensionColumnDataChunk {
    * @param offset offset from which data need to be filed
    * @return how many bytes was copied
    */
-  int fillChunkData(byte[] data, int offset, int columnIndex, KeyStructureInfo restructuringInfo);
+  int fillChunkData(byte[] data, int offset, int columnIndex);
 
   /**
    * It uses to convert column data to dictionary integer value
@@ -41,8 +40,7 @@ public interface DimensionColumnDataChunk {
    * @param row
    * @param restructuringInfo @return
    */
-  int fillConvertedChunkData(int rowId, int columnIndex, int[] row,
-      KeyStructureInfo restructuringInfo);
+  int fillConvertedChunkData(int rowId, int columnIndex, int[] row);
 
   /**
    * Fill the data to vector
@@ -51,8 +49,7 @@ public interface DimensionColumnDataChunk {
    * @param restructuringInfo
    * @return next column index
    */
-  int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column,
-      KeyStructureInfo restructuringInfo);
+  int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column);
 
   /**
    * Fill the data to vector
@@ -62,8 +59,7 @@ public interface DimensionColumnDataChunk {
    * @param restructuringInfo
    * @return next column index
    */
-  int fillConvertedChunkData(int[] rowMapping, ColumnVectorInfo[] vectorInfo, int column,
-      KeyStructureInfo restructuringInfo);
+  int fillConvertedChunkData(int[] rowMapping, ColumnVectorInfo[] vectorInfo, int column);
 
   /**
    * Below method to get  the data based in row id

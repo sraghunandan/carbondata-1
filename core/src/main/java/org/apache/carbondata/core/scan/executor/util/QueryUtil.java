@@ -50,7 +50,6 @@ import org.apache.carbondata.core.metadata.schema.table.column.CarbonMeasure;
 import org.apache.carbondata.core.scan.complextypes.ArrayQueryType;
 import org.apache.carbondata.core.scan.complextypes.PrimitiveQueryType;
 import org.apache.carbondata.core.scan.complextypes.StructQueryType;
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.apache.carbondata.core.scan.expression.ColumnExpression;
 import org.apache.carbondata.core.scan.expression.Expression;
 import org.apache.carbondata.core.scan.filter.GenericQueryType;
@@ -209,8 +208,7 @@ public class QueryUtil {
    * @return block index of file
    */
   public static int[] getDimensionsBlockIndexes(List<QueryDimension> queryDimensions,
-      Map<Integer, Integer> dimensionOrdinalToBlockMapping,
-      List<CarbonDimension> customAggregationDimension, Set<CarbonDimension> filterDimensions,
+      Map<Integer, Integer> dimensionOrdinalToBlockMapping, Set<CarbonDimension> filterDimensions,
       Set<Integer> allProjectionListDimensionIndexes) {
     // using set as in row group columns will point to same block
     Set<Integer> dimensionBlockIndex = new HashSet<Integer>();
@@ -235,13 +233,6 @@ public class QueryUtil {
           addChildrenBlockIndex(dimensionBlockIndex, queryDimensions.get(i).getDimension());
         }
       }
-    }
-    for (int i = 0; i < customAggregationDimension.size(); i++) {
-      blockIndex =
-          dimensionOrdinalToBlockMapping.get(customAggregationDimension.get(i).getOrdinal());
-      // not adding the children dimension as dimension aggregation
-      // is not push down in case of complex dimension
-      dimensionBlockIndex.add(blockIndex);
     }
     int[] dimensionIndex = ArrayUtils
         .toPrimitive(dimensionBlockIndex.toArray(new Integer[dimensionBlockIndex.size()]));
@@ -447,58 +438,6 @@ public class QueryUtil {
   }
 
   /**
-   * Below method will be used to get the mapping of block index and its
-   * restructuring info
-   *
-   * @param queryDimensions   query dimension from query model
-   * @param segmentProperties segment properties
-   * @return map of block index to its restructuring info
-   * @throws KeyGenException if problem while key generation
-   */
-  public static Map<Integer, KeyStructureInfo> getColumnGroupKeyStructureInfo(
-      List<QueryDimension> queryDimensions, SegmentProperties segmentProperties)
-      throws KeyGenException {
-    Map<Integer, KeyStructureInfo> rowGroupToItsRSInfo = new HashMap<Integer, KeyStructureInfo>();
-    // get column group id and its ordinal mapping of column group
-    Map<Integer, List<Integer>> columnGroupAndItsOrdinalMappingForQuery =
-        getColumnGroupAndItsOrdinalMapping(queryDimensions);
-    Map<Integer, KeyGenerator> columnGroupAndItsKeygenartor =
-        segmentProperties.getColumnGroupAndItsKeygenartor();
-
-    Iterator<Entry<Integer, List<Integer>>> iterator =
-        columnGroupAndItsOrdinalMappingForQuery.entrySet().iterator();
-    KeyStructureInfo restructureInfos = null;
-    while (iterator.hasNext()) {
-      Entry<Integer, List<Integer>> next = iterator.next();
-      KeyGenerator keyGenerator = columnGroupAndItsKeygenartor.get(next.getKey());
-      restructureInfos = new KeyStructureInfo();
-      // sort the ordinal
-      List<Integer> ordinal = next.getValue();
-      List<Integer> mdKeyOrdinal = new ArrayList<Integer>();
-      //Un sorted
-      List<Integer> mdKeyOrdinalForQuery = new ArrayList<Integer>();
-      for (Integer ord : ordinal) {
-        mdKeyOrdinal.add(segmentProperties.getColumnGroupMdKeyOrdinal(next.getKey(), ord));
-        mdKeyOrdinalForQuery.add(segmentProperties.getColumnGroupMdKeyOrdinal(next.getKey(), ord));
-      }
-      Collections.sort(mdKeyOrdinal);
-      // get the masked byte range for column group
-      int[] maskByteRanges = getMaskedByteRangeBasedOrdinal(mdKeyOrdinal, keyGenerator);
-      // max key for column group
-      byte[] maxKey = getMaxKeyBasedOnOrinal(mdKeyOrdinal, keyGenerator);
-      restructureInfos.setKeyGenerator(keyGenerator);
-      restructureInfos.setMaskByteRanges(maskByteRanges);
-      restructureInfos.setMaxKey(maxKey);
-      restructureInfos.setMdkeyQueryDimensionOrdinal(ArrayUtils
-          .toPrimitive(mdKeyOrdinalForQuery.toArray(new Integer[mdKeyOrdinalForQuery.size()])));
-      rowGroupToItsRSInfo
-          .put(segmentProperties.getDimensionOrdinalToBlockMapping().get(ordinal.get(0)),
-              restructureInfos);
-    }
-    return rowGroupToItsRSInfo;
-  }
-
-  /**
    * return true if given key is found in array
    *
    * @param data
@@ -512,69 +451,6 @@ public class QueryUtil {
       }
     }
     return false;
-  }
-
-  /**
-   * Below method will be used to create a mapping of column group columns
-   * this mapping will have column group id to all the dimension ordinal
-   * present in the column group This mapping will be used during query
-   * execution, to create a mask key for the column group dimension which will
-   * be used in aggregation and filter query as column group dimension will be
-   * stored in bit level
-   */
-  private static Map<Integer, List<Integer>> getColumnGroupAndItsOrdinalMapping(
-      List<QueryDimension> origdimensions) {
-
-    List<QueryDimension> dimensions = new ArrayList<QueryDimension>(origdimensions.size());
-    dimensions.addAll(origdimensions);
-    /*
-     * sort based on column group id
-     */
-    Collections.sort(dimensions, new Comparator<QueryDimension>() {
-
-      @Override public int compare(QueryDimension o1, QueryDimension o2) {
-        return Integer
-            .compare(o1.getDimension().columnGroupId(), o2.getDimension().columnGroupId());
-      }
-    });
-    // list of row groups this will store all the row group column
-    Map<Integer, List<Integer>> columnGroupAndItsOrdinalsMapping =
-        new HashMap<Integer, List<Integer>>();
-    // to store a column group
-    List<Integer> currentColumnGroup = null;
-    // current index
-    int index = 0;
-    // previous column group to check all the column of row id has bee
-    // selected
-    int prvColumnGroupId = -1;
-    while (index < dimensions.size()) {
-      // if dimension group id is not zero and it is same as the previous
-      // column group id
-      // then we need to add ordinal of that column as it belongs to same
-      // column group
-      if (dimensions.get(index).getDimension().hasEncoding(Encoding.IMPLICIT)) {
-        index++;
-        continue;
-      } else if (!dimensions.get(index).getDimension().isColumnar()
-          && dimensions.get(index).getDimension().columnGroupId() == prvColumnGroupId
-          && null != currentColumnGroup) {
-        currentColumnGroup.add(dimensions.get(index).getDimension().getOrdinal());
-      }
-
-      // if dimension is not a columnar then it is column group column
-      else if (!dimensions.get(index).getDimension().isColumnar()) {
-        currentColumnGroup = new ArrayList<Integer>();
-        columnGroupAndItsOrdinalsMapping
-            .put(dimensions.get(index).getDimension().columnGroupId(), currentColumnGroup);
-        currentColumnGroup.add(dimensions.get(index).getDimension().getOrdinal());
-      }
-      // update the row id every time,this is required to group the
-      // columns
-      // of the same row group
-      prvColumnGroupId = dimensions.get(index).getDimension().columnGroupId();
-      index++;
-    }
-    return columnGroupAndItsOrdinalsMapping;
   }
 
   /**

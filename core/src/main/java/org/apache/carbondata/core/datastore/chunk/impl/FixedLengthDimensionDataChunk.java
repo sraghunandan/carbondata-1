@@ -19,7 +19,6 @@ package org.apache.carbondata.core.datastore.chunk.impl;
 import org.apache.carbondata.core.constants.CarbonCommonConstants;
 import org.apache.carbondata.core.datastore.chunk.store.DimensionChunkStoreFactory;
 import org.apache.carbondata.core.datastore.chunk.store.DimensionChunkStoreFactory.DimensionStoreType;
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.apache.carbondata.core.scan.result.vector.CarbonColumnVector;
 import org.apache.carbondata.core.scan.result.vector.ColumnVectorInfo;
 
@@ -57,8 +56,7 @@ public class FixedLengthDimensionDataChunk extends AbstractDimensionDataChunk {
    * @param keyStructureInfo define the structure of the key
    * @return how many bytes was copied
    */
-  @Override public int fillChunkData(byte[] data, int offset, int index,
-      KeyStructureInfo keyStructureInfo) {
+  @Override public int fillChunkData(byte[] data, int offset, int index) {
     dataChunkStore.fillRow(index, data, offset);
     return dataChunkStore.getColumnValueSize();
   }
@@ -72,8 +70,7 @@ public class FixedLengthDimensionDataChunk extends AbstractDimensionDataChunk {
    * @param restructuringInfo
    * @return
    */
-  @Override public int fillConvertedChunkData(int rowId, int columnIndex, int[] row,
-      KeyStructureInfo restructuringInfo) {
+  @Override public int fillConvertedChunkData(int rowId, int columnIndex, int[] row) {
     row[columnIndex] = dataChunkStore.getSurrogate(rowId);
     return columnIndex + 1;
   }
@@ -86,8 +83,7 @@ public class FixedLengthDimensionDataChunk extends AbstractDimensionDataChunk {
    * @param restructuringInfo
    * @return next column index
    */
-  @Override public int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column,
-      KeyStructureInfo restructuringInfo) {
+  @Override public int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column) {
     ColumnVectorInfo columnVectorInfo = vectorInfo[column];
     int offset = columnVectorInfo.offset;
     int vectorOffset = columnVectorInfo.vectorOffset;
@@ -131,7 +127,7 @@ public class FixedLengthDimensionDataChunk extends AbstractDimensionDataChunk {
    * @return next column index
    */
   @Override public int fillConvertedChunkData(int[] rowMapping, ColumnVectorInfo[] vectorInfo,
-      int column, KeyStructureInfo restructuringInfo) {
+      int column) {
     ColumnVectorInfo columnVectorInfo = vectorInfo[column];
     int offset = columnVectorInfo.offset;
     int vectorOffset = columnVectorInfo.vectorOffset;

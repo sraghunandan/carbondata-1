@@ -86,8 +86,4 @@ public class CarbonColumnarBatch {
       }
     }
   }
-
-  public int getRowsFilteredCount() {
-    return rowsFiltered;
-  }
 }

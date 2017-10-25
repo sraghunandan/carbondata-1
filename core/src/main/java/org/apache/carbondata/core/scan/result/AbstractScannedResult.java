@@ -33,7 +33,6 @@ import org.apache.carbondata.core.mutate.CarbonUpdateUtil;
 import org.apache.carbondata.core.mutate.DeleteDeltaVo;
 import org.apache.carbondata.core.mutate.TupleIdEnum;
 import org.apache.carbondata.core.scan.executor.infos.BlockExecutionInfo;
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.apache.carbondata.core.scan.filter.GenericQueryType;
 import org.apache.carbondata.core.scan.result.vector.CarbonColumnVector;
 import org.apache.carbondata.core.scan.result.vector.CarbonColumnarBatch;
@@ -99,16 +98,6 @@ public abstract class AbstractScannedResult {
   protected int[] noDictionaryColumnBlockIndexes;
 
   /**
-   * column group to is key structure info
-   * which will be used to get the key from the complete
-   * column group key
-   * For example if only one dimension of the column group is selected
-   * then from complete column group key it will be used to mask the key and
-   * get the particular column key
-   */
-  protected Map<Integer, KeyStructureInfo> columnGroupKeyStructureInfo;
-
-  /**
    *
    */
   private Map<Integer, GenericQueryType> complexParentIndexToQueryMap;
@@ -146,7 +135,6 @@ public abstract class AbstractScannedResult {
     this.fixedLengthKeySize = blockExecutionInfo.getFixedLengthKeySize();
     this.noDictionaryColumnBlockIndexes = blockExecutionInfo.getNoDictionaryBlockIndexes();
     this.dictionaryColumnBlockIndexes = blockExecutionInfo.getDictionaryColumnBlockIndex();
-    this.columnGroupKeyStructureInfo = blockExecutionInfo.getColumnGroupToKeyStructureInfo();
     this.complexParentIndexToQueryMap = blockExecutionInfo.getComlexDimensionInfoMap();
     this.complexParentBlockIndexes = blockExecutionInfo.getComplexColumnParentBlockIndexes();
     this.totalDimensionsSize = blockExecutionInfo.getQueryDimensions().length;
@@ -198,8 +186,7 @@ public abstract class AbstractScannedResult {
     int offset = 0;
     for (int i = 0; i < this.dictionaryColumnBlockIndexes.length; i++) {
       offset += dimensionDataChunks[dictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillChunkData(completeKey, offset, rowId,
-              columnGroupKeyStructureInfo.get(dictionaryColumnBlockIndexes[i]));
+          .fillChunkData(completeKey, offset, rowId);
     }
     rowCounter++;
     return completeKey;
@@ -217,8 +204,7 @@ public abstract class AbstractScannedResult {
     int column = 0;
     for (int i = 0; i < this.dictionaryColumnBlockIndexes.length; i++) {
       column = dimensionDataChunks[dictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillConvertedChunkData(rowId, column, completeKey,
-              columnGroupKeyStructureInfo.get(dictionaryColumnBlockIndexes[i]));
+          .fillConvertedChunkData(rowId, column, completeKey);
     }
     rowCounter++;
     return completeKey;
@@ -231,8 +217,7 @@ public abstract class AbstractScannedResult {
     int column = 0;
     for (int i = 0; i < this.dictionaryColumnBlockIndexes.length; i++) {
       column = dimensionDataChunks[dictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillConvertedChunkData(vectorInfo, column,
-              columnGroupKeyStructureInfo.get(dictionaryColumnBlockIndexes[i]));
+          .fillConvertedChunkData(vectorInfo, column);
     }
   }
 
@@ -243,8 +228,7 @@ public abstract class AbstractScannedResult {
     int column = 0;
     for (int i = 0; i < this.noDictionaryColumnBlockIndexes.length; i++) {
       column = dimensionDataChunks[noDictionaryColumnBlockIndexes[i]][pageCounter]
-          .fillConvertedChunkData(vectorInfo, column,
-              columnGroupKeyStructureInfo.get(noDictionaryColumnBlockIndexes[i]));
+          .fillConvertedChunkData(vectorInfo, column);
     }
   }
 
@@ -355,18 +339,6 @@ public abstract class AbstractScannedResult {
   }
 
   /**
-   * Below method will be used to get the dimension data based on dimension
-   * ordinal and index
-   *
-   * @param dimOrdinal dimension ordinal present in the query
-   * @param rowId      row index
-   * @return dimension data based on row id
-   */
-  protected byte[] getDimensionData(int dimOrdinal, int rowId) {
-    return dimensionDataChunks[dimOrdinal][pageCounter].getChunkData(rowId);
-  }
-
-  /**
    * Below method will be used to get the dimension key array
    * for all the no dictionary dimension present in the query
    *
@@ -379,24 +351,6 @@ public abstract class AbstractScannedResult {
     for (int i = 0; i < this.noDictionaryColumnBlockIndexes.length; i++) {
       noDictionaryColumnsKeys[position++] =
           dimensionDataChunks[noDictionaryColumnBlockIndexes[i]][pageCounter].getChunkData(rowId);
-    }
-    return noDictionaryColumnsKeys;
-  }
-
-  /**
-   * Below method will be used to get the dimension key array
-   * for all the no dictionary dimension present in the query
-   *
-   * @param rowId row number
-   * @return no dictionary keys for all no dictionary dimension
-   */
-  protected String[] getNoDictionaryKeyStringArray(int rowId) {
-    String[] noDictionaryColumnsKeys = new String[noDictionaryColumnBlockIndexes.length];
-    int position = 0;
-    for (int i = 0; i < this.noDictionaryColumnBlockIndexes.length; i++) {
-      noDictionaryColumnsKeys[position++] = new String(
-          dimensionDataChunks[noDictionaryColumnBlockIndexes[i]][pageCounter].getChunkData(rowId),
-          Charset.forName(CarbonCommonConstants.DEFAULT_CHARSET));
     }
     return noDictionaryColumnsKeys;
   }
@@ -419,20 +373,6 @@ public abstract class AbstractScannedResult {
     if (null != deletedRecordMap) {
       currentDeleteDeltaVo = deletedRecordMap.get(blockletNumber + '_' + pageCounter);
     }
-  }
-
-  /**
-   * @return blockletId
-   */
-  public long getRowId() {
-    return rowId;
-  }
-
-  /**
-   * @param rowId
-   */
-  public void setRowId(long rowId) {
-    this.rowId = rowId;
   }
 
   /**
@@ -462,13 +402,6 @@ public abstract class AbstractScannedResult {
       }
     }
     return complexTypeData;
-  }
-
-  /**
-   * @return return the total number of row after scanning
-   */
-  public int numberOfOutputRows() {
-    return this.totalNumberOfRows;
   }
 
   /**
@@ -530,18 +463,6 @@ public abstract class AbstractScannedResult {
   }
 
   /**
-   * As this class will be a flyweight object so
-   * for one block all the blocklet scanning will use same result object
-   * in that case we need to reset the counter to zero so
-   * for new result it will give the result from zero
-   */
-  public void reset() {
-    rowCounter = 0;
-    currentRow = -1;
-    pageCounter = 0;
-  }
-
-  /**
    * @param numberOfRows set total of number rows valid after scanning
    */
   public void setNumberOfRows(int[] numberOfRows) {
@@ -599,14 +520,6 @@ public abstract class AbstractScannedResult {
    * @return no dictionary key array for all the no dictionary dimension
    */
   public abstract byte[][] getNoDictionaryKeyArray();
-
-  /**
-   * Below method will be used to get the no dictionary key
-   * array in string array format for all the no dictionary dimension selected in query
-   *
-   * @return no dictionary key array for all the no dictionary dimension
-   */
-  public abstract String[] getNoDictionaryKeyStringArray();
 
   /**
    * Mark the filtered rows in columnar batch. These rows will not be added to vector batches later.

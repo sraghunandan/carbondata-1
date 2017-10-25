@@ -39,6 +39,7 @@ import org.apache.carbondata.processing.loading.DataField;
 import org.apache.carbondata.processing.loading.constants.DataLoadProcessorConstants;
 import org.apache.carbondata.processing.loading.converter.RowConverter;
 import org.apache.carbondata.processing.loading.converter.impl.RowConverterImpl;
+import org.apache.carbondata.processing.loading.exception.CarbonDataLoadingException;
 import org.apache.carbondata.processing.loading.row.CarbonRowBatch;
 import org.apache.carbondata.processing.util.CarbonDataProcessorUtil;
 
@@ -59,11 +60,6 @@ public class DataConverterProcessorStepImpl extends AbstractDataLoadProcessorSte
   }
 
   @Override
-  public DataField[] getOutput() {
-    return child.getOutput();
-  }
-
-  @Override
   public void initialize() throws IOException {
     super.initialize();
     child.initialize();
@@ -76,14 +72,22 @@ public class DataConverterProcessorStepImpl extends AbstractDataLoadProcessorSte
     converter.initialize();
   }
 
+  @Override public Iterator<CarbonRowBatch>[] execute() throws CarbonDataLoadingException {
+    Iterator<CarbonRowBatch>[] childIters = child.execute();
+    Iterator<CarbonRowBatch>[] iterators = new Iterator[childIters.length];
+    for (int i = 0; i < childIters.length; i++) {
+      iterators[i] = getIterator(childIters[i]);
+    }
+    return iterators;
+  }
+
   /**
    * Create the iterator using child iterator.
    *
    * @param childIter
    * @return new iterator with step specific processing.
    */
-  @Override
-  protected Iterator<CarbonRowBatch> getIterator(final Iterator<CarbonRowBatch> childIter) {
+  private Iterator<CarbonRowBatch> getIterator(final Iterator<CarbonRowBatch> childIter) {
     return new CarbonIterator<CarbonRowBatch>() {
       private boolean first = true;
       private RowConverter localConverter;
@@ -116,11 +120,6 @@ public class DataConverterProcessorStepImpl extends AbstractDataLoadProcessorSte
     }
     rowCounter.getAndAdd(newBatch.getSize());
     return newBatch;
-  }
-
-  @Override
-  protected CarbonRow processRow(CarbonRow row) {
-    throw new UnsupportedOperationException();
   }
 
   public static BadRecordsLogger createBadRecordLogger(CarbonDataLoadConfiguration configuration) {

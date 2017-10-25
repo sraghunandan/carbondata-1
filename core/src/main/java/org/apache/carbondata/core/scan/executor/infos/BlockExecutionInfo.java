@@ -41,14 +41,6 @@ public class BlockExecutionInfo {
   private AbstractIndex blockIndex;
 
   /**
-   * each segment key size can be different and in that case we need to update
-   * the fixed key with latest segment key generator. so this property will
-   * tell whether this is required or not if key size is same then it is not
-   * required
-   */
-  private boolean isFixedKeyUpdateRequired;
-
-  /**
    * below to store all the information required for measures during query
    * execution
    */
@@ -135,11 +127,6 @@ public class BlockExecutionInfo {
   private int[] eachColumnValueSize;
 
   /**
-   * column group block index in file to key structure info mapping
-   */
-  private Map<Integer, KeyStructureInfo> columnGroupToKeyStructureInfo;
-
-  /**
    * filter tree to execute the filter
    */
   private FilterExecuter filterExecuterTree;
@@ -214,43 +201,17 @@ public class BlockExecutionInfo {
   private boolean isRestructuredBlock;
 
   /**
-   * absolute table identifier
-   */
-  private AbsoluteTableIdentifier absoluteTableIdentifier;
-
-  /**
    * delete delta file path
    */
   private String[] deleteDeltaFilePath;
 
   private Map<String, DeleteDeltaVo> deletedRecordsMap;
-  public AbsoluteTableIdentifier getAbsoluteTableIdentifier() {
-    return absoluteTableIdentifier;
-  }
-
-  public void setAbsoluteTableIdentifier(AbsoluteTableIdentifier absoluteTableIdentifier) {
-    this.absoluteTableIdentifier = absoluteTableIdentifier;
-  }
 
   /**
    * @param blockIndex the tableBlock to set
    */
   public void setDataBlock(AbstractIndex blockIndex) {
     this.blockIndex = blockIndex;
-  }
-
-  /**
-   * @return the isFixedKeyUpdateRequired
-   */
-  public boolean isFixedKeyUpdateRequired() {
-    return isFixedKeyUpdateRequired;
-  }
-
-  /**
-   * @param isFixedKeyUpdateRequired the isFixedKeyUpdateRequired to set
-   */
-  public void setFixedKeyUpdateRequired(boolean isFixedKeyUpdateRequired) {
-    this.isFixedKeyUpdateRequired = isFixedKeyUpdateRequired;
   }
 
   /**
@@ -408,13 +369,6 @@ public class BlockExecutionInfo {
   }
 
   /**
-   * @return the tableBlockKeyGenerator
-   */
-  public KeyGenerator getBlockKeyGenerator() {
-    return blockKeyGenerator;
-  }
-
-  /**
    * @param tableBlockKeyGenerator the tableBlockKeyGenerator to set
    */
   public void setBlockKeyGenerator(KeyGenerator tableBlockKeyGenerator) {
@@ -461,21 +415,6 @@ public class BlockExecutionInfo {
    */
   public void setNoDictionaryBlockIndexes(int[] noDictionaryBlockIndexes) {
     this.noDictionaryBlockIndexes = noDictionaryBlockIndexes;
-  }
-
-  /**
-   * @return the columnGroupToKeyStructureInfo
-   */
-  public Map<Integer, KeyStructureInfo> getColumnGroupToKeyStructureInfo() {
-    return columnGroupToKeyStructureInfo;
-  }
-
-  /**
-   * @param columnGroupToKeyStructureInfo the columnGroupToKeyStructureInfo to set
-   */
-  public void setColumnGroupToKeyStructureInfo(
-      Map<Integer, KeyStructureInfo> columnGroupToKeyStructureInfo) {
-    this.columnGroupToKeyStructureInfo = columnGroupToKeyStructureInfo;
   }
 
   public boolean isRawRecordDetailQuery() {

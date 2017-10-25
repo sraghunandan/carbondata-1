@@ -283,7 +283,6 @@ public abstract class AbstractQueryExecutor<E> implements QueryExecutor<E> {
         .setTotalNumberDimensionBlock(segmentProperties.getDimensionOrdinalToBlockMapping().size());
     blockExecutionInfo
         .setTotalNumberOfMeasureBlock(segmentProperties.getMeasuresOrdinalToBlockMapping().size());
-    blockExecutionInfo.setAbsoluteTableIdentifier(queryModel.getAbsoluteTableIdentifier());
     blockExecutionInfo.setComplexDimensionInfoMap(QueryUtil
         .getComplexDimensionsMap(currentBlockQueryDimensions,
             segmentProperties.getDimensionOrdinalToBlockMapping(),
@@ -307,9 +306,6 @@ public abstract class AbstractQueryExecutor<E> implements QueryExecutor<E> {
     blockExecutionInfo.setStartKey(startIndexKey);
     //setting the end index key of the block node
     blockExecutionInfo.setEndKey(endIndexKey);
-    // expression dimensions
-    List<CarbonDimension> expressionDimensions =
-        new ArrayList<CarbonDimension>(CarbonCommonConstants.DEFAULT_COLLECTION_SIZE);
     // expression measure
     List<CarbonMeasure> expressionMeasures =
         new ArrayList<CarbonMeasure>(CarbonCommonConstants.DEFAULT_COLLECTION_SIZE);
@@ -321,7 +317,7 @@ public abstract class AbstractQueryExecutor<E> implements QueryExecutor<E> {
     Set<CarbonDimension> currentBlockFilterDimensions =
         getCurrentBlockFilterDimensions(queryProperties.complexFilterDimension, segmentProperties);
     int[] dimensionsBlockIndexes = QueryUtil.getDimensionsBlockIndexes(currentBlockQueryDimensions,
-        segmentProperties.getDimensionOrdinalToBlockMapping(), expressionDimensions,
+        segmentProperties.getDimensionOrdinalToBlockMapping(),
         currentBlockFilterDimensions, allProjectionListDimensionIdexes);
     int numberOfColumnToBeReadInOneIO = Integer.parseInt(CarbonProperties.getInstance()
         .getProperty(CarbonV3DataFormatConstants.NUMBER_OF_COLUMN_TO_READ_IN_IO,
@@ -392,16 +388,6 @@ public abstract class AbstractQueryExecutor<E> implements QueryExecutor<E> {
     blockExecutionInfo.setComplexColumnParentBlockIndexes(
         getComplexDimensionParentBlockIndexes(currentBlockQueryDimensions));
     blockExecutionInfo.setVectorBatchCollector(queryModel.isVectorReader());
-    try {
-      // to set column group and its key structure info which will be used
-      // to
-      // for getting the column group column data in case of final row
-      // and in case of dimension aggregation
-      blockExecutionInfo.setColumnGroupToKeyStructureInfo(
-          QueryUtil.getColumnGroupKeyStructureInfo(currentBlockQueryDimensions, segmentProperties));
-    } catch (KeyGenException e) {
-      throw new QueryExecutionException(e);
-    }
     // set actual query dimensions and measures. It may differ in case of restructure scenarios
     blockExecutionInfo.setActualQueryDimensions(queryModel.getQueryDimension()
         .toArray(new QueryDimension[queryModel.getQueryDimension().size()]));

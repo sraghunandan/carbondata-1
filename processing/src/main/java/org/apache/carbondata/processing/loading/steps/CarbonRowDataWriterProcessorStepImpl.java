@@ -78,10 +78,6 @@ public class CarbonRowDataWriterProcessorStepImpl extends AbstractDataLoadProces
     super(configuration, child);
   }
 
-  @Override public DataField[] getOutput() {
-    return child.getOutput();
-  }
-
   @Override public void initialize() throws IOException {
     super.initialize();
     child.initialize();
@@ -275,10 +271,6 @@ public class CarbonRowDataWriterProcessorStepImpl extends AbstractDataLoadProces
       throw new CarbonDataLoadingException("unable to generate the mdkey", e);
     }
     rowCounter.getAndAdd(batch.getSize());
-  }
-
-  @Override protected CarbonRow processRow(CarbonRow row) {
-    return null;
   }
 
   class DataWriterRunnable implements Runnable {

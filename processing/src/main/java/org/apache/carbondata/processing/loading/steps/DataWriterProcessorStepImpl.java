@@ -56,10 +56,6 @@ public class DataWriterProcessorStepImpl extends AbstractDataLoadProcessorStep {
     super(configuration, null);
   }
 
-  @Override public DataField[] getOutput() {
-    return child.getOutput();
-  }
-
   @Override public void initialize() throws IOException {
     super.initialize();
     child.initialize();
@@ -190,9 +186,4 @@ public class DataWriterProcessorStepImpl extends AbstractDataLoadProcessorStep {
     }
     rowCounter.getAndAdd(1);
   }
-
-  @Override protected CarbonRow processRow(CarbonRow row) {
-    return null;
-  }
-
 }

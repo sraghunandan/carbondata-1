@@ -19,7 +19,6 @@ package org.apache.carbondata.core.datastore.chunk.store;
 
 import org.apache.carbondata.core.datastore.chunk.DimensionColumnDataChunk;
 import org.apache.carbondata.core.datastore.page.ColumnPage;
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.apache.carbondata.core.scan.result.vector.ColumnVectorInfo;
 
 public class ColumnPageWrapper implements DimensionColumnDataChunk {
@@ -31,26 +30,22 @@ public class ColumnPageWrapper implements DimensionColumnDataChunk {
   }
 
   @Override
-  public int fillChunkData(byte[] data, int offset, int columnIndex,
-      KeyStructureInfo restructuringInfo) {
+  public int fillChunkData(byte[] data, int offset, int columnIndex) {
     throw new UnsupportedOperationException("internal error");
   }
 
   @Override
-  public int fillConvertedChunkData(int rowId, int columnIndex, int[] row,
-      KeyStructureInfo restructuringInfo) {
+  public int fillConvertedChunkData(int rowId, int columnIndex, int[] row) {
     throw new UnsupportedOperationException("internal error");
   }
 
   @Override
-  public int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column,
-      KeyStructureInfo restructuringInfo) {
+  public int fillConvertedChunkData(ColumnVectorInfo[] vectorInfo, int column) {
     throw new UnsupportedOperationException("internal error");
   }
 
   @Override
-  public int fillConvertedChunkData(int[] rowMapping, ColumnVectorInfo[] vectorInfo, int column,
-      KeyStructureInfo restructuringInfo) {
+  public int fillConvertedChunkData(int[] rowMapping, ColumnVectorInfo[] vectorInfo, int column) {
     throw new UnsupportedOperationException("internal error");
   }
 

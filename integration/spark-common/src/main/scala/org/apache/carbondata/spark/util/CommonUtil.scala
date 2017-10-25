@@ -626,8 +626,8 @@ object CommonUtil {
       csvHeader.toLowerCase.split(CarbonCommonConstants.COMMA).map(_.trim)
     }
 
-    if (!CarbonDataProcessorUtil.isHeaderValid(carbonLoadModel.getTableName, csvColumns,
-        carbonLoadModel.getCarbonDataLoadSchema)) {
+    if (!CarbonDataProcessorUtil.isHeaderValid(csvColumns,
+      carbonLoadModel.getCarbonDataLoadSchema)) {
       if (csvFile == null) {
         LOGGER.error("CSV header in DDL is not proper."
                      + " Column names in schema and CSV header are not the same.")

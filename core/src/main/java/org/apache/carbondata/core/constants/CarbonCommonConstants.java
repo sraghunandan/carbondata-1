@@ -285,7 +285,8 @@ public final class CarbonCommonConstants {
    * SORT_FILE_BUFFER_SIZE
    */
   @CarbonProperty
-  public static final String SORT_FILE_BUFFER_SIZE = "carbon.sort.file.buffer.size";
+  public static final String
+      SORT_FILE_BUFFER_SIZE = "carbon.sort.file.buffer.size";
   /**
    * no.of records after which counter to be printed
    */

@@ -37,8 +37,6 @@ import org.apache.carbondata.processing.loading.sort.unsafe.holder.SortTempChunk
 import org.apache.carbondata.processing.loading.sort.unsafe.holder.UnsafeSortTempFileChunkHolder;
 import org.apache.carbondata.processing.sort.exception.CarbonSortKeyAndGroupByException;
 import org.apache.carbondata.processing.sort.sortdata.SortParameters;
-import org.apache.carbondata.processing.sort.sortdata.TempSortFileWriter;
-import org.apache.carbondata.processing.sort.sortdata.TempSortFileWriterFactory;
 
 public class UnsafeIntermediateFileMerger implements Runnable {
   /**

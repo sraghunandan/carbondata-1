@@ -21,7 +21,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import org.apache.carbondata.core.scan.executor.infos.KeyStructureInfo;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,11 +41,8 @@ public class FixedLengthDimensionDataChunkTest {
   }
 
   @Test public void fillChunkDataTest() {
-    KeyStructureInfo keyStructureInfo = new KeyStructureInfo();
     int[] maskByteRanges = { 1, 2, 4, 6, 5 };
-    keyStructureInfo.setMaskByteRanges(maskByteRanges);
-    keyStructureInfo.setMaxKey("1234567".getBytes());
-    int res = fixedLengthDimensionDataChunk.fillChunkData(data, 0, 0, keyStructureInfo);
+    int res = fixedLengthDimensionDataChunk.fillChunkData(data, 0, 0);
     int expectedResult = 4 ;
     assertEquals(res, expectedResult);
   }
@@ -59,8 +55,7 @@ public class FixedLengthDimensionDataChunkTest {
 
   @Test public void fillConvertedChunkDataTest() {
     int[] row = { 1, 2, 4, 6 };
-    KeyStructureInfo keyStructureInfo = new KeyStructureInfo();
-    int res = fixedLengthDimensionDataChunk.fillConvertedChunkData(1, 0, row, keyStructureInfo);
+    int res = fixedLengthDimensionDataChunk.fillConvertedChunkData(1, 0, row);
     int expectedResult = 1;
     assertEquals(res, expectedResult);
   }

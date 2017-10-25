@@ -43,10 +43,6 @@ public class SortScopeOptions {
     }
   }
 
-  public static boolean isValidSortOption(String sortScope) {
-    return CarbonUtil.isValidSortOption(sortScope);
-  }
-
   public enum SortScope {
     NO_SORT, BATCH_SORT, LOCAL_SORT, GLOBAL_SORT
   }

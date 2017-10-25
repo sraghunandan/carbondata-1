@@ -565,16 +565,14 @@ public class CarbonUpdateUtil {
           // case 1
           if (CarbonUpdateUtil.isBlockInvalid(block.getStatus())) {
             completeListOfDeleteDeltaFiles = updateStatusManager
-                .getDeleteDeltaInvalidFilesList(segment.getLoadName(), block, true,
-                    allSegmentFiles);
+                .getDeleteDeltaInvalidFilesList(block, true, allSegmentFiles);
             for (CarbonFile invalidFile : completeListOfDeleteDeltaFiles) {
 
               compareTimestampsAndDelete(invalidFile, forceDelete, false);
             }
 
             CarbonFile[] blockRelatedFiles = updateStatusManager
-                .getAllBlockRelatedFiles(block.getBlockName(), allSegmentFiles,
-                    block.getActualBlockName());
+                .getAllBlockRelatedFiles(allSegmentFiles, block.getActualBlockName());
 
             // now for each invalid index file need to check the query execution time out
             // and then delete.
@@ -586,8 +584,7 @@ public class CarbonUpdateUtil {
 
           } else {
             invalidDeleteDeltaFiles = updateStatusManager
-                .getDeleteDeltaInvalidFilesList(segment.getLoadName(), block, false,
-                    allSegmentFiles);
+                .getDeleteDeltaInvalidFilesList(block, false, allSegmentFiles);
             for (CarbonFile invalidFile : invalidDeleteDeltaFiles) {
 
               compareTimestampsAndDelete(invalidFile, forceDelete, false);
