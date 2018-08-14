@@ -31,7 +31,7 @@ This tutorial is going to introduce all commands and data operations on CarbonDa
 
 ## CREATE TABLE
 
-  This command can be used to create a CarbonData table by specifying the list of fields along with the table properties. You can also specify the location where the table needs to be stored.
+  This command can be used to create a CarbonData table by specifying the list of fields along with the table properties. The location where the table needs to be stored can also be specified.
   
   ```
   CREATE TABLE [IF NOT EXISTS] [db_name.]table_name[(col_name data_type , ...)]
@@ -39,24 +39,26 @@ This tutorial is going to introduce all commands and data operations on CarbonDa
   [TBLPROPERTIES (property_name=property_value, ...)]
   [LOCATION 'path']
   ```
-  **NOTE:** CarbonData also supports "STORED AS carbondata" and "USING carbondata". Find example code at [CarbonSessionExample](https://github.com/apache/carbondata/blob/master/examples/spark2/src/main/scala/org/apache/carbondata/examples/CarbonSessionExample.scala) in the CarbonData repo.
+  **NOTE:** CarbonData also supports "STORED AS carbondata" and "USING carbondata". Refer example code at [CarbonSessionExample](https://github.com/apache/carbondata/blob/master/examples/spark2/src/main/scala/org/apache/carbondata/examples/CarbonSessionExample.scala) in the CarbonData repo.
 ### Usage Guidelines
 
-  Following are the guidelines for TBLPROPERTIES, CarbonData's additional table options can be set via carbon.properties.
+  Following are the guidelines for TBLPROPERTIES, CarbonData's additional table options that can be set via create Table ddl command.
   
    - **Dictionary Encoding Configuration**
 
-     Dictionary encoding is turned off for all columns by default from 1.3 onwards, you can use this command for including or excluding columns to do dictionary encoding.
-     Suggested use cases : do dictionary encoding for low cardinality columns, it might help to improve data compression ratio and performance.
+     Dictionary encoding is turned off for all columns by default from 1.3 onwards, This option can be used for including or excluding columns from dictionary encoding.
+     Suggested use cases : Doing dictionary encoding for low cardinality columns would improve data compression ratio and performance.
+     
+     **NOTE:** Refer to [Performance Tuning Guide](performance-tuning.md)
 
      ```
      TBLPROPERTIES ('DICTIONARY_INCLUDE'='column1, column2')
 	 ```
-	 NOTE: Dictionary Include/Exclude for complex child columns is not supported.
+	 NOTE: Dictionary Include/Exclude for complex child columns are not supported.
 	 
    - **Inverted Index Configuration**
 
-     By default inverted index is enabled, it might help to improve compression ratio and query speed, especially for low cardinality columns which are in reward position.
+     Inverted index is enabled for dictionary columns and columns added to SORT_COLUMNS. It helps to improve query speed, especially for low cardinality columns which are towardsin reward position.
      Suggested use cases : For high cardinality columns, you can disable the inverted index for improving the data loading performance.
 
      ```
@@ -109,7 +111,7 @@ This tutorial is going to introduce all commands and data operations on CarbonDa
  
    - **Table Block Size Configuration**
 
-     This command is for setting block size of this table, the default value is 1024 MB and supports a range of 1 MB to 2048 MB.
+     This command is for setting block size of this table, the default value is 1024 MB. Supported range is 1 MB to 2048 MB.
 
      ```
      TBLPROPERTIES ('TABLE_BLOCKSIZE'='512')
@@ -121,11 +123,11 @@ This tutorial is going to introduce all commands and data operations on CarbonDa
      These properties are table level compaction configurations, if not specified, system level configurations in carbon.properties will be used.
      Following are 5 configurations:
      
-     * MAJOR_COMPACTION_SIZE: same meaning as carbon.major.compaction.size, size in MB.
-     * AUTO_LOAD_MERGE: same meaning as carbon.enable.auto.load.merge.
-     * COMPACTION_LEVEL_THRESHOLD: same meaning as carbon.compaction.level.threshold.
-     * COMPACTION_PRESERVE_SEGMENTS: same meaning as carbon.numberof.preserve.segments.
-     * ALLOWED_COMPACTION_DAYS: same meaning as carbon.allowed.compaction.days.     
+     * MAJOR_COMPACTION_SIZE: Refer to carbon.major.compaction.size, size in MB.
+     * AUTO_LOAD_MERGE: Refer to carbon.enable.auto.load.merge.
+     * COMPACTION_LEVEL_THRESHOLD: Refer to carbon.compaction.level.threshold.
+     * COMPACTION_PRESERVE_SEGMENTS: Refer to carbon.numberof.preserve.segments.
+     * ALLOWED_COMPACTION_DAYS: Refer to carbon.allowed.compaction.days.     
 
      ```
      TBLPROPERTIES ('MAJOR_COMPACTION_SIZE'='2048',
